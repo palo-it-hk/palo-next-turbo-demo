@@ -5,10 +5,12 @@
 
 // RTFM: Inside the root layout (app/layout.tsx), import the globals.css stylesheet to apply the styles to every route in your application.
 
-import './globals.css';
+import '@/styles/globals.css';
 import { Arvo, Open_Sans } from 'next/font/google';
 
 import { StyledComponentsRegistry } from '@/lib/styling/styled-components';
+
+import './styles.css';
 
 const open_sans = Open_Sans({
   variable: '--open-sans',

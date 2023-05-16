@@ -44,6 +44,11 @@ export const darkTheme = {
     medium: '1rem',
     large: '1.125rem',
   },
+  lineHeights: {
+    small: '1.25rem',
+    medium: '1.5rem',
+    large: '1.75rem',
+  },
   space: {
     small: '0.5rem',
     medium: '0.8rem',

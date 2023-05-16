@@ -1,4 +1,4 @@
-import '../app/globals.css';
+import '../styles/globals.css';
 
 import type { Parameters } from '@storybook/react';
 import { withThemeFromJSXProvider } from '@storybook/addon-styling';
