@@ -8,6 +8,8 @@
 import './globals.css';
 import { Arvo, Open_Sans } from 'next/font/google';
 
+import { StyledComponentsRegistry } from '@/lib/styling/styled-components';
+
 const open_sans = Open_Sans({
   variable: '--open-sans',
   preload: false,
@@ -30,7 +32,9 @@ export default function RootLayout({
     // The root layout must define <html>, and <body> tags since Next.js does not automatically create them
     <html lang="en" className={`${open_sans.variable} ${arvo.variable}`}>
       <body>
-        <h1 className={'font-bold'}>Welcome to the PALO IT!</h1>
+        <StyledComponentsRegistry>
+          <h1 className={'font-bold'}>Welcome to the PALO IT!</h1>
+        </StyledComponentsRegistry>
         {children}
       </body>
     </html>
