@@ -25,7 +25,12 @@ export function StyledComponentsRegistry({
     return <>{styles}</>;
   });
 
-  if (typeof window !== 'undefined') return <>{children}</>;
+  if (typeof window !== 'undefined')
+    return (
+      <ThemeProvider theme={lightTheme}>
+        {children as React.ReactChild}
+      </ThemeProvider>
+    );
 
   return (
     <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>

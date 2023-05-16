@@ -34,8 +34,8 @@ export default function RootLayout({
       <body>
         <StyledComponentsRegistry>
           <h1 className={'font-bold'}>Welcome to the PALO IT!</h1>
+          {children}
         </StyledComponentsRegistry>
-        {children}
       </body>
     </html>
   );
