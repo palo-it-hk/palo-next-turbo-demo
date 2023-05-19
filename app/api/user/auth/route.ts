@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
-  const token = request.body;
+  const { username, password } = await request.json();
 
-  console.log('token is ', token);
+  if (username === 'test-user' && password === 'test-password') {
+    return NextResponse.json({
+      message: 'User verified',
+      token: 'secret-token',
+    });
+  }
 
-  return NextResponse.json({ message: 'ok' });
-  //if token is valid, then response ok
+  return NextResponse.json({ message: 'Authorization failed' });
 }
