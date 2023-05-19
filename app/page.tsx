@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 function Home() {
   return (
     <div>
-      <p className="font-primary ">Open sans</p>
+      <p className="font-primary">Open sans</p>
       <p className="font-secondary font-bold">Arvo</p>
       <p>Verdana</p>
     </div>
