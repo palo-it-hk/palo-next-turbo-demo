@@ -5,8 +5,12 @@
 
 // RTFM: Inside the root layout (app/layout.tsx), import the globals.css stylesheet to apply the styles to every route in your application.
 
-import './globals.css';
+import '@/styles/globals.css';
 import { Arvo, Open_Sans } from 'next/font/google';
+
+import { StyledComponentsRegistry } from '@/lib/styling/styled-components';
+
+import './styles.css';
 
 const open_sans = Open_Sans({
   variable: '--open-sans',
@@ -30,8 +34,10 @@ export default function RootLayout({
     // The root layout must define <html>, and <body> tags since Next.js does not automatically create them
     <html lang="en" className={`${open_sans.variable} ${arvo.variable}`}>
       <body>
-        <h1 className={'font-bold'}>Welcome to the PALO IT!</h1>
-        {children}
+        <StyledComponentsRegistry>
+          <h1 className={'font-bold'}>Welcome to the PALO IT!</h1>
+          {children}
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

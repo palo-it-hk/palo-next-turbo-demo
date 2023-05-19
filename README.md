@@ -9,7 +9,12 @@ This playground is a mirror of the [Next.js v13 App Directory Playground](https:
 ## Running Locally
 
 1. Install dependencies: `yarn`
-1. Start the dev server: `yarn dev`
+2. Start the dev server: `yarn dev`
+
+## Running Storybook
+
+1. Install dependencies: `yarn`
+2. Start the dev server: `yarn storybook`
 
 **Note:** The playground uses [Tailwind CSS](https://tailwindcss.com) via [PostCSS](https://turbo.build/pack/docs/features/css#postcss).
 
