@@ -7,8 +7,8 @@ import { useJwtStore } from 'store/domain-store';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('test-user');
+  const [password, setPassword] = useState('test-password');
   const [errorMessage, setErrorMessage] = useState('');
 
   async function handleSubmit() {
@@ -40,23 +40,13 @@ export default function LoginPage() {
     const store = useJwtStore();
     console.log('receivedToken is', receivedToken);
     store.setJwt(receivedToken);
-    router.push('http://localhost:3000/protected-page-with-layout');
+    router.back();
   }
 
   return (
     <>
-      <InputField
-        fieldName="Username"
-        action={setUsername}
-        value={username}
-        placeholder="test-user"
-      />
-      <InputField
-        fieldName="Password"
-        action={setPassword}
-        value={password}
-        placeholder="test-password"
-      />
+      <InputField fieldName="Username" action={setUsername} value={username} />
+      <InputField fieldName="Password" action={setPassword} value={password} />
       <div>
         <Button label="submit" size="small" onClick={handleSubmit} />
       </div>
@@ -69,12 +59,10 @@ function InputField({
   fieldName,
   action,
   value,
-  placeholder,
 }: {
   fieldName: string;
   action: Dispatch<SetStateAction<string>>;
   value: string;
-  placeholder: string;
 }) {
   return (
     <label>
@@ -85,7 +73,6 @@ function InputField({
         style={{ border: '1px solid black' }}
         onChange={(e) => action(e.target.value)}
         required
-        placeholder={placeholder}
       />
     </label>
   );

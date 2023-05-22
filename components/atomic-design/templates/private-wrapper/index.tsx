@@ -1,29 +1,27 @@
 'use client';
 
-import { Button } from '@/components/atomic-design/atoms/Button-SC';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useJwtStore } from 'store/domain-store';
+import { User } from 'store/user';
+import { Button } from '../../atoms/Button-SC';
 
-export default function AuthLayout({
-  children,
-}: {
+type Props = {
   children: React.ReactNode;
-}) {
-  const store = useJwtStore();
+};
+
+export default function PrivateWrapper({ children }: Props) {
   const [displayContent, setDisplayContent] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    authCheck();
-  });
+  const store = useJwtStore();
+  const token = store.getJwt;
 
   function authCheck() {
-    const jwtToken = store.getJwt;
-    if (jwtToken === '') {
-      router.push('http://localhost:3000/login');
+    if (token === '') {
+      router.push('/login');
       return;
     }
+
     setDisplayContent(true);
   }
 
@@ -32,15 +30,19 @@ export default function AuthLayout({
     router.refresh();
   }
 
+  useEffect(() => {
+    authCheck();
+  });
+
   return (
     <>
       {displayContent ? (
-        <>
-          {children}
+        <div>
           <div>
             <Button label="Logout" size="small" onClick={logout} />
           </div>
-        </>
+          {children}
+        </div>
       ) : (
         <></>
       )}
