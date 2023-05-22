@@ -19,7 +19,10 @@ export default function Error({
       <h2>Something went wrong!</h2>
       <button
         onClick={
-          // Attempt to recover by trying to re-render the segment
+          // The cause of an error can sometimes be temporary. In these cases, simply trying again
+          // might resolve the issue.
+          // An error component can use the reset() function to prompt the user to attempt
+          // to recover from the error.
           () => reset()
         }
       >
