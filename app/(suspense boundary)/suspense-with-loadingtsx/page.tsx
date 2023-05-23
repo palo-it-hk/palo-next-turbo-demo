@@ -19,6 +19,11 @@ async function DataComponent() {
   return <p>I have loaded: {message}</p>;
 }
 
+// An async Server Components will cause a 'Promise<Element>' is not a valid JSX element type error where it is used.
+// As a temporary workaround, you can add {/* @ts-expect-error Async Server Component */} above the component to disable type checking for it.
+// This should be solved when Typescript 5.1
+// https://nextjs.org/docs/app/building-your-application/configuring/typescript
+
 export default async function Page() {
   return (
     <>
