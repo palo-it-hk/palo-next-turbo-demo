@@ -10,5 +10,8 @@ export async function POST(request: Request) {
     });
   }
 
-  return NextResponse.json({ message: 'Authorization failed' });
+  return NextResponse.json(
+    { message: 'Authorization failed' },
+    { status: 401 },
+  );
 }
