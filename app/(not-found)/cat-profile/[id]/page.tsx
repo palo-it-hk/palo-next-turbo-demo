@@ -4,6 +4,8 @@ import { Cat } from 'store/cat';
 async function getCatInfo(id: string) {
   let res;
   try {
+    // There are data for cat profile 1 and 2. You can trigger notfound() by searching profile 3 because it doesn't exist.
+
     res = await fetch(`http://127.0.0.1:3000/api/data/cat/${id}`);
   } catch (e) {
     return;

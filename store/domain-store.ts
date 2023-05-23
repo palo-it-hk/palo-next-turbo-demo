@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
 
 export class JwtStore {
-  jwtToken: string = 'abc';
+  jwtToken: string = '';
 
   constructor() {
     makeAutoObservable(this);
@@ -21,6 +21,7 @@ export class JwtStore {
     this.jwtToken = jwtToken;
   }
 }
+
 const jwtStore = new JwtStore();
 
 export function useJwtStore() {

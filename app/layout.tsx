@@ -1,4 +1,4 @@
-// RTFM: The app directory MUST include a root layout
+// RTFM: The app directory MUST include a root layout and it CANNOT be a client component
 // The _app.tsx and _document.tsx from /pages
 // styles in app/layout will no apply to pages/* so you should still keep the _app and _documents to prevent the old routes from breaking.
 // Once the migration is completed, then you can delete those 2 files
