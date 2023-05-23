@@ -1,22 +1,18 @@
 'use client';
 
 import { Button } from '@/components/atomic-design/atoms/Button-SC';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function ErrorFunction() {
-  useEffect(() => {
-    async function asd() {
-      const res = await fetch(`asd`);
-      const thing = await res.json();
-      setAsd(thing);
-    }
-
-    asd();
-    console.log('hi');
-  });
-
   const [err, setErr] = useState(false);
-  const [asd, setAsd] = useState('');
+
+  // There was an attempt to use a function to crash:
+  // function iCrash() { throw new error ('error here')}
+
+  // However it will just throw an error without redirecting to the error page.
+  // I'm guessing this is because clicking the button is completely on the client side and there is no way that the server can connect the action to error.tsx.
+
+  // The working method will trigger a render which I guess will prompt the connection, even though it is 'use client', I suspect some of the inner workings still depend on some server side logic.
 
   if (err) {
     throw new Error('Error triggered.');
@@ -31,7 +27,6 @@ export default function ErrorFunction() {
       <p>Click the below button to trigger an error boundary</p>
       <div>
         <Button label="Click me" size="small" onClick={crash} />
-        <p>{asd}</p>
       </div>
     </>
   );
