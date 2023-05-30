@@ -16,8 +16,21 @@ const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    postAdded(state, action) {
-      state.push(action.payload);
+    postAdded: {
+      // Use the PayloadAction type to declare the contents of `action.payload` the returned result of the prepare function must be
+      // the same with action in the reducer function here
+      reducer(state, action: PayloadAction<Post>) {
+        state.push(action.payload);
+      },
+      prepare(title: string, content: string) {
+        return {
+          payload: {
+            id: (initialState.length + 1).toString(),
+            title,
+            content,
+          },
+        };
+      },
     },
     postUpdated(state, action: PayloadAction<Post>) {
       const { id, title, content } = action.payload;

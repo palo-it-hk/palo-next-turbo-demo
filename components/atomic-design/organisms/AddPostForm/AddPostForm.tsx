@@ -14,19 +14,12 @@ import {
 
 export const AddPostForm = () => {
   const dispatch = useAppDispatch();
-  const allPosts = useAppSelector(selectAllPosts);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
   const onSavePostClicked = () => {
     if (title && content) {
-      dispatch(
-        postAdded({
-          id: (allPosts.length + 1).toString(),
-          title,
-          content,
-        }),
-      );
+      dispatch(postAdded(title, content));
       setTitle('');
       setContent('');
     }
