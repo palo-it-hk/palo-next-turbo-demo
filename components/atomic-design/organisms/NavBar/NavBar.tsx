@@ -6,9 +6,8 @@ export function NavBar() {
     <div style={{ margin: '20px 0px 20px 0px' }}>
       <Link href="/redux-demo">
         <Button label="All posts" size="small" />
-      </Link>{' '}
+      </Link>
       <Link href="/redux-demo/add-post-form">
-        {' '}
         <Button label="Add new post" size="small" />
       </Link>
     </div>
