@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useJwtStore } from 'store/domain-store';
+import { useJwtStore } from 'store/state-management/mobx/mobx-domain-store';
 import { User } from 'store/user';
 import { Button } from '../../atoms/Button-SC';
 

@@ -11,6 +11,7 @@ import { Arvo, Open_Sans } from 'next/font/google';
 import { StyledComponentsRegistry } from '@/lib/styling/styled-components';
 
 import './styles.css';
+import { Providers } from 'store/state-management/redux/Provider';
 
 const open_sans = Open_Sans({
   variable: '--open-sans',
@@ -34,10 +35,12 @@ export default function RootLayout({
     // The root layout must define <html>, and <body> tags since Next.js does not automatically create them
     <html lang="en" className={`${open_sans.variable} ${arvo.variable}`}>
       <body>
-        <StyledComponentsRegistry>
-          <h1 className={'font-bold'}>Welcome to the PALO IT!</h1>
-          {children}
-        </StyledComponentsRegistry>
+        <Providers>
+          <StyledComponentsRegistry>
+            <h1 className={'font-bold'}>Welcome to the PALO IT!</h1>
+            {children}
+          </StyledComponentsRegistry>
+        </Providers>
       </body>
     </html>
   );
