@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
 type Post = {
@@ -19,10 +19,18 @@ const postsSlice = createSlice({
     postAdded(state, action) {
       state.push(action.payload);
     },
+    postUpdated(state, action: PayloadAction<Post>) {
+      const { id, title, content } = action.payload;
+      const existingPost = state.find((post) => post.id === id);
+      if (existingPost) {
+        existingPost.title = title;
+        existingPost.content = content;
+      }
+    },
   },
 });
 
-export const { postAdded } = postsSlice.actions;
+export const { postAdded, postUpdated } = postsSlice.actions;
 
 export const selectAllPosts = (state: RootState) => state.posts;
 export const selectPostById = (state: RootState, postId: string) =>

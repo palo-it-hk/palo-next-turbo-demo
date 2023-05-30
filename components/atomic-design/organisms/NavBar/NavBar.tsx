@@ -7,7 +7,7 @@ export function NavBar() {
       <Link href="/redux-demo">
         <Button label="All posts" size="small" />
       </Link>
-      <Link href="/redux-demo/add-post-form">
+      <Link href="/redux-demo/add-post">
         <Button label="Add new post" size="small" />
       </Link>
     </div>

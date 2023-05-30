@@ -2,16 +2,19 @@
 
 import React, { useState } from 'react';
 import Subtitle from '../../atoms/Subtitle/Subtitle';
-import { Wrapper } from './AddPostForm.styles';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   postAdded,
   selectAllPosts,
 } from 'store/state-management/redux/posts/postsSlice';
+import PostForm from '../PostForm/PostForm';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from 'store/state-management/redux/hook';
 
 export const AddPostForm = () => {
-  const dispatch = useDispatch();
-  const allPosts = useSelector(selectAllPosts);
+  const dispatch = useAppDispatch();
+  const allPosts = useAppSelector(selectAllPosts);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
@@ -35,16 +38,16 @@ export const AddPostForm = () => {
     setContent(e.target.value);
 
   return (
-    <Wrapper>
+    <>
       <Subtitle subtitle="Add a new Post" />
 
-      <p>Post Title:</p>
-      <input type="text" value={title} onChange={onTitleChanged} />
-      <p>Content:</p>
-      <textarea value={content} onChange={onContentChanged} />
-      <button type="button" onClick={onSavePostClicked}>
-        Save Post
-      </button>
-    </Wrapper>
+      <PostForm
+        title={title}
+        titleAction={onTitleChanged}
+        content={content}
+        contentAction={onContentChanged}
+        saveAction={onSavePostClicked}
+      />
+    </>
   );
 };
