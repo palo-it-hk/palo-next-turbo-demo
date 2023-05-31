@@ -2,15 +2,9 @@
 
 import React, { useState } from 'react';
 import Subtitle from '../../atoms/Subtitle/Subtitle';
-import {
-  postAdded,
-  selectAllPosts,
-} from 'store/state-management/redux/posts/postsSlice';
+import { postAdded } from 'store/state-management/redux/posts/postsSlice';
 import PostForm from '../PostForm/PostForm';
-import {
-  useAppDispatch,
-  useAppSelector,
-} from 'store/state-management/redux/hook';
+import { useAppDispatch } from 'store/state-management/redux/hook';
 
 export const AddPostForm = () => {
   const dispatch = useAppDispatch();
