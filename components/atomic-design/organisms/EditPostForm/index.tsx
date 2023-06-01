@@ -6,8 +6,8 @@ import {
   postUpdated,
   selectPostById,
 } from 'store/state-management/redux/posts/postsSlice';
-import Subtitle from '../../atoms/Subtitle/Subtitle';
-import PostForm from '../PostForm/PostForm';
+import Subtitle from '../../atoms/Subtitle';
+import PostForm from '../PostForm';
 import {
   useAppDispatch,
   useAppSelector,

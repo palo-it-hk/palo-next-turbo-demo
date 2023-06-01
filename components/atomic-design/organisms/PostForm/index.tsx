@@ -1,4 +1,4 @@
-import { Wrapper } from './PostForm.styles';
+import { Wrapper } from './index.styles';
 
 type PostFormProps = {
   title: string;

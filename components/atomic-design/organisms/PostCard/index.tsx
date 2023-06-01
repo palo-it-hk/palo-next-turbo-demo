@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { PostBody, PostTitleWrapper, Wrapper } from './PostCard.styles';
+import { PostBody, PostTitleWrapper, Wrapper } from './index.styles';
 
 type PostCardProps = {
-  id?: string;
+  id: string;
   title: string;
   content: string;
 };
@@ -21,3 +21,5 @@ export const PostCard = ({ id, title, content }: PostCardProps) => {
     </Wrapper>
   );
 };
+
+export default PostCard;

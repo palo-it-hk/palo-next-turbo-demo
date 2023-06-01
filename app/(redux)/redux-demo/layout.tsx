@@ -1,4 +1,4 @@
-import NavBar from '@/components/atomic-design/organisms/NavBar/NavBar';
+import NavBar from '@/components/atomic-design/organisms/NavBar/';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

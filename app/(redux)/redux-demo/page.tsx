@@ -1,4 +1,4 @@
-import { PostsList } from '@/components/atomic-design/organisms/PostsList/PostsList';
+import PostsList from '@/components/atomic-design/organisms/PostsList';
 
 export const Page = () => {
   return <PostsList />;
