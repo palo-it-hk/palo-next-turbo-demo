@@ -1,20 +1,21 @@
 'use client';
 
 import { notFound, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+
 import {
   postUpdated,
   selectPostById,
-} from 'store/state-management/redux/posts/postsSlice';
-import Subtitle from '../../atoms/Subtitle';
-import PostForm from '../PostForm';
+} from 'store/state-management/redux/posts/slice';
 import {
   useAppDispatch,
   useAppSelector,
 } from 'store/state-management/redux/hook';
 
+import Subtitle from '../../atoms/Subtitle-TW';
+import PostForm from '../PostForm';
+
 export const EditPostForm = ({ id }: { id: string }) => {
-  const router = useRouter();
   const post = useAppSelector((state) => selectPostById(state, id));
 
   if (!post) {
@@ -26,16 +27,25 @@ export const EditPostForm = ({ id }: { id: string }) => {
 
   const dispatch = useAppDispatch();
 
-  const onTitleChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setTitle(e.target.value);
-  const onContentChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-    setContent(e.target.value);
-  const onSavePostClicked = () => {
-    if (title && content) {
-      dispatch(postUpdated({ id, title, content }));
-      router.push(`/redux-demo/post/${id}`);
-    }
-  };
+  const onTitleChanged = useCallback(() => {
+    return (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
+  }, []);
+
+  const onContentChanged = useCallback(() => {
+    return (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+      setContent(e.target.value);
+  }, []);
+
+  const router = useRouter();
+
+  const onSavePostClicked = useCallback(() => {
+    return () => {
+      if (title && content) {
+        dispatch(postUpdated({ id, title, content }));
+        router.push(`/redux-demo/post/${id}`);
+      }
+    };
+  }, []);
 
   return (
     <>
