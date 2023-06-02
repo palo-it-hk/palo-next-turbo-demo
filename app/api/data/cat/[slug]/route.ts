@@ -1,9 +1,10 @@
-import { catLibrary } from 'data/catData';
 import { NextResponse } from 'next/server';
+
+import { catLibrary } from 'data/catData';
 
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: { slug: string } },
 ) {
   const catId = params.slug;
 

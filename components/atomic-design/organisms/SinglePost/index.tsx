@@ -1,12 +1,14 @@
 'use client';
 
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import { useSelector } from 'react-redux';
-import { selectPostById } from 'store/state-management/redux/posts/postsSlice';
+
+import { selectPostById } from 'store/state-management/redux/posts/slice';
 import { RootState } from 'store/state-management/redux/store';
+
 import { PostCard } from '../PostCard';
 import { Button } from '../../atoms/Button-SC';
-import Link from 'next/link';
 
 export const SinglePost = ({ id }: { id: string }) => {
   const post = useSelector((state: RootState) => selectPostById(state, id));

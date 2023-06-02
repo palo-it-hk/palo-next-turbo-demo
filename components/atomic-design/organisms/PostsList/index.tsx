@@ -1,10 +1,12 @@
 'use client';
 
 import React from 'react';
-import { selectAllPosts } from 'store/state-management/redux/posts/postsSlice';
-import { PostCard } from '../PostCard';
-import Subtitle from '../../atoms/Subtitle';
+
+import { selectAllPosts } from 'store/state-management/redux/posts/slice';
 import { useAppSelector } from 'store/state-management/redux/hook';
+
+import { PostCard } from '../PostCard';
+import Subtitle from '../../atoms/Subtitle-TW';
 
 export const PostsList = () => {
   const posts = useAppSelector(selectAllPosts);

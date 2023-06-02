@@ -1,4 +1,5 @@
 import Link from 'next/link';
+
 import { PostBody, PostTitleWrapper, Wrapper } from './index.styles';
 
 type PostCardProps = {

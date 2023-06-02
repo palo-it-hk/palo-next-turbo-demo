@@ -1,5 +1,3 @@
-import { notFound } from 'next/navigation';
-
 async function getData() {
   //node fetch issues if using localhost, src: https://github.com/node-fetch/node-fetch/issues/1624
   let res;

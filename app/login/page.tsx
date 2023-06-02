@@ -1,8 +1,10 @@
 'use client';
 
-import { Button } from '@/components/atomic-design/atoms/Button-SC';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useState } from 'react';
+
+import { Button } from '@/components/atomic-design/atoms/Button-SC';
+
 import { useJwtStore } from 'store/state-management/mobx/mobx-domain-store';
 
 export default function LoginPage() {
