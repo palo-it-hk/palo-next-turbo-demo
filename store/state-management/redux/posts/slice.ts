@@ -5,10 +5,9 @@ import {
   createEntityAdapter,
   createSlice,
 } from '@reduxjs/toolkit';
-import { RootState } from '../store';
 import { Post } from 'store/posts';
 
-type InitialStateType = {
+export type InitialStateType = {
   // We can use this information to decide what to show in our UI as the request progresses,
   // and also add logic in our reducers to prevent cases like loading data twice.
   // But since NextJS has data caching (to be explored), this use case might not be applicable
@@ -17,7 +16,7 @@ type InitialStateType = {
   error: string | undefined;
 };
 
-const postsAdapter = createEntityAdapter<Post>();
+export const postsAdapter = createEntityAdapter<Post>();
 
 const initialState: EntityState<Post> & InitialStateType =
   postsAdapter.getInitialState({
@@ -79,12 +78,5 @@ const postsSlice = createSlice({
 });
 
 export const { postUpdated } = postsSlice.actions;
-
-export const {
-  selectAll: selectAllPosts,
-  selectById: selectPostById,
-
-  // Pass in a selector that returns the posts slice of state
-} = postsAdapter.getSelectors((state: RootState) => state.posts);
 
 export default postsSlice.reducer;

@@ -6,20 +6,18 @@ import {
   useAppDispatch,
   useAppSelector,
 } from 'store/state-management/redux/hook';
-import {
-  fetchPosts,
-  selectAllPosts,
-} from 'store/state-management/redux/posts/slice';
+import { fetchPosts } from 'store/state-management/redux/posts/slice';
 
 import PostCard from '../PostCard';
 import Subtitle from '../../atoms/Subtitle-TW';
+import { postSelectors } from 'store/state-management/redux/posts/selectors';
 
 export const PostsList = () => {
   const dispatch = useAppDispatch();
-  const posts = useAppSelector(selectAllPosts);
-  const error = useAppSelector((state) => state.posts.error);
-
-  const postStatus = useAppSelector((state) => state.posts.status);
+  const postSelector = postSelectors();
+  const posts = useAppSelector(postSelector.selectAll);
+  const postStatus = postSelector.getPostStatus;
+  const error = postSelector.getErrorStatus;
 
   useEffect(() => {
     // originally we check if this data has already been fetched before by assigning it a postState
