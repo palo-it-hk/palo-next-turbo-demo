@@ -1,5 +1,3 @@
-import { EntityAdapter, EntityState, createSelector } from '@reduxjs/toolkit';
-
 import { RootState } from '../store';
 import { postsAdapter } from './slice';
 import { useAppSelector } from '../hook';
