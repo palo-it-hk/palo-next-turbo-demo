@@ -7,7 +7,7 @@ type PostFormProps = {
   titleAction: (e: React.ChangeEvent<HTMLInputElement>) => void;
   content: string;
   contentAction: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  saveAction: () => void;
+  saveAction: (title: string, content: string) => void;
 };
 
 export const PostForm = memo(
@@ -24,7 +24,7 @@ export const PostForm = memo(
         <input type="text" value={title} onChange={titleAction} />
         <p>Content:</p>
         <textarea value={content} onChange={contentAction} />
-        <button type="button" onClick={saveAction}>
+        <button type="button" onClick={() => saveAction(title, content)}>
           Save Post
         </button>
       </Wrapper>

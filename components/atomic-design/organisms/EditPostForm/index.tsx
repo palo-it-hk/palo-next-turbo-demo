@@ -28,22 +28,21 @@ export const EditPostForm = ({ id }: { id: string }) => {
 
   const dispatch = useAppDispatch();
 
-  const onTitleChanged = useCallback(() => {
-    return (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
-  }, []);
+  const onTitleChanged = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value),
+    [],
+  );
 
-  const onContentChanged = useCallback(() => {
-    return (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-      setContent(e.target.value);
-  }, []);
+  const onContentChanged = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value),
+    [],
+  );
 
-  const onSavePostClicked = useCallback(() => {
-    return () => {
-      if (title && content) {
-        dispatch(postUpdated({ id, title, content }));
-        router.push(`/redux-demo/post/${id}`);
-      }
-    };
+  const onSavePostClicked = useCallback((title: string, content: string) => {
+    if (title && content) {
+      dispatch(postUpdated({ id, title, content }));
+      router.push(`/redux-demo/post/${id}`);
+    }
   }, []);
 
   return (

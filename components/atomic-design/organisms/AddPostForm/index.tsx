@@ -13,21 +13,21 @@ export const AddPostForm = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-  const onSavePostClicked = () => {
+  const onSavePostClicked = useCallback((title: string, content: string) => {
     if (title && content) {
       dispatch(addNewPost({ title, content }));
       setTitle('');
       setContent('');
     }
-  };
-
-  const onTitleChanged = useCallback(() => {
-    (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
   }, []);
 
+  const onTitleChanged = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value),
+    [],
+  );
+
   const onContentChanged = useCallback(
-    () => (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-      setContent(e.target.value),
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value),
     [],
   );
 
@@ -45,3 +45,5 @@ export const AddPostForm = () => {
     </>
   );
 };
+
+export default AddPostForm;
