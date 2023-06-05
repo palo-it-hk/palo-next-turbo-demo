@@ -2,16 +2,19 @@
 
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
-
-import { selectPostById } from 'store/state-management/redux/posts/slice';
 import { RootState } from 'store/state-management/redux/store';
+
+import { postSelectorInit } from 'store/state-management/redux/posts/selectors';
+import { useAppSelector } from 'store/state-management/redux/hook';
 
 import { PostCard } from '../PostCard';
 import { Button } from '../../atoms/Button-SC';
 
 export const SinglePost = ({ id }: { id: string }) => {
-  const post = useSelector((state: RootState) => selectPostById(state, id));
+  const postSelector = postSelectorInit();
+  const post = useAppSelector((state: RootState) =>
+    postSelector.selectById(state, id),
+  );
 
   if (!post) {
     notFound();

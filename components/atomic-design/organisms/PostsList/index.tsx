@@ -10,11 +10,11 @@ import { fetchPosts } from 'store/state-management/redux/posts/slice';
 
 import PostCard from '../PostCard';
 import Subtitle from '../../atoms/Subtitle-TW';
-import { postSelectors } from 'store/state-management/redux/posts/selectors';
+import { postSelectorInit } from 'store/state-management/redux/posts/selectors';
 
 export const PostsList = () => {
   const dispatch = useAppDispatch();
-  const postSelector = postSelectors();
+  const postSelector = postSelectorInit();
   const posts = useAppSelector(postSelector.selectAll);
   const postStatus = postSelector.getPostStatus;
   const error = postSelector.getErrorStatus;
