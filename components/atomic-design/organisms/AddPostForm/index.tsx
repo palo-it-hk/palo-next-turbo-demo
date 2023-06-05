@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { useAppDispatch } from 'store/state-management/redux/hook';
 import { addNewPost } from 'store/state-management/redux/posts/slice';
@@ -21,10 +21,15 @@ export const AddPostForm = () => {
     }
   };
 
-  const onTitleChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setTitle(e.target.value);
-  const onContentChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-    setContent(e.target.value);
+  const onTitleChanged = useCallback(() => {
+    (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
+  }, []);
+
+  const onContentChanged = useCallback(
+    () => (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+      setContent(e.target.value),
+    [],
+  );
 
   return (
     <>
