@@ -4,18 +4,19 @@ import { notFound, useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
 import {
-  postUpdated,
-  selectPostById,
-} from 'store/state-management/redux/posts/slice';
-import {
   useAppDispatch,
   useAppSelector,
 } from 'store/state-management/redux/hook';
+import {
+  postUpdated,
+  selectPostById,
+} from 'store/state-management/redux/posts/slice';
 
 import Subtitle from '../../atoms/Subtitle-TW';
 import PostForm from '../PostForm';
 
 export const EditPostForm = ({ id }: { id: string }) => {
+  const router = useRouter();
   const post = useAppSelector((state) => selectPostById(state, id));
 
   if (!post) {
@@ -35,8 +36,6 @@ export const EditPostForm = ({ id }: { id: string }) => {
     return (e: React.ChangeEvent<HTMLTextAreaElement>) =>
       setContent(e.target.value);
   }, []);
-
-  const router = useRouter();
 
   const onSavePostClicked = useCallback(() => {
     return () => {
