@@ -1,52 +1,90 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import {
+  EntityState,
+  PayloadAction,
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice,
+} from '@reduxjs/toolkit';
 import { RootState } from '../store';
+import { Post } from 'store/posts';
 
-type Post = {
-  id: string;
-  title: string;
-  content: string;
+type InitialStateType = {
+  // We can use this information to decide what to show in our UI as the request progresses,
+  // and also add logic in our reducers to prevent cases like loading data twice.
+  // But since NextJS has data caching (to be explored), this use case might not be applicable
+  // However the status can be useful for manipulating loading status on the UI
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  error: string | undefined;
 };
 
-const initialState: Post[] = [
-  { id: '1', title: 'First Post!', content: 'Hello!' },
-  { id: '2', title: 'Second Post', content: 'More text' },
-];
+const postsAdapter = createEntityAdapter<Post>();
+
+const initialState: EntityState<Post> & InitialStateType =
+  postsAdapter.getInitialState({
+    status: 'idle',
+    error: undefined,
+  });
+
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
+  const response = await fetch('http://localhost:3000/api/data/posts');
+  const allPosts: Post[] = (await response.json()).allPosts;
+  return allPosts;
+});
+
+export const addNewPost = createAsyncThunk(
+  'posts/addNewPost',
+  async (initialPost: { title: string; content: string }) => {
+    const res = await fetch('http://localhost:3000/api/data/posts', {
+      method: 'POST',
+      body: JSON.stringify(initialPost),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return await (
+      await res.json()
+    ).newPost;
+  },
+);
 
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    postAdded: {
-      // Use the PayloadAction type to declare the contents of `action.payload` the returned result of the prepare function must be
-      // the same with action in the reducer function here
-      reducer(state, action: PayloadAction<Post>) {
-        state.push(action.payload);
-      },
-      prepare(title: string, content: string) {
-        return {
-          payload: {
-            id: (initialState.length + 1).toString(),
-            title,
-            content,
-          },
-        };
-      },
-    },
     postUpdated(state, action: PayloadAction<Post>) {
-      const { id, title, content } = action.payload;
-      const existingPost = state.find((post) => post.id === id);
-      if (existingPost) {
-        existingPost.title = title;
-        existingPost.content = content;
+      const { id, ...changes } = action.payload;
+      const existingPostId = postsAdapter.selectId(action.payload);
+      if (existingPostId) {
+        postsAdapter.updateOne(state, { id, changes });
       }
     },
   },
+  extraReducers(builder) {
+    builder
+      .addCase(fetchPosts.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchPosts.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        // Add any fetched posts to the array
+        postsAdapter.upsertMany(state, action.payload);
+      })
+      .addCase(fetchPosts.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(addNewPost.fulfilled, postsAdapter.addOne);
+  },
 });
 
-export const { postAdded, postUpdated } = postsSlice.actions;
+export const { postUpdated } = postsSlice.actions;
 
-export const selectAllPosts = (state: RootState) => state.posts;
-export const selectPostById = (state: RootState, postId: string) =>
-  state.posts.find((post) => post.id === postId);
+export const {
+  selectAll: selectAllPosts,
+  selectById: selectPostById,
+
+  // Pass in a selector that returns the posts slice of state
+} = postsAdapter.getSelectors((state: RootState) => state.posts);
 
 export default postsSlice.reducer;
