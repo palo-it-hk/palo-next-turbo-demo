@@ -32,4 +32,3 @@ Next 13 beta has changed and added special files to create UI with specific beha
 | loading.ts | this component will be rendered whenever the suspense boundary is triggered | within `(suspense boundary)` | `{/* @ts-expect-error Async Server Component */}` should be placed in front of the component that is to be loaded | 
 | error.ts | this component will be rendered whenever the error boundary is triggered | within (`error-boundary`) | error.js boundaries do not catch errors thrown in layout.js or template.js components of the same segment | 
 | not-found.ts | this component when a `notFound()` is thrown | within `(not-found)` | error.js boundaries do not catch errors thrown in layout.js or template.js components of the same segment |
-

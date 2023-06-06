@@ -6,6 +6,7 @@
 // RTFM: Inside the root layout (app/layout.tsx), import the globals.css stylesheet to apply the styles to every route in your application.
 
 import { Arvo, Open_Sans } from 'next/font/google';
+import CustomFont from 'next/font/local';
 
 import { StyledComponentsRegistry } from '@/lib/styling/styled-components';
 import '@/styles/globals.css';
@@ -24,6 +25,22 @@ const arvo = Arvo({
   preload: false,
 });
 
+// Used CustomFont() rather than localfont() because the latter is not working
+// https://stackoverflow.com/questions/75439877/error-while-trying-to-add-external-local-fonts-in-nextjs
+const josefinSlab = CustomFont({
+  src: '../public/fonts/josefinslab-variablefont_wght.ttf',
+  variable: '--josefin-slab',
+});
+
+//single custom font with multiple fonts
+const gluten = CustomFont({
+  src: [
+    { path: '../public/fonts/gluten-regular.ttf', weight: '400' },
+    { path: '../public/fonts/gluten-bold.ttf', weight: '700' },
+  ],
+  variable: '--gluten',
+});
+
 export default function RootLayout({
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
@@ -33,10 +50,13 @@ export default function RootLayout({
 }) {
   return (
     // The root layout must define <html>, and <body> tags since Next.js does not automatically create them
-    <html lang="en" className={`${open_sans.variable} ${arvo.variable}`}>
+    <html
+      lang="en"
+      className={`${open_sans.variable} ${arvo.variable} ${josefinSlab.variable} ${gluten.variable}`}
+    >
       <body>
         <StyledComponentsRegistry>
-          <h1 className={'font-bold'}>Welcome to the PALO IT!</h1>
+          <h1 className={'font-bold'}>Welcome to PALO IT!</h1>
           <Providers>{children}</Providers>
         </StyledComponentsRegistry>
       </body>
