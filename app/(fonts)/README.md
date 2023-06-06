@@ -30,6 +30,4 @@ export default function RootLayout({
 
 ## Fonts with Tailwind
 
-This repo implements fonts using Tailwind. You can see how it is introduced in the root `layout.tsx`, `tailwind.config.js`, and `(fonts)`.
-
-## Local fonts
+This repo implements imported and local fonts using Tailwind and `next/font/google` and `next/font/local`. You can see how it is introduced in the root `layout.tsx`, configured in `tailwind.config.js`, and implemented in `(fonts)`.
