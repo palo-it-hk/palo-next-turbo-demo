@@ -1,6 +1,6 @@
 # Fonts
 
-`'next font` automatically optimize your fonts with zero layout shift and remove external network requests.
+`'next font` automatically optimize your fonts with zero layout shift and remove external network requests. It is recommended to use variable fonts.
 
 ## Google fonts
 
@@ -33,3 +33,6 @@ export default function RootLayout({
 ## Fonts with Tailwind(local and google)
 
 This repo implements imported and local fonts using Tailwind and `next/font/google` and `next/font/local`. You can see how it is introduced in the root `layout.tsx`, configured in `tailwind.config.js`, and implemented in `(fonts)`.
+
+## Preloading
+

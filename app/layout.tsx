@@ -5,41 +5,12 @@
 
 // RTFM: Inside the root layout (app/layout.tsx), import the globals.css stylesheet to apply the styles to every route in your application.
 
-import { Arvo, Open_Sans } from 'next/font/google';
-import CustomFont from 'next/font/local';
-
 import { StyledComponentsRegistry } from '@/lib/styling/styled-components';
 import '@/styles/globals.css';
 
 import './styles.css';
+import { open_sans, arvo, josefinSlab, gluten } from './fonts';
 import Providers from '@/components/atomic-design/templates/Providers';
-
-const open_sans = Open_Sans({
-  variable: '--open-sans',
-  preload: false,
-});
-
-const arvo = Arvo({
-  weight: ['400', '700'],
-  variable: '--arvo',
-  preload: false,
-});
-
-// Used CustomFont() rather than localfont() because the latter is not working
-// https://stackoverflow.com/questions/75439877/error-while-trying-to-add-external-local-fonts-in-nextjs
-const josefinSlab = CustomFont({
-  src: '../public/fonts/josefinslab-variablefont_wght.ttf',
-  variable: '--josefin-slab',
-});
-
-//single custom font with multiple fonts
-const gluten = CustomFont({
-  src: [
-    { path: '../public/fonts/gluten-regular.ttf', weight: '400' },
-    { path: '../public/fonts/gluten-bold.ttf', weight: '700' },
-  ],
-  variable: '--gluten',
-});
 
 export default function RootLayout({
   // Layouts must accept a children prop.
