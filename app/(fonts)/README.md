@@ -6,8 +6,9 @@
 
 Use google fonts by installing `next/font/google`. This way fonts are included in the deployment and served from the same domain as your deployment. No requests are made to Google by the browser.
 
+
+`/app/layout.tsx`
 ```typescript
-#!/app/layout.tsx
 import { Inter } from 'next/font/google';
  
 // If loading a variable font, you don't need to specify the font weight
