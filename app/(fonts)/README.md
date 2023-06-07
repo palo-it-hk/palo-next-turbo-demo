@@ -6,7 +6,8 @@
 
 Use google fonts by installing `next/font/google`. This way fonts are included in the deployment and served from the same domain as your deployment. No requests are made to Google by the browser.
 
-```
+```typescript
+#!/app/layout.tsx
 import { Inter } from 'next/font/google';
  
 // If loading a variable font, you don't need to specify the font weight
@@ -28,6 +29,6 @@ export default function RootLayout({
 }
 ```
 
-## Fonts with Tailwind
+## Fonts with Tailwind(local and google)
 
 This repo implements imported and local fonts using Tailwind and `next/font/google` and `next/font/local`. You can see how it is introduced in the root `layout.tsx`, configured in `tailwind.config.js`, and implemented in `(fonts)`.
