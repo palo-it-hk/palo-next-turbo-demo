@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 
 import { PostBody, PostTitleWrapper, Wrapper } from './index.styles';
