@@ -27,3 +27,9 @@ https://nextjs.link/with-turbopack
 ## Providing Feedback
 
 https://nextjs.link/turbopack-feedback
+
+# Issues
+
+## Turbopack
+
+Triggering `notFound()` will cause the browser to make requests to the browser non-stop during dev mode. This is a known issue in the community but not yet addressed officially. https://github.com/vercel/next.js/discussions/50429
