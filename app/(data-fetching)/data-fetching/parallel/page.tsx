@@ -1,15 +1,5 @@
 import Album from '@/components/atomic-design/organisms/Album';
-import { Suspense } from 'react';
-
-async function getArtist() {
-  const res = await fetch('http://localhost:3000/api/data/music/artist');
-  return res.json();
-}
-
-async function getAlbum() {
-  const res = await fetch('http://localhost:3000/api/data/music/album');
-  return res.json();
-}
+import { getAlbum, getArtist } from '@/services/music';
 
 export default async function Page() {
   // Initiate both requests in parallel

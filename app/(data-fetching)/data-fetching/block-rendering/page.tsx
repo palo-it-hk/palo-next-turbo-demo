@@ -1,20 +1,7 @@
 import Album from '@/components/atomic-design/organisms/Album';
+import { getData } from '@/services/data';
+import { getAlbum, getArtist } from '@/services/music';
 import { Suspense } from 'react';
-
-async function getArtist() {
-  const res = await fetch('http://localhost:3000/api/data/music/artist', {});
-  return res.json();
-}
-
-async function getData() {
-  const res = await fetch(`http://localhost:3000/api/data`, {});
-  return res.json();
-}
-
-async function getAlbum() {
-  const res = await fetch('http://localhost:3000/api/data/music/album', {});
-  return res.json();
-}
 
 async function Container1({ promise }: { promise: Promise<any> }) {
   const data = await promise;
