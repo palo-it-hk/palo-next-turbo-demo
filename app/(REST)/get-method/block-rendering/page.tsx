@@ -3,6 +3,11 @@ import { getData } from '@/services/data';
 import { getAlbum, getArtist } from '@/services/music';
 import { Suspense } from 'react';
 
+// NextJS recommends fetching data directly in the component that needs it,
+// even if you're requesting the same data in multiple components,
+// rather than passing the data between components as props.
+// https://nextjs.org/docs/app/building-your-application/data-fetching/caching
+
 async function Container1({ promise }: { promise: Promise<any> }) {
   const data = await promise;
   const album = getAlbum();

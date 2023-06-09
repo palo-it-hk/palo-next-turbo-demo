@@ -8,3 +8,8 @@ export async function GET(request: Request) {
     currentTime: currentTime,
   });
 }
+
+export async function POST(request: Request) {
+  const { time } = await request.json();
+  return NextResponse.json({ time });
+}

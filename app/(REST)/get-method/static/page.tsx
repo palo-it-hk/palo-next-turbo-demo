@@ -42,10 +42,11 @@ export default async function Page() {
       <hr />
       <p className="font-bold">Second fetch (using the cached fetch)</p>
       <CatInfoDisplay cat={cat2} />
-      {/* Only fetches 5 seconds after the last fetch. Note that you can only see 
-      the changes only if you start a new tab. Refreshing will not show results due 
-      to nextJS persists components.  */}
+      <hr />
       <p className="font-bold">Current time and date</p>
+      {/* Only displays new result after 5 seconds from the last one. Note that you can only see 
+      the updated fetch result only if you start a new tab. Refreshing will not show results due 
+      to nextJS persisting renders.  */}
       Now is {date.currentTime}
     </>
   );
