@@ -61,7 +61,7 @@
     "vite": "4.3.6"
   },
   "eslintConfig": {
-    "extends": [
+    "extends": ["next/core-web-vitals",
       "plugin:storybook/recommended"
     ]
   }

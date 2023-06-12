@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 
 import { Button } from '@/components/atomic-design/atoms/Button-SC';
 
-import { useJwtStore } from 'store/state-management/mobx/mobx-domain-store';
+import { initJwtStore } from 'store/state-management/mobx/mobx-domain-store';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -39,7 +39,7 @@ export default function LoginPage() {
       return;
     }
 
-    const store = useJwtStore();
+    const store = initJwtStore();
     console.log('receivedToken is', receivedToken);
     store.setJwt(receivedToken);
     router.back();

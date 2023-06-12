@@ -7,16 +7,28 @@ async function getCatInfo(id: string) {
   // Therefore, the below fetch is a form of static data fetching.
 
   // You should avoid caching for user-specific data (i.e. requests that derive data from cookies() or headers())
-  const res = await fetch(`http://127.0.0.1:3000/api/data/cat/${id}`);
-  return res.json();
+  let res;
+  try {
+    res = await fetch(`http://localhost:3000/api/data/cat/${id}`);
+  } catch (e) {
+    console.log('error');
+  }
+  if (res?.ok) {
+    return res.json();
+  }
 }
 
 async function getDate() {
   // You an set the cache lifetime of a resource (in seconds) with the revalidate property
-  const res = await fetch(`http://localhost:3000/api/data/time`, {
-    next: { revalidate: 5 },
-  });
-  return res.json();
+  let res;
+  try {
+    res = await fetch(`http://localhost:3000/api/data/time`);
+  } catch (e) {
+    console.log('error');
+  }
+  if (res?.ok) {
+    return res.json();
+  }
 }
 
 export default async function Page() {
@@ -28,8 +40,10 @@ export default async function Page() {
 
   const date = await getDate();
 
-  if (!fetchedData1 || !fetchedData2) {
-    throw new Error("Can't fetch cat data");
+  console.log('fetchedData1', fetchedData1);
+
+  if (!fetchedData1 || !fetchedData2 || !date) {
+    return <>Error when fetching data</>;
   }
 
   const cat1: Cat = fetchedData1.catInfo;

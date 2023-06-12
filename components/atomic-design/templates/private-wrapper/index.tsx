@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { useJwtStore } from 'store/state-management/mobx/mobx-domain-store';
+import { initJwtStore } from 'store/state-management/mobx/mobx-domain-store';
 
 import { Button } from '../../atoms/Button-SC';
 
@@ -14,7 +14,7 @@ type Props = {
 export default function PrivateWrapper({ children }: Props) {
   const [displayContent, setDisplayContent] = useState(false);
   const router = useRouter();
-  const store = useJwtStore();
+  const store = initJwtStore();
   const token = store.getJwt;
 
   function authCheck() {

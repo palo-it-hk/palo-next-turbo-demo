@@ -24,6 +24,6 @@ export class JwtStore {
 
 const jwtStore = new JwtStore();
 
-export function useJwtStore() {
+export function initJwtStore() {
   return jwtStore;
 }

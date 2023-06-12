@@ -1,17 +1,25 @@
-'use client';
+async function getDate() {
+  console.log('this ran');
+  // You an set the cache lifetime of a resource (in seconds) with the revalidate property
+  let res;
+  try {
+    res = await fetch(`http://localhost:3000/api/data/time`);
+  } catch (e) {
+    console.log('error');
+  }
+  if (res?.ok) {
+    return res.json();
+  }
+}
 
-import { useEffect } from 'react';
+export default async function Page() {
+  let displayTime = '';
 
-export default function Page() {
-  useEffect(() => {
-    async function hydrate() {
-      const res = await fetch(`http://localhost:3000/api/data/time`);
-      const result = res.json();
-      console.log('result is', result);
-    }
+  const date = await getDate();
+  console.log('date is ', date);
 
-    hydrate();
-  }, []);
-
-  return <></>;
+  if (date) {
+    displayTime = date.currentTime;
+  }
+  return <>{displayTime}</>;
 }

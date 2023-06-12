@@ -4,13 +4,16 @@ import { getData } from '@/services/data';
 import { getAlbum, getArtist } from '@/services/music';
 
 async function Data({ promise }: { promise: Promise<any> }) {
-  const data = await promise;
+  const data: { message: string | null } = await promise;
+
   return <p>{data.message}</p>;
 }
 
 async function Album({ promise }: { promise: Promise<any> }) {
   const res: { songs: string[] } = await promise;
+
   const songList = res.songs.map((song, id) => <li key={id}>{song}</li>);
+
   return <ol>{songList}</ol>;
 }
 
@@ -31,13 +34,11 @@ export default async function Page() {
       <p className="font-bold">Album (takes 5 seconds to load):</p>
 
       <Suspense fallback={<p>Loading..</p>}>
-        {/* @ts-expect-error Async Server Component */}
         <Album promise={album} />
       </Suspense>
 
       <p className="font-bold">Data (takes 2 seconds to load):</p>
       <Suspense fallback={<p>Loading..</p>}>
-        {/* @ts-expect-error Async Server Component */}
         <Data promise={data} />
       </Suspense>
     </>

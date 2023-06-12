@@ -24,7 +24,6 @@ export default async function Page() {
       <p>Data is: </p>
 
       <Suspense fallback={<p>Loading..</p>}>
-        {/* @ts-expect-error Async Server Component */}
         <DataComponent />
       </Suspense>
     </>

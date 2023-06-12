@@ -11,7 +11,7 @@ import {
 import { postSelectorInit } from 'store/state-management/redux/posts/selectors';
 import { fetchPosts } from 'store/state-management/redux/posts/slice';
 
-export const Page = () => {
+export default function Page() {
   const dispatch = useAppDispatch();
   const postSelector = postSelectorInit();
   const posts = useAppSelector(postSelector.selectAll);
@@ -42,6 +42,4 @@ export const Page = () => {
       {content}
     </section>
   );
-};
-
-export default Page;
+}

@@ -6,7 +6,7 @@ async function getCatInfo(id: string) {
   try {
     // There are data for cat profile 1 and 2. You can trigger notfound() by searching profile 3 because it doesn't exist.
 
-    res = await fetch(`http://127.0.0.1:3000/api/data/cat/${id}`);
+    res = await fetch(`http://localhost:3000/api/data/cat/${id}`);
   } catch (e) {
     return;
   }

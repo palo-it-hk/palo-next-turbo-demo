@@ -14,7 +14,6 @@ async function Container1({ promise }: { promise: Promise<any> }) {
   return (
     <>
       <Suspense fallback={<p>Loading...</p>}>
-        {/* @ts-expect-error Async Server Component */}
         <Container2 promise={album} />
       </Suspense>
       <p className="font-bold">Data is:</p>
@@ -29,7 +28,6 @@ async function Container2({ promise }: { promise: Promise<any> }) {
   return (
     <>
       <Suspense fallback={<p>Loading...</p>}>
-        {/* @ts-expect-error Async Server Component */}
         <Container3 promise={artist} />
       </Suspense>
 
@@ -57,7 +55,6 @@ export default function Page() {
       <p> The loading sequence will start from container 3, 2 and 1</p>
 
       <Suspense fallback={<p>Loading</p>}>
-        {/* @ts-expect-error Async Server Component */}
         <Container1 promise={data} />
       </Suspense>
     </>
