@@ -33,3 +33,42 @@ https://nextjs.link/turbopack-feedback
 ## Turbopack
 
 Triggering `notFound()` will cause the browser to make requests to the browser non-stop during dev mode. This is a known issue in the community but not yet addressed officially. https://github.com/vercel/next.js/discussions/50429
+
+## API
+
+Throughout this repo, you will see that `/app` will be used as the API to store, produce and fetch data. This is for demo purposes and unlikely to reflect real use-cases.
+
+Pre-rendering static pages that depend on Next APIs will not work properly during prod mode. This is because the APIs are not hosted yet by the time Next is rendering the static pages, therefore unable to resolve the fetch by the time it is rendering.
+
+Read more on [static and dynamic rendering](https://nextjs.org/docs/app/building-your-application/rendering/static-and-dynamic-rendering)
+
+```typescript
+// page.tsx
+
+async function getData() {
+  const res = await fetch('http://localhost:3000/api/data/');
+  // await fetch('/api/data/posts') will not work also
+
+  return res.json();
+}
+
+export default async function Page() {
+  const res: { allPosts: Post[] } = await getData();
+
+  const posts = res.allPosts;
+
+  return (
+    <>
+      <PostList posts={posts} />
+    </>
+  );
+}
+
+// The above will not render the data
+```
+
+You do not see this problem in dev mode because pages are pre-rendered twice.
+
+## Cache behavior
+
+Next stores caches inside `.next`. Failing to clear cache may produce inconsistent behavior especially when running `yarn run build && yarn run start`. Manually removing the `.next` folder is recommended to clear the cache. 
