@@ -1,25 +1,23 @@
-async function getDate() {
-  console.log('this ran');
-  // You an set the cache lifetime of a resource (in seconds) with the revalidate property
+import PostList from '@/components/atomic-design/organisms/PostList';
+
+async function getPosts() {
   let res;
+
   try {
-    res = await fetch(`http://localhost:3000/api/data/time`);
+    res = await fetch('http://localhost:3000/api/data/posts');
   } catch (e) {
-    console.log('error');
+    return;
   }
-  if (res?.ok) {
-    return res.json();
-  }
+
+  return res.json();
 }
 
 export default async function Page() {
-  let displayTime = '';
+  const posts = await getPosts();
 
-  const date = await getDate();
-  console.log('date is ', date);
-
-  if (date) {
-    displayTime = date.currentTime;
+  if (!posts) {
+    return <>No posts are fetched. </>;
   }
-  return <>{displayTime}</>;
+
+  return <PostList posts={posts.allPosts} />;
 }

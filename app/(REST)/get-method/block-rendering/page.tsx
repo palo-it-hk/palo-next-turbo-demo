@@ -3,17 +3,18 @@ import { getData } from '@/services/data';
 import { getAlbum, getArtist } from '@/services/music';
 import { Suspense } from 'react';
 
-// NextJS recommends fetching data directly in the component that needs it,
-// even if you're requesting the same data in multiple components,
-// rather than passing the data between components as props.
-// https://nextjs.org/docs/app/building-your-application/data-fetching/caching
+// To improve the user experience, you can add a suspense boundary to break up the rendering work and show fetch results in the desired sequence
 
-async function Container1({ promise }: { promise: Promise<any> }) {
-  const data = await promise;
+async function Container1() {
+  // waits for the data to resolve first
+  const data = await getData();
+
+  // initiates the next fetch
   const album = getAlbum();
   return (
     <>
       <Suspense fallback={<p>Loading...</p>}>
+        {/* Passes the promise to the next */}
         <Container2 promise={album} />
       </Suspense>
       <p className="font-bold">Data is:</p>
@@ -23,11 +24,15 @@ async function Container1({ promise }: { promise: Promise<any> }) {
 }
 
 async function Container2({ promise }: { promise: Promise<any> }) {
+  // waits fo the second data to resolve
   const album = await promise;
+
+  // initiates the next fetch
   const artist = getArtist();
   return (
     <>
       <Suspense fallback={<p>Loading...</p>}>
+        {/* passes the promise to the next */}
         <Container3 promise={artist} />
       </Suspense>
 
@@ -38,24 +43,27 @@ async function Container2({ promise }: { promise: Promise<any> }) {
 }
 
 async function Container3({ promise }: { promise: Promise<any> }) {
+  // waits for the last data to be fetched
   const artist = await promise;
   return (
     <>
       <p className="font-bold">Artist Name</p>
-      <p>artist.name</p>
+      <p>{artist.name}</p>
     </>
   );
 }
 
 export default function Page() {
-  const data = getData();
-
   return (
     <>
-      <p> The loading sequence will start from container 3, 2 and 1</p>
+      <p>
+        The loading sequence is determined by the fetch pattern. In this demo,
+        the data appears to render from bottom to the top to demonstrate the
+        ability to control the sequence of data rendering.
+      </p>
 
       <Suspense fallback={<p>Loading</p>}>
-        <Container1 promise={data} />
+        <Container1 />
       </Suspense>
     </>
   );

@@ -6,7 +6,9 @@ async function getCatInfo(id: string) {
   try {
     // There are data for cat profile 1 and 2. You can trigger notfound() by searching profile 3 because it doesn't exist.
 
-    res = await fetch(`http://localhost:3000/api/data/cat/${id}`);
+    res = await fetch(`http://localhost:3000/api/data/cat/${id}`, {
+      next: { revalidate: 5 },
+    });
   } catch (e) {
     return;
   }
@@ -18,6 +20,7 @@ export default async function CatProfile({
 }: {
   params: { id: string };
 }) {
+  console.log('cat profile()');
   const catId = params.id;
 
   const fetchedData = await getCatInfo(catId);

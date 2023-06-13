@@ -1,10 +1,7 @@
 async function getData() {
-  //node fetch issues if using localhost, src: https://github.com/node-fetch/node-fetch/issues/1624
   let res;
   try {
-    res = await fetch(`http://localhost:3000/api/data`, {
-      cache: 'no-cache',
-    });
+    res = await fetch(`http://localhost:3000/api/data`);
   } catch (e) {
     return { message: '' };
   }
@@ -13,15 +10,9 @@ async function getData() {
 
 async function DataComponent() {
   const { message } = await getData();
-  console.log('message is ', message);
 
   return <p>I have loaded: {message}</p>;
 }
-
-// An async Server Components will cause a 'Promise<Element>' is not a valid JSX element type error where it is used.
-// As a temporary workaround, you can add {/* @ts-expect-error Async Server Component */} above the component to disable type checking for it.
-// This should be solved when Typescript 5.1
-// https://nextjs.org/docs/app/building-your-application/configuring/typescript
 
 export default async function Page() {
   return (

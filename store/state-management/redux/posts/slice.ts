@@ -25,7 +25,7 @@ const initialState: EntityState<Post> & InitialStateType =
   });
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
-  const response = await fetch('http://www.localhost:3000/api/data/posts');
+  const response = await fetch('http://localhost:3000/api/data/posts');
   const allPosts: Post[] = (await response.json()).allPosts;
   return allPosts;
 });
@@ -33,7 +33,7 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
 export const addNewPost = createAsyncThunk(
   'posts/addNewPost',
   async (initialPost: { title: string; content: string }) => {
-    const res = await fetch('http://www.localhost:3000/api/data/posts', {
+    const res = await fetch('http://localhost:3000/api/data/posts', {
       method: 'POST',
       body: JSON.stringify(initialPost),
       headers: {
