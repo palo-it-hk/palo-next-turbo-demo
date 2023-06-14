@@ -4,14 +4,15 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { RootState } from 'store/state-management/redux/store';
 
-import { postSelectorInit } from 'store/state-management/redux/posts/selectors';
+import getSelectors from 'store/state-management/redux/posts/selectors';
 import { useAppSelector } from 'store/state-management/redux/hook';
+import { postsAdapter } from 'store/state-management/redux/posts/slice';
 
 import { PostCard } from '../PostCard';
 import { Button } from '../../atoms/Button-SC';
 
 export const SinglePost = ({ id }: { id: string }) => {
-  const postSelector = postSelectorInit();
+  const postSelector = getSelectors(postsAdapter);
   const post = useAppSelector((state: RootState) =>
     postSelector.selectById(state, id),
   );

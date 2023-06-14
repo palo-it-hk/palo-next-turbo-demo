@@ -7,8 +7,11 @@ import {
   useAppDispatch,
   useAppSelector,
 } from 'store/state-management/redux/hook';
-import { postUpdated } from 'store/state-management/redux/posts/slice';
-import { postSelectorInit } from 'store/state-management/redux/posts/selectors';
+import {
+  postUpdated,
+  postsAdapter,
+} from 'store/state-management/redux/posts/slice';
+import getSelectors from 'store/state-management/redux/posts/selectors';
 import { RootState } from 'store/state-management/redux/store';
 
 import Subtitle from '../../atoms/Subtitle-TW';
@@ -16,7 +19,7 @@ import PostForm from '../PostForm';
 
 export const EditPostForm = ({ id }: { id: string }) => {
   const router = useRouter();
-  const postSelector = postSelectorInit();
+  const postSelector = getSelectors(postsAdapter);
   const post = useAppSelector((state: RootState) =>
     postSelector.selectById(state, id),
   );
