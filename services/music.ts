@@ -7,7 +7,6 @@ export async function getArtist(): Promise<Artist> {
     });
     return res.json();
   } catch (e) {
-    console.log(e);
     return {
       name: '',
     };
@@ -21,7 +20,6 @@ export async function getAlbum(): Promise<Album> {
     });
     return res.json();
   } catch (e) {
-    console.log(e);
     return {
       songs: [],
     };

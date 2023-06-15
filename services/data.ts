@@ -9,7 +9,6 @@ export async function getData(): Promise<Data> {
     });
     return res.json();
   } catch (e) {
-    console.log(e);
     return {
       message: '',
     };
