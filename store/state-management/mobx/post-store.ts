@@ -1,8 +1,8 @@
 import { flow, makeAutoObservable, runInAction } from 'mobx';
-import { Post } from 'store/posts';
+import { Post as PostType } from 'store/posts';
 
-export class PostStore {
-  posts: Post[] = [];
+export class Post {
+  posts: PostType[] = [];
   status: 'idle' | 'loading' | 'succeeded' | 'failed' = 'idle';
   error: string | undefined = undefined;
 
@@ -32,7 +32,7 @@ export class PostStore {
     this.status = 'succeeded';
   }
 
-  updatePost(updatedPost: Post) {
+  updatePost(updatedPost: PostType) {
     const { id, title, content } = updatedPost;
     const existingPost = this.posts.find((post) => post.id === id);
     if (existingPost) {
@@ -63,7 +63,7 @@ export class PostStore {
     this.posts.push(newPost);
   }
 
-  get getPostSortedBackwards(): Post[] {
+  get getPostSortedBackwards(): PostType[] {
     return this.posts.sort((a, b) => {
       if (b.id > a.id) {
         return 1;
@@ -73,3 +73,5 @@ export class PostStore {
     });
   }
 }
+
+export const postStore = new Post();
