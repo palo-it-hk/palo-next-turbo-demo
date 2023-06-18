@@ -24,7 +24,7 @@ export const SinglePost = ({ id }: { id: string }) => {
   return (
     <>
       <PostCard title={post.title} content={post.content} id={post.id} />
-      <Link href={`/redux-demo/edit-post/${id}`}>
+      <Link href={`/redux/edit-post/${id}`}>
         <Button label="edit post" size="small" style={{ marginTop: '10px' }} />
       </Link>
     </>
