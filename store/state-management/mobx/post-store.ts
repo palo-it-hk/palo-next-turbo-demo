@@ -1,5 +1,5 @@
 import { flow, makeAutoObservable, runInAction } from 'mobx';
-import { Post as PostType } from 'store/posts';
+import { PostType } from 'store/posts';
 
 export class Post {
   posts: PostType[] = [];
@@ -19,17 +19,25 @@ export class Post {
 
   *fetchPosts() {
     this.status = 'loading';
+    let res: Response | undefined;
 
-    const res: Response = yield fetch('http://localhost:3000/api/data/posts');
-    if (!res.ok) {
-      this.status = 'failed';
-      this.error = 'Error with fetching posts';
+    try {
+      res = yield fetch('http://localhost:3000/api/data/posts');
+    } catch (e) {
+      console.log(e);
+    }
+
+    if (res?.ok) {
+      const { allPosts } = yield res.json();
+
+      this.posts = [...allPosts];
+      this.status = 'succeeded';
+
       return;
     }
-    const { allPosts } = yield res.json();
 
-    this.posts = [...allPosts];
-    this.status = 'succeeded';
+    this.status = 'failed';
+    this.error = 'Error with fetching posts';
   }
 
   updatePost(updatedPost: PostType) {
@@ -71,6 +79,10 @@ export class Post {
         return -1;
       }
     });
+  }
+
+  getPostById(id: string): PostType | undefined {
+    return this.posts.find((post) => post.id === id);
   }
 }
 
