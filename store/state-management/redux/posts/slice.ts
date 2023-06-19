@@ -16,7 +16,7 @@ import {
   createEntityAdapter,
   createSlice,
 } from '@reduxjs/toolkit';
-import { Post } from 'store/posts';
+import { PostType } from 'store/posts';
 
 export type InitialStateType = {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
@@ -25,10 +25,10 @@ export type InitialStateType = {
 
 // 1c) Create the entity adaptor
 // which gens a set of prebuilt reducers and selectors for CRUD actions for normalized state structures.
-export const postsAdapter = createEntityAdapter<Post>();
+export const postsAdapter = createEntityAdapter<PostType>();
 
 // 1b) Create the initial state
-const initialState: EntityState<Post> & InitialStateType =
+const initialState: EntityState<PostType> & InitialStateType =
   postsAdapter.getInitialState({
     status: 'idle',
     error: undefined,
@@ -37,7 +37,7 @@ const initialState: EntityState<Post> & InitialStateType =
 // 3b) Create Thunk actions using createAsyncThunk
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   const response = await fetch('http://localhost:3000/api/data/posts');
-  const allPosts: Post[] = (await response.json()).allPosts;
+  const allPosts: PostType[] = (await response.json()).allPosts;
   return allPosts;
 });
 
@@ -64,7 +64,7 @@ const postsSlice = createSlice({
   initialState,
   reducers: {
     // 2) Create some reducers
-    postUpdated(state, action: PayloadAction<Post>) {
+    postUpdated(state, action: PayloadAction<PostType>) {
       const { id, ...changes } = action.payload;
       const existingPostId = postsAdapter.selectId(action.payload);
       if (existingPostId) {

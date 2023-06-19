@@ -13,28 +13,32 @@ import {
   fetchPosts,
   postsAdapter,
 } from 'store/state-management/redux/posts/slice';
+import { usePathname } from 'next/navigation';
 
 export const Page = () => {
   // Initiate dispatch
   const dispatch = useAppDispatch();
-  //
+
+  const pathname = usePathname();
+  const route = pathname.split('/')[1] as 'mobx' | 'redux';
+
   const postSelector = getSelectors(postsAdapter);
   const allPosts = useAppSelector(postSelector.selectAll);
-  const postStatus = postSelector.getPostStatus;
-  const error = postSelector.getErrorStatus;
+
+  const { postStatus, errorStatus } = postSelector;
 
   useEffect(() => {
-    if (postStatus === 'idle') {
+    if (postStatus === 'idle' || postStatus === 'failed') {
       dispatch(fetchPosts());
     }
   }, [postStatus, dispatch]);
 
-  let content: JSX.Element | JSX.Element[] = <div>Loading</div>;
+  let content = <div>Loading</div>;
 
   if (postStatus === 'succeeded') {
-    content = <PostList posts={allPosts} />;
+    content = <PostList posts={allPosts} route={route} />;
   } else if (postStatus === 'failed') {
-    content = <>{error}</>;
+    content = <>{errorStatus}</>;
   }
 
   return (

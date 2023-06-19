@@ -1,6 +1,6 @@
 'use client';
 
-import { notFound } from 'next/navigation';
+import { notFound, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { RootState } from 'store/state-management/redux/store';
 
@@ -11,7 +11,9 @@ import { postsAdapter } from 'store/state-management/redux/posts/slice';
 import { PostCard } from '../PostCard';
 import { Button } from '../../atoms/Button-SC';
 
-export const SinglePost = ({ id }: { id: string }) => {
+export const SinglePostRedux = ({ id }: { id: string }) => {
+  const pathname = usePathname();
+  const route = pathname.split('/')[1] as 'mobx' | 'redux';
   const postSelector = getSelectors(postsAdapter);
   const post = useAppSelector((state: RootState) =>
     postSelector.selectById(state, id),
@@ -23,7 +25,12 @@ export const SinglePost = ({ id }: { id: string }) => {
 
   return (
     <>
-      <PostCard title={post.title} content={post.content} id={post.id} />
+      <PostCard
+        title={post.title}
+        content={post.content}
+        id={post.id}
+        route={route}
+      />
       <Link href={`/redux/edit-post/${id}`}>
         <Button label="edit post" size="small" style={{ marginTop: '10px' }} />
       </Link>
@@ -31,4 +38,4 @@ export const SinglePost = ({ id }: { id: string }) => {
   );
 };
 
-export default SinglePost;
+export default SinglePostRedux;

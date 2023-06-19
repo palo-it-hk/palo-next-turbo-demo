@@ -17,19 +17,19 @@ import { RootState } from 'store/state-management/redux/store';
 import Subtitle from '../../atoms/Subtitle-TW';
 import PostForm from '../PostForm';
 
-export const EditPostForm = ({ id }: { id: string }) => {
+export const EditPostFormRedux = ({ id }: { id: string }) => {
   const router = useRouter();
   const postSelector = getSelectors(postsAdapter);
-  const post = useAppSelector((state: RootState) =>
+  const initialPost = useAppSelector((state: RootState) =>
     postSelector.selectById(state, id),
   );
 
-  if (!post) {
+  if (!initialPost) {
     notFound();
   }
 
-  const [title, setTitle] = useState(post.title);
-  const [content, setContent] = useState(post.content);
+  const [title, setTitle] = useState(initialPost.title);
+  const [content, setContent] = useState(initialPost.content);
 
   const dispatch = useAppDispatch();
 
@@ -64,4 +64,4 @@ export const EditPostForm = ({ id }: { id: string }) => {
   );
 };
 
-export default EditPostForm;
+export default EditPostFormRedux;

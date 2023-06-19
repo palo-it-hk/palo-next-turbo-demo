@@ -1,7 +1,7 @@
-import EditPostForm from '@/components/atomic-design/organisms/EditPostForm';
+import EditPostFormRedux from '@/components/atomic-design/organisms/EditPostFormRedux';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const postId = params.id;
 
-  return <EditPostForm id={postId} />;
+  return <EditPostFormRedux id={postId} />;
 }

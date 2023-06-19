@@ -1,7 +1,7 @@
-import SinglePost from '@/components/atomic-design/organisms/SinglePost';
+import SinglePostRedux from '@/components/atomic-design/organisms/SinglePostRedux';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const postId = params.id;
 
-  return <SinglePost id={postId} />;
+  return <SinglePostRedux id={postId} />;
 }
