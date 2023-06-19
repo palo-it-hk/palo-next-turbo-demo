@@ -1,8 +1,8 @@
 import { flow, makeAutoObservable, runInAction } from 'mobx';
-import { PostType } from 'store/posts';
+import { Post } from 'store/posts';
 
-export class Post {
-  posts: PostType[] = [];
+export class PostStore {
+  posts: Post[] = [];
   status: 'idle' | 'loading' | 'succeeded' | 'failed' = 'idle';
   error: string | undefined = undefined;
 
@@ -40,7 +40,7 @@ export class Post {
     this.error = 'Error with fetching posts';
   }
 
-  updatePost(updatedPost: PostType) {
+  updatePost(updatedPost: Post) {
     const { id, title, content } = updatedPost;
     const existingPost = this.posts.find((post) => post.id === id);
     if (existingPost) {
@@ -71,7 +71,7 @@ export class Post {
     this.posts.push(newPost);
   }
 
-  get getPostSortedBackwards(): PostType[] {
+  get getPostSortedBackwards(): Post[] {
     return this.posts.sort((a, b) => {
       if (b.id > a.id) {
         return 1;
@@ -81,9 +81,9 @@ export class Post {
     });
   }
 
-  getPostById(id: string): PostType | undefined {
+  getPostById(id: string): Post | undefined {
     return this.posts.find((post) => post.id === id);
   }
 }
 
-export const postStore = new Post();
+export const postStore = new PostStore();

@@ -1,11 +1,11 @@
-import { PostType } from 'store/posts';
+import { Post } from 'store/posts';
 import PostCard from '../PostCard';
 
 const PostList = ({
   posts,
   route,
 }: {
-  posts: PostType[];
+  posts: Post[];
   route: 'mobx' | 'redux';
 }) => {
   const list = posts.map((post) => (

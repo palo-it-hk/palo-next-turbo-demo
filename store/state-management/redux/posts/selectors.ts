@@ -2,12 +2,12 @@
 
 import { EntityAdapter } from '@reduxjs/toolkit';
 
-import { PostType } from 'store/posts';
+import { Post } from 'store/posts';
 
 import { useAppSelector } from '../hook';
 import { RootState } from '../store';
 
-export default function (postsAdapter: EntityAdapter<PostType>) {
+export default function (postsAdapter: EntityAdapter<Post>) {
   // postsAdapter is created with createEntityAdapter(). It enables built-in selectors such as the below
   // For more basic selectors, see https://redux-toolkit.js.org/api/createEntityAdapter#selector-functions
   const defaultSelector = postsAdapter.getSelectors(
