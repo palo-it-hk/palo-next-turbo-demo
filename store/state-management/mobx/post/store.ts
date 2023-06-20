@@ -1,15 +1,16 @@
-import { flow, makeAutoObservable, runInAction } from 'mobx';
-import { PostTransportLayer } from 'store/transport-layer';
+import { flow, makeAutoObservable, reaction, runInAction } from 'mobx';
 import { postTransportLayer } from './transport-layer';
+import { Post, transportLayer } from 'store/posts';
 
 export class PostStore {
   posts: Post[] = [];
   status: 'idle' | 'loading' | 'succeeded' | 'failed' = 'idle';
   error: string | undefined = undefined;
-  transportLayer: PostTransportLayer = postTransportLayer;
+  transportLayer: transportLayer;
 
-  constructor() {
+  constructor(transportLayer: transportLayer) {
     makeAutoObservable(this, {}, { autoBind: true });
+    this.transportLayer = transportLayer;
   }
 
   fetchPosts() {
@@ -37,26 +38,18 @@ export class PostStore {
     }
   }
 
-  *addNewPost(title: string, content: string) {
-    const res: Response = yield fetch('http://localhost:3000/api/data/posts', {
-      method: 'POST',
-      body: JSON.stringify({
-        title: title,
-        content: content,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!res.ok) {
-      this.error = 'Error with saving posts';
-      return;
-    }
-
-    const { newPost } = yield res.json();
-
-    this.posts.push(newPost);
+  addNewPost(title: string, content: string) {
+    this.transportLayer
+      .updateServer(title, content)
+      .then((response) => response.json())
+      .then((data) => {
+        const { newPost } = data;
+        const existingPost = this.posts.find((post) => post.id === newPost.id);
+        if (!existingPost) {
+          this.posts.push(newPost);
+        }
+        return;
+      });
   }
 
   get getPostSortedBackwards(): Post[] {
@@ -74,21 +67,4 @@ export class PostStore {
   }
 }
 
-export const postStore = new PostStore();
-
-export class Post {
-  id: string = '';
-  title: string = '';
-  content: string = '';
-  store?: PostStore | null = null;
-
-  constructor(store: PostStore, id: string) {
-    makeAutoObservable(this, {
-      id: false,
-      store: false,
-    });
-
-    this.store = store;
-    this.id = id;
-  }
-}
+export const postStore = new PostStore(postTransportLayer);
