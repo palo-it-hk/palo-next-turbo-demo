@@ -1,43 +1,31 @@
 import { flow, makeAutoObservable, runInAction } from 'mobx';
-import { Post } from 'store/posts';
+import { PostTransportLayer } from 'store/transport-layer';
+import { postTransportLayer } from './transport-layer';
 
 export class PostStore {
   posts: Post[] = [];
   status: 'idle' | 'loading' | 'succeeded' | 'failed' = 'idle';
   error: string | undefined = undefined;
+  transportLayer: PostTransportLayer = postTransportLayer;
 
   constructor() {
-    makeAutoObservable(
-      this,
-      {
-        fetchPosts: flow,
-        addNewPost: flow,
-      },
-      { autoBind: true },
-    );
+    makeAutoObservable(this, {}, { autoBind: true });
   }
 
-  *fetchPosts() {
+  fetchPosts() {
     this.status = 'loading';
-    let res: Response | undefined;
-
-    try {
-      res = yield fetch('http://localhost:3000/api/data/posts');
-    } catch (e) {
-      console.log(e);
-    }
-
-    if (res?.ok) {
-      const { allPosts } = yield res.json();
-
-      this.posts = [...allPosts];
-      this.status = 'succeeded';
-
-      return;
-    }
-
-    this.status = 'failed';
-    this.error = 'Error with fetching posts';
+    this.transportLayer
+      .fetchPosts()
+      .then((response) => response.json())
+      .then((data) => {
+        const { allPosts } = data;
+        this.posts = [...allPosts];
+        this.status = 'succeeded';
+      })
+      .catch(() => {
+        this.status = 'failed';
+        this.error = 'Error with fetching posts';
+      });
   }
 
   updatePost(updatedPost: Post) {
@@ -87,3 +75,20 @@ export class PostStore {
 }
 
 export const postStore = new PostStore();
+
+export class Post {
+  id: string = '';
+  title: string = '';
+  content: string = '';
+  store?: PostStore | null = null;
+
+  constructor(store: PostStore, id: string) {
+    makeAutoObservable(this, {
+      id: false,
+      store: false,
+    });
+
+    this.store = store;
+    this.id = id;
+  }
+}
