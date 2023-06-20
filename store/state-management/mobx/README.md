@@ -16,5 +16,14 @@ To set up redux on the fly, you can see all the files below and read the comment
 
 (Its best to read in the following order)
 
-**Setting up the store**
-`store/state-management/mobx/post-store.ts`
+**Setting up the store, selectors, methods and async actions**
+`store/state-management/mobx/post/store.ts`
+`store/state-management/mobx/post/transport-layer.ts`
+
+**Attaching it to the app**
+`components/atomic-design/templates/Providers/index.tsx`
+
+## Demo
+
+This repo demo's redux in the form of a simple blog site. You can run it with [http://localhost:3000/mobx] .
+The `page` folder of the demo is within `/app/(state-management/mobx)`

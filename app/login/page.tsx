@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 
 import { Button } from '@/components/atomic-design/atoms/Button-SC';
 import { observer } from 'mobx-react-lite';
-import { jwtStore } from 'store/state-management/mobx/auth-store';
+import { jwtStore } from 'store/state-management/mobx/auth/store';
 
 function LoginPage() {
   const router = useRouter();

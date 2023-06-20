@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { memo, useCallback, useContext, useState } from 'react';
 
 const Page = () => {
+  // Gets the current state of the postStore
   const postStore = useContext(MobxContext);
 
   const [title, setTitle] = useState('');
@@ -44,4 +45,5 @@ const Page = () => {
   );
 };
 
+// wrap in observer so it can subscribe to changes in state
 export default observer(Page);

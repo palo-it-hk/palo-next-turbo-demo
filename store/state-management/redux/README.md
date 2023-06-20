@@ -40,7 +40,10 @@ To set up redux on the fly, you can see all the files below and read the comment
 **Setting up selectors**
 `store/state-management/redux/posts/selectors.ts`
 
+**Attaching it to the app**
+`components/atomic-design/templates/Providers/index.tsx`
+
 ## Demo
 
-This repo demo's redux in the form of a simple blog site. You can run it with [http://localhost:3000/redux-demo] .
-The folder of this page is within `/app/(redux)`
+This repo demo's redux in the form of a simple blog site. You can run it with [http://localhost:3000/redux] .
+The `page` folder of the demo is within `/app/(state-management)/redux`

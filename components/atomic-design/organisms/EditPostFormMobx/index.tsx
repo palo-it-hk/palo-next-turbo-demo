@@ -5,9 +5,11 @@ import { MobxContext } from '../../templates/Providers';
 import { notFound, useRouter } from 'next/navigation';
 import Subtitle from '../../atoms/Subtitle-TW';
 import PostForm from '../PostForm';
+import { observer } from 'mobx-react-lite';
 
 const EditPostFormMobx = ({ id }: { id: string }) => {
   const router = useRouter();
+  // Gets the current state of the postStore
   const postStore = useContext(MobxContext);
   const initialPost = postStore.getPostById(id);
   if (!initialPost) {
@@ -47,4 +49,5 @@ const EditPostFormMobx = ({ id }: { id: string }) => {
   );
 };
 
-export default EditPostFormMobx;
+// wrap in observer so it can subscribe to changes in state
+export default observer(EditPostFormMobx);

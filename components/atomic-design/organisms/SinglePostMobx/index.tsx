@@ -13,6 +13,8 @@ import { useContext } from 'react';
 export const SinglePostMobx = ({ id }: { id: string }) => {
   const pathname = usePathname();
   const route = pathname.split('/')[1] as 'mobx' | 'redux';
+
+  // Gets the current state of the postStore
   const postStore = useContext(MobxContext);
 
   const post = postStore.getPostById(id);
@@ -36,4 +38,5 @@ export const SinglePostMobx = ({ id }: { id: string }) => {
   );
 };
 
+// wrap in observer so it can subscribe to changes in state
 export default observer(SinglePostMobx);
