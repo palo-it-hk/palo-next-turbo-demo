@@ -4,7 +4,7 @@ import Subtitle from '@/components/atomic-design/atoms/Subtitle-TW';
 import PostForm from '@/components/atomic-design/organisms/PostForm';
 import { MobxContext } from '@/components/atomic-design/templates/Providers';
 import { observer } from 'mobx-react-lite';
-import { memo, useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 
 const Page = () => {
   // Gets the current state of the postStore
