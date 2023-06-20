@@ -1,4 +1,6 @@
-# Set up redux with typescript
+# Redux
+
+## Set up redux with typescript
 
 Redux usage largely the same in NextJS. Some variance are mostly due to the usage of Typescript.
 
