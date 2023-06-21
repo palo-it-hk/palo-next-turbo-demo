@@ -1,10 +1,9 @@
-import PostList from '@/components/atomic-design/organisms/PostList';
-
-async function getPosts() {
+async function getDataOnDemand() {
   let res;
-
   try {
-    res = await fetch('http://localhost:3000/api/data/posts');
+    res = await fetch('http://localhost:3000/api/data/time', {
+      next: { revalidate: 30 },
+    });
   } catch (e) {
     return;
   }
@@ -13,11 +12,12 @@ async function getPosts() {
 }
 
 export default async function Page() {
-  const posts = await getPosts();
+  console.log('page()');
+  const data = await getDataOnDemand();
 
-  if (!posts) {
-    return <>No posts are fetched. </>;
+  if (!data) {
+    return <>No data can be fetched</>;
   }
 
-  return <PostList posts={posts.allPosts} />;
+  return <>{data.currentTime}</>;
 }

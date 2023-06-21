@@ -1,8 +1,8 @@
 import { format } from 'date-fns';
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   console.log('time GET()');
   const currentTime = new Date();
   return NextResponse.json({
