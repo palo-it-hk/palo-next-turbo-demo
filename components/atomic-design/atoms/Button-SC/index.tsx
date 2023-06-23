@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import styled, { css } from 'styled-components';
 
 interface ButtonProps {
@@ -9,6 +9,7 @@ interface ButtonProps {
   size?: 'small' | 'medium' | 'large';
   label: string;
   onClick?: () => void;
+  style?: CSSProperties;
 }
 
 const getVariantStyles = ({ primary = false }) =>
@@ -66,6 +67,8 @@ const StyledButton = styled.button<ButtonProps>`
     `}
 `;
 
-export const Button: React.FC<ButtonProps> = ({ label, ...rest }) => (
-  <StyledButton {...rest}>{label}</StyledButton>
+export const Button: React.FC<ButtonProps> = ({ label, style, ...rest }) => (
+  <StyledButton {...rest} style={style}>
+    {label}
+  </StyledButton>
 );

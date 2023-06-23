@@ -1,11 +1,13 @@
 'use client';
 
-import { Button } from '@/components/atomic-design/atoms/Button-SC';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { useJwtStore } from 'store/domain-store';
 
-export default function LoginPage() {
+import { Button } from '@/components/atomic-design/atoms/Button-SC';
+import { observer } from 'mobx-react-lite';
+import { jwtStore } from 'store/state-management/mobx/auth/store';
+
+function LoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState('test-user');
   const [password, setPassword] = useState('test-password');
@@ -37,9 +39,7 @@ export default function LoginPage() {
       return;
     }
 
-    const store = useJwtStore();
-    console.log('receivedToken is', receivedToken);
-    store.setJwt(receivedToken);
+    jwtStore.setJwt(receivedToken);
     router.back();
   }
 
@@ -77,3 +77,5 @@ function InputField({
     </label>
   );
 }
+
+export default observer(LoginPage);

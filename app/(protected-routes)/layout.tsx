@@ -1,20 +1,14 @@
 'use client';
 
+import { Button } from '@/components/atomic-design/atoms/Button-SC';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useJwtStore } from 'store/domain-store';
-import { User } from 'store/user';
-import { Button } from '../../atoms/Button-SC';
+import { jwtStore } from 'store/state-management/mobx/auth/store';
 
-type Props = {
-  children: React.ReactNode;
-};
-
-export default function PrivateWrapper({ children }: Props) {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   const [displayContent, setDisplayContent] = useState(false);
   const router = useRouter();
-  const store = useJwtStore();
-  const token = store.getJwt;
+  const token = jwtStore.jwtToken;
 
   function authCheck() {
     if (token === '') {
@@ -26,7 +20,7 @@ export default function PrivateWrapper({ children }: Props) {
   }
 
   function logout() {
-    store.setJwt('');
+    jwtStore.setJwt('');
     router.refresh();
   }
 
@@ -48,4 +42,6 @@ export default function PrivateWrapper({ children }: Props) {
       )}
     </>
   );
-}
+};
+
+export default Layout;

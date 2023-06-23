@@ -1,7 +1,8 @@
 'use client';
 
-import { Button } from '@/components/atomic-design/atoms/Button-SC';
 import { useState } from 'react';
+
+import { Button } from '@/components/atomic-design/atoms/Button-SC';
 
 export default function ErrorFunction() {
   const [err, setErr] = useState(false);

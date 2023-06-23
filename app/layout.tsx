@@ -5,12 +5,13 @@
 
 // RTFM: Inside the root layout (app/layout.tsx), import the globals.css stylesheet to apply the styles to every route in your application.
 
-import '@/styles/globals.css';
 import { Arvo, Open_Sans } from 'next/font/google';
 
 import { StyledComponentsRegistry } from '@/lib/styling/styled-components';
+import '@/styles/globals.css';
 
 import './styles.css';
+import Providers from '@/components/atomic-design/templates/Providers';
 
 const open_sans = Open_Sans({
   variable: '--open-sans',
@@ -36,7 +37,7 @@ export default function RootLayout({
       <body>
         <StyledComponentsRegistry>
           <h1 className={'font-bold'}>Welcome to the PALO IT!</h1>
-          {children}
+          <Providers>{children}</Providers>
         </StyledComponentsRegistry>
       </body>
     </html>

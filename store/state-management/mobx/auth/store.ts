@@ -13,17 +13,9 @@ export class JwtStore {
     });
   }
 
-  get getJwt() {
-    return this.jwtToken;
-  }
-
   setJwt(jwtToken: string) {
     this.jwtToken = jwtToken;
   }
 }
 
-const jwtStore = new JwtStore();
-
-export function useJwtStore() {
-  return jwtStore;
-}
+export const jwtStore = new JwtStore();
