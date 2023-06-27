@@ -13,13 +13,16 @@ const Page = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-  const onSavePostClicked = useCallback((title: string, content: string) => {
-    if (title && content) {
-      postStore.addNewPost(title, content);
-      setTitle('');
-      setContent('');
-    }
-  }, []);
+  const onSavePostClicked = useCallback(
+    (title: string, content: string) => {
+      if (title && content) {
+        postStore.addNewPost(title, content);
+        setTitle('');
+        setContent('');
+      }
+    },
+    [postStore],
+  );
 
   const onTitleChanged = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value),

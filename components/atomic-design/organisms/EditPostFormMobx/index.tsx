@@ -28,12 +28,15 @@ const EditPostFormMobx = ({ id }: { id: string }) => {
     [],
   );
 
-  const onSavePostClicked = useCallback((title: string, content: string) => {
-    if (title && content) {
-      postStore.updatePost({ id, title, content });
-      router.push(`/mobx/post/${id}`);
-    }
-  }, []);
+  const onSavePostClicked = useCallback(
+    (title: string, content: string) => {
+      if (title && content) {
+        postStore.updatePost({ id, title, content });
+        router.push(`/mobx/post/${id}`);
+      }
+    },
+    [id, postStore, router],
+  );
 
   return (
     <>

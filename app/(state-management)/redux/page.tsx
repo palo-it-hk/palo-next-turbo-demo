@@ -15,7 +15,7 @@ import {
 } from 'store/state-management/redux/posts/slice';
 import { usePathname } from 'next/navigation';
 
-export const Page = () => {
+const Page = () => {
   // Initiate dispatch
   const dispatch = useAppDispatch();
 
