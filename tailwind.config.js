@@ -15,8 +15,7 @@ module.exports = {
       secondary: ['var(--arvo)'],
       josefin:['var(--josefin-slab)'],
       gluten:['var(--gluten)']
-    },
-    extend: {},
+    }
   },
   plugins: [],
 };

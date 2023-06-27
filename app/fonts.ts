@@ -3,15 +3,17 @@ import CustomFont from 'next/font/local';
 
 export const open_sans = Open_Sans({
   variable: '--open-sans',
-  preload: false,
   display: 'fallback',
+  // preload is for preloading font subsets, if no font subsets are needed then the preload prop is not applicable
+  // setting preload to true while not specifying a subset will throw an error
+  preload: false,
 });
 
 export const arvo = Arvo({
   weight: ['400', '700'],
   variable: '--arvo',
-  preload: false,
   display: 'fallback',
+  preload: false,
 });
 
 // Used CustomFont() rather than localfont() because the latter is not working
