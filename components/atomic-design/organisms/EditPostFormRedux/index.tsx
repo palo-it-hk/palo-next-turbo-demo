@@ -43,12 +43,15 @@ export const EditPostFormRedux = ({ id }: { id: string }) => {
     [],
   );
 
-  const onSavePostClicked = useCallback((title: string, content: string) => {
-    if (title && content) {
-      dispatch(postUpdated({ id, title, content }));
-      router.push(`/redux/post/${id}`);
-    }
-  }, []);
+  const onSavePostClicked = useCallback(
+    (title: string, content: string) => {
+      if (title && content) {
+        dispatch(postUpdated({ id, title, content }));
+        router.push(`/redux/post/${id}`);
+      }
+    },
+    [dispatch, id, router],
+  );
 
   return (
     <>

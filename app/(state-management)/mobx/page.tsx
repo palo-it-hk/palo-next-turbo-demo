@@ -22,7 +22,7 @@ const Page = () => {
     if (status === 'idle' || status === 'failed') {
       postStore.fetchPosts();
     }
-  }, [status]);
+  }, [status, postStore]);
 
   let content = <>Loading...</>;
 
