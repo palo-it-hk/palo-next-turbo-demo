@@ -19,6 +19,7 @@
     "paths": {
       "store/*":["store/*"],
       "data/*":["data/*"],
+      "public/*": ["./public/*"],
       "@/*":["*"],
     },
     "plugins": [
