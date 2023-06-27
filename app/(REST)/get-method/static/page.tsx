@@ -8,11 +8,9 @@ async function getCatInfo(id: string) {
   // You should avoid caching for user-specific data (i.e. requests that derive data from cookies() or headers())
   let res;
   try {
-    //  NOTE  It's not possible to access the next API in a static page. Read more in the root README.md
-    // This can only be demo'd during development mode
     res = await fetch(`http://localhost:3000/api/data/cat/${id}`);
   } catch (e) {
-    console.log('error');
+    return;
   }
   if (res?.ok) {
     return res.json();

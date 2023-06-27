@@ -28,6 +28,9 @@ export default async function Page() {
         having them fetch their own data, they will render as soon as the data
         has been fetched regardless of it&apos;s location in the page.
       </p>
+      <p className="font-bold text-green-500">
+        Please view this page in dev mode.
+      </p>
       <p className="font-bold">Artist :</p>
       {/* 
     Will load first because it has already been fetched  */}

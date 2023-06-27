@@ -62,6 +62,10 @@ export default function Page() {
         ability to control the sequence of data rendering.
       </p>
 
+      <p className="font-bold text-green-500">
+        Please view this page in dev mode.
+      </p>
+
       <Suspense fallback={<p>Loading</p>}>
         <Container1 />
       </Suspense>

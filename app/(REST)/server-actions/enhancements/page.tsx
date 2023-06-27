@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-export function FormComponent({ message }: { message: string[] }) {
+function FormComponent({ message }: { message: string[] }) {
   const [optimisticMessages, addOptimisticMessage] = useOptimistic(
     message,
     (state, newMessage: string) => [...state, newMessage],

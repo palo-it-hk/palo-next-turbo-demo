@@ -12,7 +12,7 @@ export async function handleSubmitForm(data: FormData) {
 }
 
 export async function handleSubmitButton(id: string) {
-  console.log('id is ', id);
+  return JSON.stringify({ id: id });
 }
 
 let message = ['Hi Ho!'];

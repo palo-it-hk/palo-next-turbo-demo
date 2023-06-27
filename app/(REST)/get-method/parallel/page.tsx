@@ -14,6 +14,9 @@ export default async function Page() {
 
   return (
     <>
+      <p className="font-bold text-green-500">
+        Please view this page in dev mode.
+      </p>
       <p className="font-bold">Artist :</p>
       <p> {artist.name}</p>
       <p className="font-bold">Album :</p>

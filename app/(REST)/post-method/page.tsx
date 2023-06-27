@@ -10,7 +10,7 @@ export default function Page() {
   //POST requests are automatically deduplicated when using fetch
   const handleSubmit = cache(async () => {
     const currentTime = format(new Date(), 'PPpp');
-    const res = await fetch('http://localhost:3000/api/data/time', {
+    const res = await fetch('/api/data/time', {
       method: 'POST',
       body: JSON.stringify({ time: currentTime }),
       headers: {
@@ -24,9 +24,27 @@ export default function Page() {
 
   return (
     <>
+      <p className="font-bold text-green-500">
+        Please view this page in prod mode.
+      </p>
+
+      <div className="my-10">
+        <p className="font-bold">Whats happening in the background</p>
+        <ol className="list-inside list-decimal">
+          <li>
+            The button sends the current time to the server. The server returns
+            to the client what it has received and the client displays it below.
+          </li>
+          <li>
+            POST requests are not cached by default therefore the data is fresh
+            on every request
+          </li>
+        </ol>
+      </div>
       <Button label="Share current time" size="small" onClick={handleSubmit} />
-      <p className="font-bold">Time submitted</p>
-      <p>{time}</p>
+      <p>
+        <span className="font-bold">Time submitted :</span> {time}
+      </p>
     </>
   );
 }

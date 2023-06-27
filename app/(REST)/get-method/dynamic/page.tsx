@@ -1,17 +1,34 @@
-import PostList from '@/components/atomic-design/organisms/PostList';
-import { Post } from 'store/posts';
+async function getData() {
+  let res;
 
-async function getPosts() {
   // To fetch fresh data on every fetch request, use the cache: 'no-store' option.
   // As such, This page will be rendered in the server every time a request is received.
   // fetch within client components are not cached
-  const res = await fetch('http://localhost:3000/api/data/posts', {
-    cache: 'no-store',
-  });
+  try {
+    res = await fetch(`http://localhost:3000/api/data/time`, {
+      cache: 'no-store',
+    });
+  } catch (e) {
+    return;
+  }
+
   return res.json();
 }
 
 export default async function Page() {
-  const posts: Post[] = (await getPosts()).allPosts;
-  return <PostList posts={posts} />;
+  const data = await getData();
+
+  if (!data) {
+    return <>No data can be fetched</>;
+  }
+
+  return (
+    <>
+      <p className="font-bold text-green-500">
+        Please view this page in prod mode.
+      </p>
+      <p>This data will update every refresh because it&apos;s not cached</p>
+      <p>{data.currentTime}</p>
+    </>
+  );
 }
