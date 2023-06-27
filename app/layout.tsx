@@ -9,9 +9,9 @@ import { Arvo, Open_Sans } from 'next/font/google';
 
 import { StyledComponentsRegistry } from '@/lib/styling/styled-components';
 import '@/styles/globals.css';
-import { Providers } from 'store/state-management/redux/Provider';
 
 import './styles.css';
+import Providers from '@/components/atomic-design/templates/Providers';
 
 const open_sans = Open_Sans({
   variable: '--open-sans',

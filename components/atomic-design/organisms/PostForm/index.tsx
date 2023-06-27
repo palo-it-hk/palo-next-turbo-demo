@@ -1,5 +1,3 @@
-import { memo } from 'react';
-
 import { Wrapper } from './index.styles';
 
 type PostFormProps = {
@@ -23,13 +21,9 @@ export const PostForm = ({
       <input type="text" value={title} onChange={titleAction} />
       <p>Content:</p>
       <textarea value={content} onChange={contentAction} />
-      <button type="button" onClick={() => saveAction(title, content)}>
-        Save Post
-      </button>
+      <button onClick={() => saveAction(title, content)}>Save Post</button>
     </Wrapper>
   );
 };
 
-const memoizedPostForm = memo(PostForm);
-
-export default memoizedPostForm;
+export default PostForm;

@@ -1,5 +1,3 @@
-import PrivateWrapper from '@/components/atomic-design/templates/private-wrapper';
-
 export default function PrivatePage() {
-  return <PrivateWrapper>You are seeing private content</PrivateWrapper>;
+  return <p>You are seeing private content</p>;
 }

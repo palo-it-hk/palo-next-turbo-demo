@@ -1,10 +1,21 @@
 import { Post } from 'store/posts';
 import PostCard from '../PostCard';
 
-const PostList = ({ posts }: { posts: Post[] }) => {
+const PostList = ({
+  posts,
+  route,
+}: {
+  posts: Post[];
+  route: 'mobx' | 'redux';
+}) => {
   const list = posts.map((post) => (
     <div key={post.id}>
-      <PostCard id={post.id} title={post.title} content={post.content} />
+      <PostCard
+        id={post.id}
+        title={post.title}
+        content={post.content}
+        route={route}
+      />
     </div>
   ));
   return <>{list}</>;

@@ -8,12 +8,13 @@ type PostCardProps = {
   id: string;
   title: string;
   content: string;
+  route: 'mobx' | 'redux';
 };
 
-export const PostCard = ({ id, title, content }: PostCardProps) => {
+export const PostCard = ({ id, title, content, route }: PostCardProps) => {
   return (
     <Wrapper key={id}>
-      <Link href={`/redux-demo/post/${id}`}>
+      <Link href={`/${route}/post/${id}`}>
         <PostTitleWrapper>
           <h1 className={'font-bold'}>{title}</h1>
         </PostTitleWrapper>
