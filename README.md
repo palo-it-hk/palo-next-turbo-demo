@@ -28,21 +28,23 @@ https://nextjs.link/with-turbopack
 
 https://nextjs.link/turbopack-feedback
 
-# Issues
-
-## notFound() during dev mode
-
-Triggering `notFound()` will cause the browser to make requests to the browser non-stop during dev mode. This is a known issue in the community but not yet addressed officially. https://github.com/vercel/next.js/discussions/50429. This will not happen in prod mode.
-
-## features not yet supported by Turbopack
+## Features not yet supported by Turbopack
 
 | feature/library      | Description | docs |
 | ----------- | ----------- | ----------- |
-| SVGR      | A library that enables importing of svg files as react components | [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140) |
+| [SVGR](https://react-svgr.com/)      | A library that enables importing of svg files as React components | [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140) |
+
+
+## Issues
+
+### notFound() during dev mode
+
+The Triggering `notFound()` will cause the browser to make requests to the browser non-stop during dev mode. This is a known issue in the community but not yet addressed officially. https://github.com/vercel/next.js/discussions/50429. This will not happen in prod mode.
 
 
 
-## API
+
+### API
 
 Throughout this repo, you will see that `/app` will be used as the API to store, produce and fetch data. This is for demo purposes and unlikely to reflect real use-cases.
 
