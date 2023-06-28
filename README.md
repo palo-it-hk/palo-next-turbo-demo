@@ -24,10 +24,6 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
 
 https://nextjs.link/with-turbopack
 
-## Providing Feedback
-
-https://nextjs.link/turbopack-feedback
-
 ## Features not yet supported by Turbopack
 
 | feature/library      | Description | docs |
@@ -86,6 +82,7 @@ Next stores caches inside `.next`. Failing to clear cache may produce inconsiste
 ## Fonts(Typography)
 
 **Demo**: [www.localhost:3000/fonts](www.localhost:3000/fonts)
+
 **folder**: `app/(fonts)`
 
 With `'next font`,  CSS and font files are downloaded at build time and self-hosted with the rest of your static assets. The result is zero layout shift and removes external network requests. It is recommended to use variable fonts.
@@ -123,6 +120,7 @@ This repo implements imported and local fonts using Tailwind and `next/font/goog
 ## Assets
 
 **Demo**: [www.localhost:3000/static-assets](www.localhost:3000/static-assets)
+
 **folder**: `app/(static assets)`
 
 Static files such as images in the `public` in the root directly. Once inside, they can be referenced, by your code starting from the base URL (`/`).
