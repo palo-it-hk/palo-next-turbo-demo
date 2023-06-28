@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // // Enable to below to use SVGR:
   // webpack(config) {
   //   config.module.rules.push({
   //     test: /\.svg$/,
