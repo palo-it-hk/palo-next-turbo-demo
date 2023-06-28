@@ -5,24 +5,12 @@
 
 // RTFM: Inside the root layout (app/layout.tsx), import the globals.css stylesheet to apply the styles to every route in your application.
 
-import { Arvo, Open_Sans } from 'next/font/google';
-
 import { StyledComponentsRegistry } from '@/lib/styling/styled-components';
 import '@/styles/globals.css';
 
 import './styles.css';
+import { open_sans, arvo, josefinSlab, gluten } from './fonts';
 import Providers from '@/components/atomic-design/templates/Providers';
-
-const open_sans = Open_Sans({
-  variable: '--open-sans',
-  preload: false,
-});
-
-const arvo = Arvo({
-  weight: ['400', '700'],
-  variable: '--arvo',
-  preload: false,
-});
 
 export default function RootLayout({
   // Layouts must accept a children prop.
@@ -33,10 +21,13 @@ export default function RootLayout({
 }) {
   return (
     // The root layout must define <html>, and <body> tags since Next.js does not automatically create them
-    <html lang="en" className={`${open_sans.variable} ${arvo.variable}`}>
+    <html
+      lang="en"
+      className={`${open_sans.variable} ${arvo.variable} ${josefinSlab.variable} ${gluten.variable}`}
+    >
       <body>
         <StyledComponentsRegistry>
-          <h1 className={'font-bold'}>Welcome to the PALO IT!</h1>
+          <h1 className={'font-bold'}>Welcome to PALO IT!</h1>
           <Providers>{children}</Providers>
         </StyledComponentsRegistry>
       </body>

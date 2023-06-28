@@ -24,17 +24,23 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
 
 https://nextjs.link/with-turbopack
 
-## Providing Feedback
+## Features not yet supported by Turbopack
 
-https://nextjs.link/turbopack-feedback
+| feature/library      | Description | docs |
+| ----------- | ----------- | ----------- |
+| [SVGR](https://react-svgr.com/)      | A library that enables importing of svg files as React components | [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140) |
 
-# Issues
 
-## Turbopack
+## Issues
 
-Triggering `notFound()` will cause the browser to make requests to the browser non-stop during dev mode. This is a known issue in the community but not yet addressed officially. https://github.com/vercel/next.js/discussions/50429
+### notFound() during dev mode
 
-## API
+The Triggering `notFound()` will cause the browser to make requests to the browser non-stop during dev mode. This is a known issue in the community but not yet addressed officially. https://github.com/vercel/next.js/discussions/50429. This will not happen in prod mode.
+
+
+
+
+### API
 
 Throughout this repo, you will see that `/app` will be used as the API to store, produce and fetch data. This is for demo purposes and unlikely to reflect real use-cases.
 
@@ -72,3 +78,113 @@ You do not see this problem in dev mode because pages are pre-rendered twice.
 ## Cache behavior
 
 Next stores caches inside `.next`. Failing to clear cache may produce inconsistent behavior especially when running `yarn run build && yarn run start`. Manually removing the `.next` folder is recommended to clear the cache. 
+
+## Fonts(Typography)
+
+**Demo**: [www.localhost:3000/fonts](www.localhost:3000/fonts)
+
+**folder**: `app/(fonts)`
+
+With `'next font`,  CSS and font files are downloaded at build time and self-hosted with the rest of your static assets. The result is zero layout shift and removes external network requests. It is recommended to use variable fonts.
+
+### Google fonts
+
+Use google fonts by installing `next/font/google`. This way fonts are included in the deployment and served from the same domain as your deployment. No requests are made to Google by the browser.
+
+```typescript
+import { Inter } from 'next/font/google';
+ 
+// If loading a variable font, you don't need to specify the font weight
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+});
+ 
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" className={inter.className}>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+### Fonts with Tailwind(local and google)
+
+This repo implements imported and local fonts using Tailwind and `next/font/google` and `next/font/local`. You can see how it is introduced in the root `layout.tsx`, configured in `tailwind.config.js`, and implemented in the demo.
+
+## Assets
+
+**Demo**: [www.localhost:3000/static-assets](www.localhost:3000/static-assets)
+
+**folder**: `app/(static assets)`
+
+Static files such as images in the `public` in the root directly. Once inside, they can be referenced, by your code starting from the base URL (`/`).
+
+- It's the only directory to serve static assets
+- Also where the `robots.txt` and `favicon.ico` are stored
+- The file name of the asset should not share the same name as any files in the `app`(ie: if you image is `demo.jpg`, the name will clash with a page that is named `/demo`)
+- Only assets that are in the public directory at build time will be served by Next.js. Files added at runtime won't be available. We recommend using a third party service like AWS S3 for persistent file storage.
+
+In webpack and some other frameworks, importing an image returns a string containing that image' URL, but in Next, it returns an object. This is so it can be fed into Next's `<Image>` component as part of optimization.
+
+### SVGs with SVGR
+
+SVGR is a tool that allows us to import SVGs into your React applications as React components.
+
+### Install
+
+1. Install package
+
+`yarn add --dev @svgr/webpack`
+
+2. next.config.js
+
+```typescript
+const nextConfig = {
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"]
+    });
+ 
+    return config;
+  },
+  // ... Other configs
+  
+};
+
+module.exports = nextConfig;
+```
+
+3. Run. Since turbopack doesn't support SVGR yet, you need to run `yarn next dev` instead `yarn next dev --turbo`
+
+#### issues with Turbopack and SVGR
+
+Although the below is the official way to integrate loaders with Turbopack, it will throw an error: `Processing image failedFailed to parse svg source code for image dimensions`. 
+
+```typescript
+// next.config.js
+
+experimental: {
+    // Required:
+    appDir: true,
+    turbo: {
+      loaders: {
+        ".svg":['@svgr/webpack']
+      }
+    }
+  },
+
+```
+
+The issue is documented in the below:
+
+[[turbopack] SVG via svgr support](https://github.com/vercel/turbo/issues/4832)
+[App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140)
+
+To use SVGR without turbopack, follow the install steps above and run `yarn next dev`.  

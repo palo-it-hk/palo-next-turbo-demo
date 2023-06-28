@@ -26,7 +26,6 @@ export default async function Page() {
   return (
     <>
       <p>Data is: </p>
-      {/* @ts-expect-error Async Server Component */}
       <DataComponent />
     </>
   );
