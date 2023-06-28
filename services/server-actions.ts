@@ -15,16 +15,15 @@ export async function handleSubmitButton(id: string) {
   return JSON.stringify({ id: id });
 }
 
-let message = ['Hi Ho!'];
+let tasks = ['Mow the lawn'];
 
 export async function send(formData: FormData) {
   await new Promise((resolve) => setTimeout(resolve, 2000));
   //   const newMessage = formData.get('message');
-  console.log('this ran');
-  message.push('decoyed!');
+  tasks.push('decoyed!');
   return;
 }
 
-export async function getMessage() {
-  return JSON.stringify({ message: message });
+export async function getTasks() {
+  return JSON.stringify({ tasks: tasks });
 }
