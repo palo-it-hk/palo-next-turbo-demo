@@ -30,9 +30,17 @@ https://nextjs.link/turbopack-feedback
 
 # Issues
 
-## Turbopack
+## notFound() during dev mode
 
-Triggering `notFound()` will cause the browser to make requests to the browser non-stop during dev mode. This is a known issue in the community but not yet addressed officially. https://github.com/vercel/next.js/discussions/50429
+Triggering `notFound()` will cause the browser to make requests to the browser non-stop during dev mode. This is a known issue in the community but not yet addressed officially. https://github.com/vercel/next.js/discussions/50429. This will not happen in prod mode.
+
+## features not yet supported by Turbopack
+
+| feature/library      | Description | docs |
+| ----------- | ----------- | ----------- |
+| SVGR      | A library that enables importing of svg files as react components | [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140) |
+
+
 
 ## API
 
