@@ -1,7 +1,6 @@
 'use server';
 
 export async function handleSubmitForm(data: FormData) {
-  'use server';
   console.log('data is', data.get('name'));
   const name = data.get('name');
   console.log('I am from the server, your name is ', name);
@@ -26,4 +25,11 @@ export async function send(formData: FormData) {
 
 export async function getTasks() {
   return JSON.stringify({ tasks: tasks });
+}
+
+export async function doSomething() {
+  console.log('task received');
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  console.log('did something');
+  return;
 }
