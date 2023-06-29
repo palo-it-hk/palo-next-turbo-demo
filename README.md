@@ -37,8 +37,13 @@ https://nextjs.link/with-turbopack
 
 The Triggering `notFound()` will cause the browser to make requests to the browser non-stop during dev mode. This is a known issue in the community but not yet addressed officially. https://github.com/vercel/next.js/discussions/50429. This will not happen in prod mode.
 
+### Async Server Component Typescript error
 
+To use an async Server Component with TypeScript, ensure you are using TypeScript 5.1.3 or higher and @types/react 18.2.8 or higher.
 
+If you are using an older version of TypeScript, you may see a 'Promise<Element>' is not a valid JSX element type error. Updating to the latest version of TypeScript and @types/react should resolve this issue.
+
+As a temporary workaround, you can add {/* @ts-expect-error Async Server Component */} above the component to disable type checking for it.
 
 ### API
 
@@ -188,3 +193,32 @@ The issue is documented in the below:
 [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140)
 
 To use SVGR without turbopack, follow the install steps above and run `yarn next dev`.  
+
+## Data fetching
+
+Data fetching is built on top of the `fetch()` Web API and React Server Components. When using `fetch()`, requests are automatically deduped by default.
+
+Next.js extends the `fetch` options object to allow each request to set its own caching and revalidating.
+
+| Types of fetching     | link demo | folder |
+| ----------- | ----------- | ----------- |
+| Static    | [http://www.localhost:3000/get-method/static]   | (REST)/get-method/static      |
+| dynamic   | [http://www.localhost:3000/get-method/dynamic]       |(Rest)/get-method/dynamic      |
+
+### Static data fetching
+
+By default, fetch will automatically fetch and cache data indefinitely. 
+
+Caching does not occur when:
+
+- Dynamic methods (`next/headers`, `export const POST`, or similar) are used and the fetch is a`POST` request (or uses `Authorization` or `cookie` headers)
+
+- fetchCache is configured to skip cache by default
+
+- `revalidate: 0` or `cache: 'no-store'` is configured on individual fetch
+
+### Dynamic fetching
+
+To fetch fresh data on every fetch request, use the cache: 'no-store' option.
+
+
