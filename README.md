@@ -188,3 +188,6 @@ The issue is documented in the below:
 [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140)
 
 To use SVGR without turbopack, follow the install steps above and run `yarn next dev`.  
+
+## Middleware
+Middleware will be invoked for every route in your project by default but can be configured from specific paths.  `middleware.ts` must be placed in the root folder. 

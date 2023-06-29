@@ -38,7 +38,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           {children}
         </div>
       ) : (
-        <></>
+        <>You are not authorised to view this</>
       )}
     </>
   );
