@@ -234,13 +234,16 @@ NextJS supports the following styling methods:
 | styling choice    | demo | folder |
 | ----------- | ----------- |----------- |
 | CSS Modules     | [www.localhost:3000/css-modules] | `app/(styling)/css-modules` |
+| tailwind     | [www.localhost:3000/tailwind] | `app/(styling)/tailwind` |
 
 
 ## CSS Modules
 
 CSS Modules are an optional feature and are only enabled for files with the .module.css extension. Regular `<link>` stylesheets and global CSS files are still supported.
 
-### Global styles
+
+
+## Global styles
 
 You create a style sheet in the `app` folder:
 
@@ -274,3 +277,18 @@ export default function RootLayout({
 ```
 
 **Note**: If you disable JavaScript, styles will still be loaded in the production build (next start). However, JavaScript is still required for next dev to enable Fast Refresh.
+
+## Tailwind
+
+One of the advantages of Tailwind is it is usable in server components unlike styled-components. You configure Tailwind in the `tailwind.config.js` in the root folder. You do not need to modify `postcss.config.js`.
+
+To apply it, you do it in `app/globals.css` and import it in `app/layout.tsx`:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+```
+
+After installing Tailwind CSS and adding the global styles, you can use Tailwind's utility classes in your application.
