@@ -37,9 +37,6 @@ https://nextjs.link/with-turbopack
 
 The Triggering `notFound()` will cause the browser to make requests to the browser non-stop during dev mode. This is a known issue in the community but not yet addressed officially. https://github.com/vercel/next.js/discussions/50429. This will not happen in prod mode.
 
-
-
-
 ### API
 
 Throughout this repo, you will see that `/app` will be used as the API to store, produce and fetch data. This is for demo purposes and unlikely to reflect real use-cases.
@@ -74,6 +71,10 @@ export default async function Page() {
 ```
 
 You do not see this problem in dev mode because pages are pre-rendered twice.
+
+### CORS
+
+Sometimes you may receive a CORS error from the client side. You can try solving it by deleting the .next file and rebuild.
 
 ## Cache behavior
 
@@ -190,4 +191,9 @@ The issue is documented in the below:
 To use SVGR without turbopack, follow the install steps above and run `yarn next dev`.  
 
 ## Middleware
-Middleware will be invoked for every route in your project by default but can be configured from specific paths.  `middleware.ts` must be placed in the root folder. 
+
+**Demo** : [www.localhost:3000/with-middleware]
+
+**folder** : `app/(protected-routes)/with-middleware`
+
+Middleware will be invoked for every route in your project by default but can be configured from specific paths.  `middleware.ts` must be placed in the root folder.

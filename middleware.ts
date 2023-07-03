@@ -13,6 +13,8 @@ export function middleware(request: NextRequest) {
 }
 
 // allows you to filter Middleware to run on specific paths.
+// config allows full regex so you can exclude certain paths.
+// Must be static values, no dynamic values such as ${}
 export const config = {
   matcher: ['/with-middleware', '/dashboard/:path*'],
 };
