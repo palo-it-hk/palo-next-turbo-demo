@@ -222,3 +222,55 @@ Caching does not occur when:
 To fetch fresh data on every fetch request, use the cache: 'no-store' option.
 
 
+## Styling
+
+NextJS supports the following styling methods:
+
+- CSS Modules
+- Tailwind CSS
+- CSS-in-JS
+- Sass
+
+| styling choice    | demo | folder |
+| ----------- | ----------- |----------- |
+| CSS Modules     | [www.localhost:3000/css-modules] | `app/(styling)/css-modules` |
+
+
+## CSS Modules
+
+CSS Modules are an optional feature and are only enabled for files with the .module.css extension. Regular `<link>` stylesheets and global CSS files are still supported.
+
+### Global styles
+
+You create a style sheet in the `app` folder:
+
+``` typescript
+body {
+  padding: 20px 20px 60px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+```
+
+and then import it in `app/layout.tsx`
+
+``` typescript
+// These styles apply to every route in the application
+import './global.css'
+// you can import external packages this way
+import 'bootstrap/dist/css/bootstrap.css'
+ 
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  )
+}
+```
+
+**Note**: If you disable JavaScript, styles will still be loaded in the production build (next start). However, JavaScript is still required for next dev to enable Fast Refresh.

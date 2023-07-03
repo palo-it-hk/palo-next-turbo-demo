@@ -1,0 +1,9 @@
+.myComponent {
+  border: 1px solid black;
+  width: 200px;
+  height: 100px;
+}
+
+.wrapper * {
+  margin-top: 10px;
+}
