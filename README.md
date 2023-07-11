@@ -79,6 +79,10 @@ export default async function Page() {
 
 You do not see this problem in dev mode because pages are pre-rendered twice.
 
+### CORS
+
+Sometimes you may receive a CORS error from the client side. You can try solving it by deleting the .next file and rebuild.
+
 ## Cache behavior
 
 Next stores caches inside `.next`. Failing to clear cache may produce inconsistent behavior especially when running `yarn run build && yarn run start`. Manually removing the `.next` folder is recommended to clear the cache.
@@ -192,6 +196,15 @@ The issue is documented in the below:
 
 To use SVGR without turbopack, follow the install steps above and run `yarn next dev`.
 
+<<<<<<< HEAD
+## Middleware
+
+**Demo** : [www.localhost:3000/with-middleware]
+
+**folder** : `app/(protected-routes)/with-middleware`
+
+Middleware will be invoked for every route in your project by default but can be configured from specific paths.  `middleware.ts` must be placed in the root folder.
+=======
 ## Data fetching
 
 Data fetching is built on top of the `fetch()` Web API and React Server Components. When using `fetch()`, requests are automatically deduped by default.
@@ -222,4 +235,8 @@ To fetch fresh data on every fetch request, use the cache: 'no-store' option.
 
 ### Parallel fetching
 
+<<<<<<< HEAD
+>>>>>>> main
+=======
 We can save time by initiating fetch requests in parallel, however, the user won't see the rendered result until both promises are resolved.
+>>>>>>> main
