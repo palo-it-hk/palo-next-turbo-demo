@@ -40,7 +40,7 @@ function LoginPage() {
     }
 
     jwtStore.setJwt(receivedToken);
-    router.back();
+    router.push('/');
   }
 
   return (

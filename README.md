@@ -79,6 +79,10 @@ export default async function Page() {
 
 You do not see this problem in dev mode because pages are pre-rendered twice.
 
+### CORS
+
+Sometimes you may receive a CORS error from the client side. You can try solving it by deleting the .next file and rebuild.
+
 ## Cache behavior
 
 Next stores caches inside `.next`. Failing to clear cache may produce inconsistent behavior especially when running `yarn run build && yarn run start`. Manually removing the `.next` folder is recommended to clear the cache.
@@ -192,6 +196,14 @@ The issue is documented in the below:
 
 To use SVGR without turbopack, follow the install steps above and run `yarn next dev`.
 
+## Middleware
+
+**Demo** : [www.localhost:3000/with-middleware]
+
+**folder** : `app/(protected-routes)/with-middleware`
+
+Middleware will be invoked for every route in your project by default but can be configured from specific paths.  `middleware.ts` must be placed in the root folder.
+
 ## Data fetching
 
 Data fetching is built on top of the `fetch()` Web API and React Server Components. When using `fetch()`, requests are automatically deduped by default.
@@ -238,12 +250,9 @@ NextJS supports the following styling methods:
 | CSS Modules     | [www.localhost:3000/css-modules] | `app/(styling)/css-modules` |
 | tailwind     | [www.localhost:3000/tailwind] | `app/(styling)/tailwind` |
 
-
 ## CSS Modules
 
 CSS Modules are an optional feature and are only enabled for files with the .module.css extension. Regular `<link>` stylesheets and global CSS files are still supported.
-
-
 
 ## Global styles
 
@@ -294,4 +303,3 @@ To apply it, you do it in `app/globals.css` and import it in `app/layout.tsx`:
 ```
 
 After installing Tailwind CSS and adding the global styles, you can use Tailwind's utility classes in your application.
-
