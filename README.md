@@ -280,7 +280,7 @@ export default function RootLayout({
 
 ## Tailwind
 
-One of the advantages of Tailwind is it is usable in server components unlike styled-components. You configure Tailwind in the `tailwind.config.js` in the root folder. You do not need to modify `postcss.config.js`.
+One of the advantages of Tailwind is it is usable in server components unlike CSS-in-JS libraries You configure Tailwind in the `tailwind.config.js` in the root folder. You do not need to modify `postcss.config.js`.
 
 To apply it, you do it in `app/globals.css` and import it in `app/layout.tsx`:
 
