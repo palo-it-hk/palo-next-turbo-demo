@@ -26,10 +26,9 @@ https://nextjs.link/with-turbopack
 
 ## Features not yet supported by Turbopack
 
-| feature/library      | Description | docs |
-| ----------- | ----------- | ----------- |
-| [SVGR](https://react-svgr.com/)      | A library that enables importing of svg files as React components | [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140) |
-
+| feature/library                 | Description                                                       | docs                                                                                       |
+| ------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [SVGR](https://react-svgr.com/) | A library that enables importing of svg files as React components | [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140) |
 
 ## Issues
 
@@ -43,7 +42,7 @@ To use an async Server Component with TypeScript, ensure you are using TypeScrip
 
 If you are using an older version of TypeScript, you may see a 'Promise<Element>' is not a valid JSX element type error. Updating to the latest version of TypeScript and @types/react should resolve this issue.
 
-As a temporary workaround, you can add {/* @ts-expect-error Async Server Component */} above the component to disable type checking for it.
+As a temporary workaround, you can add {/_ @ts-expect-error Async Server Component _/} above the component to disable type checking for it.
 
 ### API
 
@@ -82,7 +81,7 @@ You do not see this problem in dev mode because pages are pre-rendered twice.
 
 ## Cache behavior
 
-Next stores caches inside `.next`. Failing to clear cache may produce inconsistent behavior especially when running `yarn run build && yarn run start`. Manually removing the `.next` folder is recommended to clear the cache. 
+Next stores caches inside `.next`. Failing to clear cache may produce inconsistent behavior especially when running `yarn run build && yarn run start`. Manually removing the `.next` folder is recommended to clear the cache.
 
 ## Fonts(Typography)
 
@@ -90,7 +89,7 @@ Next stores caches inside `.next`. Failing to clear cache may produce inconsiste
 
 **folder**: `app/(fonts)`
 
-With `'next font`,  CSS and font files are downloaded at build time and self-hosted with the rest of your static assets. The result is zero layout shift and removes external network requests. It is recommended to use variable fonts.
+With `'next font`, CSS and font files are downloaded at build time and self-hosted with the rest of your static assets. The result is zero layout shift and removes external network requests. It is recommended to use variable fonts.
 
 ### Google fonts
 
@@ -98,13 +97,13 @@ Use google fonts by installing `next/font/google`. This way fonts are included i
 
 ```typescript
 import { Inter } from 'next/font/google';
- 
+
 // If loading a variable font, you don't need to specify the font weight
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
 });
- 
+
 export default function RootLayout({
   children,
 }: {
@@ -154,13 +153,12 @@ const nextConfig = {
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
-      use: ["@svgr/webpack"]
+      use: ['@svgr/webpack'],
     });
- 
+
     return config;
   },
   // ... Other configs
-  
 };
 
 module.exports = nextConfig;
@@ -170,7 +168,7 @@ module.exports = nextConfig;
 
 #### issues with Turbopack and SVGR
 
-Although the below is the official way to integrate loaders with Turbopack, it will throw an error: `Processing image failedFailed to parse svg source code for image dimensions`. 
+Although the below is the official way to integrate loaders with Turbopack, it will throw an error: `Processing image failedFailed to parse svg source code for image dimensions`.
 
 ```typescript
 // next.config.js
@@ -192,7 +190,7 @@ The issue is documented in the below:
 [[turbopack] SVG via svgr support](https://github.com/vercel/turbo/issues/4832)
 [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140)
 
-To use SVGR without turbopack, follow the install steps above and run `yarn next dev`.  
+To use SVGR without turbopack, follow the install steps above and run `yarn next dev`.
 
 ## Data fetching
 
@@ -200,14 +198,15 @@ Data fetching is built on top of the `fetch()` Web API and React Server Componen
 
 Next.js extends the `fetch` options object to allow each request to set its own caching and revalidating.
 
-| Types of fetching     | link demo | folder |
-| ----------- | ----------- | ----------- |
-| Static    | [http://www.localhost:3000/get-method/static]   | (REST)/get-method/static      |
-| dynamic   | [http://www.localhost:3000/get-method/dynamic]       |(Rest)/get-method/dynamic      |
+| Types of fetching | link demo                                      | folder                     |
+| ----------------- | ---------------------------------------------- | -------------------------- |
+| Static            | [http://www.localhost:3000/get-method/static]  | (REST)/get-method/static   |
+| dynamic           | [http://www.localhost:3000/get-method/dynamic] | (Rest)/get-method/dynamic  |
+| parallel          | [http://localhost:3000/get-method/parallel]    | (REST)/get-method/parallel |
 
 ### Static data fetching
 
-By default, fetch will automatically fetch and cache data indefinitely. 
+By default, fetch will automatically fetch and cache data indefinitely.
 
 Caching does not occur when:
 
@@ -221,6 +220,9 @@ Caching does not occur when:
 
 To fetch fresh data on every fetch request, use the cache: 'no-store' option.
 
+### Parallel fetching
+
+We can save time by initiating fetch requests in parallel, however, the user won't see the rendered result until both promises are resolved.
 
 ## Styling
 
@@ -292,3 +294,4 @@ To apply it, you do it in `app/globals.css` and import it in `app/layout.tsx`:
 ```
 
 After installing Tailwind CSS and adding the global styles, you can use Tailwind's utility classes in your application.
+
