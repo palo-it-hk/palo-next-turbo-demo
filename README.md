@@ -254,19 +254,24 @@ NextJS supports the following styling methods:
 
 CSS Modules are an optional feature and are only enabled for files with the .module.css extension. Regular `<link>` stylesheets and global CSS files are still supported.
 
-## Global styles
+## Tailwind
 
-You create a style sheet in the `app` folder:
+One of the advantages of Tailwind is it is usable in server components unlike CSS-in-JS libraries You configure Tailwind in the `tailwind.config.js` in the root folder. You do not need to modify `postcss.config.js`.
 
-``` typescript
-body {
-  padding: 20px 20px 60px;
-  max-width: 680px;
-  margin: 0 auto;
-}
+To apply it, you do it in `app/globals.css` and import it in `app/layout.tsx`:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 ```
 
-and then import it in `app/layout.tsx`
+After installing Tailwind CSS and adding the global styles, you can use Tailwind's utility classes in your application.
+
+## Global styles
+
+A global styles sheet can be applied by creating a css file such as `globals.css`and then import it in `app/layout.tsx`
 
 ``` typescript
 // These styles apply to every route in the application
@@ -287,19 +292,19 @@ export default function RootLayout({
 }
 ```
 
-**Note**: If you disable JavaScript, styles will still be loaded in the production build (next start). However, JavaScript is still required for next dev to enable Fast Refresh.
+In the global style sheet, you can import dependencies from Tailwind. In our `styles/globals.css`, the theme configured in `tailwind.config.js` such as font family and colors can be retrieved by using `theme()` or `@apply`
 
-## Tailwind
-
-One of the advantages of Tailwind is it is usable in server components unlike CSS-in-JS libraries You configure Tailwind in the `tailwind.config.js` in the root folder. You do not need to modify `postcss.config.js`.
-
-To apply it, you do it in `app/globals.css` and import it in `app/layout.tsx`:
+`styles/globals.css`
 
 ```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+h3 {
+    font-family: theme('fontFamily.gluten');
+    color: theme('colors.secondary')
+  }
 
+h4 {
+    @apply text-primary
+}
 ```
 
-After installing Tailwind CSS and adding the global styles, you can use Tailwind's utility classes in your application.
+**Note**: If you disable JavaScript, styles will still be loaded in the production build (next start). However, JavaScript is still required for next dev to enable Fast Refresh.
