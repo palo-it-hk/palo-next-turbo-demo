@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+    background-color: white;
+    padding: 30px;
+  }
+
+
+h3 {
+    font-family: theme('fontFamily.gluten');
+    color: theme('colors.secondary')
+  }
+
+h4 {
+    @apply text-primary
+}

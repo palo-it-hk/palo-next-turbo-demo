@@ -10,6 +10,9 @@ export default function Page() {
         I change color based on screen size.
       </p>
       <Button label="Button with tailwind" size="small" />
+      <p className="my-5">The following is styled inside globals.css</p>
+      <h3>This is an H3</h3>
+      <h4>This is an H4</h4>
     </>
   );
 }
