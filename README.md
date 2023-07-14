@@ -29,6 +29,7 @@ https://nextjs.link/with-turbopack
 | feature/library                 | Description                                                       | docs                                                                                       |
 | ------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | [SVGR](https://react-svgr.com/) | A library that enables importing of svg files as React components | [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140) |
+| Server rendered CSS-in-JS | CSS-in-JS styling such as styled-components, kuma-ui, styled-jsx, etc cannot be server rendered | [css-in-js](https://nextjs.org/docs/app/building-your-application/styling/css-in-js) |
 
 ## Issues
 
@@ -249,6 +250,8 @@ NextJS supports the following styling methods:
 | ----------- | ----------- |----------- |
 | CSS Modules     | [www.localhost:3000/css-modules] | `app/(styling)/css-modules` |
 | tailwind     | [www.localhost:3000/tailwind] | `app/(styling)/tailwind` |
+| CSS-in-JS     | [www.localhost:3000/css-in-js] | `app/(styling)/css-in-js` |
+
 
 ## CSS Modules
 
@@ -268,6 +271,68 @@ To apply it, you do it in `app/globals.css` and import it in `app/layout.tsx`:
 ```
 
 After installing Tailwind CSS and adding the global styles, you can use Tailwind's utility classes in your application.
+
+## CSS-in-JS
+
+CSS-in-JS libraries which require runtime JavaScript are not currently supported in Server Components.
+
+If you want to style Server Components, we recommend using CSS Modules or other solutions that output CSS files, like PostCSS or Tailwind CSS.
+
+To implement Styled-components, you (1) define the style registry, (2) Wrap the children of the root layout with the style registry component
+
+Defining the style registry:
+
+```typescript
+// lib/registry.tsx
+import React, { useState } from 'react'
+import { useServerInsertedHTML } from 'next/navigation'
+import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
+ 
+export default function StyledComponentsRegistry({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  // Only create stylesheet once with lazy initial state
+  // x-ref: https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
+  const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet())
+ 
+  useServerInsertedHTML(() => {
+    const styles = styledComponentsStyleSheet.getStyleElement()
+    styledComponentsStyleSheet.instance.clearTag()
+    return <>{styles}</>
+  })
+ 
+  if (typeof window !== 'undefined') return <>{children}</>
+ 
+  return (
+    <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
+      {children}
+    </StyleSheetManager>
+  )
+}
+```
+
+Wrap it in the root layout:
+
+```typescript
+//app/layout,tsx
+import StyledComponentsRegistry from './lib/registry'
+ 
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html>
+      <body>
+        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+      </body>
+    </html>
+  )
+}
+```
 
 ## Global styles
 
