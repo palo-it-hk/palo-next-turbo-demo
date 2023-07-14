@@ -251,6 +251,7 @@ NextJS supports the following styling methods:
 | CSS Modules     | [www.localhost:3000/css-modules] | `app/(styling)/css-modules` |
 | tailwind     | [www.localhost:3000/tailwind] | `app/(styling)/tailwind` |
 | CSS-in-JS     | [www.localhost:3000/css-in-js] | `app/(styling)/css-in-js` |
+| Sass     | [www.localhost:3000/sass] | `app/(styling)/sass` |
 
 
 ## CSS Modules
@@ -329,6 +330,44 @@ export default function RootLayout({
       <body>
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
+    </html>
+  )
+}
+```
+
+## Sass
+
+Next.js has built-in support for Sass using both the `.scss` and `.sass` extensions. You can use component-level Sass via CSS Modules and the `.module.scss` or `.module.sass` extension.
+
+### If you run into the error: `selector “body” is not pure (pure selectors must contain at least one local class or id) – error in NextJs`
+
+You can't directly have simple element selectors like the below in module.css:
+
+```css
+body {/* rules here */}
+/* or */
+div {/* rules here */}
+```
+
+You would've put them in globals for general selectors like that.
+
+To solve this error, you need to add classNames:
+
+```css
+body.test {
+    border: 2px solid blue;
+}
+```
+
+and use them in the component like the below:
+
+```tsx
+import styles from './styles.module.css';
+export default function StyledRootLayout({ children }) {
+  return (
+    <html>
+      <head />
+      <body className={`${styles.test}`}>{children}</body>
     </html>
   )
 }

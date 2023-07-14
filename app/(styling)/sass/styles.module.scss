@@ -1,0 +1,35 @@
+
+
+$font-stack: Helvetica, sans-serif;
+$primary-color: #E1A679;
+$important-weight: 800;
+
+h1.title {
+    font-weight: $important-weight;
+    font-size: 2rem;
+}
+
+div.wrapper {
+  p {
+    color: $primary-color
+  }
+}
+
+// Because tailwind.config.js exists, it clashes with the theme and the following error
+// '$theme: DarkGray' does not exist in your theme config.(invalidConfigPath)
+// Therefore it may not be good to mix both styling methods
+@mixin theme($theme: DarkGray) {
+    background: $theme;
+    box-shadow: 0 0 1px rgba($theme, .25);
+    color: #fff;
+  }
+  
+  .info {
+    @include theme;
+  }
+  .alert {
+    @include theme($theme: DarkRed);
+  }
+  .success {
+    @include theme($theme: DarkGreen);
+  }
