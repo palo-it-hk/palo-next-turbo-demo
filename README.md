@@ -216,6 +216,7 @@ Next.js extends the `fetch` options object to allow each request to set its own 
 | Static            | [http://www.localhost:3000/get-method/static]  | (REST)/get-method/static   |
 | dynamic           | [http://www.localhost:3000/get-method/dynamic] | (Rest)/get-method/dynamic  |
 | parallel          | [http://localhost:3000/get-method/parallel]    | (REST)/get-method/parallel |
+| sequential-rendering          | [http://localhost:3000/get-method/sequential-rendering]    | (REST)/get-method/sequential-rendering |
 
 ### Static data fetching
 
@@ -236,6 +237,10 @@ To fetch fresh data on every fetch request, use the cache: 'no-store' option.
 ### Parallel fetching
 
 We can save time by initiating fetch requests in parallel, however, the user won't see the rendered result until both promises are resolved.
+
+### Sequential rendering
+
+With components as async functions, we can control the sequence of rendering, by having a child components fetch to wait for the parent component's fetch to finish first.
 
 ## Dynamic routes
 
