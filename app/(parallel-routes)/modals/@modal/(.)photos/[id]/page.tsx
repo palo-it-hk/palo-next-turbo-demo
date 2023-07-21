@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import ModalWrapper from '@/components/atomic-design/organisms/modal-page/Modal';
+import Link from 'next/link';
+import { Button } from '@/components/atomic-design/atoms/Button-SC';
 
 export default function Modal({
   params: { id: photoId },
@@ -15,6 +17,9 @@ export default function Modal({
         alt=""
         className="col-span-2 aspect-square w-full object-cover"
       />
+      <Link href="/modals/info">
+        <Button label="More info" size="small" />
+      </Link>
     </ModalWrapper>
   );
 }
