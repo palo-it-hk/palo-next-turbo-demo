@@ -38,3 +38,12 @@ next-env.d.ts
 .turbo
 .vscode
 styles/dist.css
+
+# yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
