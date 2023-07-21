@@ -5,7 +5,7 @@ async function getData() {
   // As such, This page will be rendered in the server every time a request is received.
 
   try {
-    res = await fetch(`http://localhost:3000/api/data/time`, {
+    res = await fetch('/api/data/time', {
       cache: 'no-store',
     });
   } catch (e) {
@@ -24,7 +24,7 @@ export default async function Page() {
 
   return (
     <>
-      <p className="font-bold text-green-500">
+      <p className="text-green-500 font-bold">
         Please view this page in prod mode.
       </p>
       <p>This data will update every refresh because it&apos;s not cached</p>
