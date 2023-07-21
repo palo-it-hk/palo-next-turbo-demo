@@ -196,7 +196,6 @@ The issue is documented in the below:
 
 To use SVGR without turbopack, follow the install steps above and run `yarn next dev`.
 
-<<<<<<< HEAD
 ## Middleware
 
 **Demo** : [www.localhost:3000/with-middleware]
@@ -204,7 +203,7 @@ To use SVGR without turbopack, follow the install steps above and run `yarn next
 **folder** : `app/(protected-routes)/with-middleware`
 
 Middleware will be invoked for every route in your project by default but can be configured from specific paths.  `middleware.ts` must be placed in the root folder.
-=======
+
 ## Data fetching
 
 Data fetching is built on top of the `fetch()` Web API and React Server Components. When using `fetch()`, requests are automatically deduped by default.
@@ -235,8 +234,77 @@ To fetch fresh data on every fetch request, use the cache: 'no-store' option.
 
 ### Parallel fetching
 
-<<<<<<< HEAD
->>>>>>> main
-=======
 We can save time by initiating fetch requests in parallel, however, the user won't see the rendered result until both promises are resolved.
->>>>>>> main
+
+## Styling
+
+NextJS supports the following styling methods:
+
+- CSS Modules
+- Tailwind CSS
+- CSS-in-JS
+- Sass
+
+| styling choice    | demo | folder |
+| ----------- | ----------- |----------- |
+| CSS Modules     | [www.localhost:3000/css-modules] | `app/(styling)/css-modules` |
+| tailwind     | [www.localhost:3000/tailwind] | `app/(styling)/tailwind` |
+
+## CSS Modules
+
+CSS Modules are an optional feature and are only enabled for files with the .module.css extension. Regular `<link>` stylesheets and global CSS files are still supported.
+
+## Tailwind
+
+One of the advantages of Tailwind is it is usable in server components unlike CSS-in-JS libraries You configure Tailwind in the `tailwind.config.js` in the root folder. You do not need to modify `postcss.config.js`.
+
+To apply it, you do it in `app/globals.css` and import it in `app/layout.tsx`:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+```
+
+After installing Tailwind CSS and adding the global styles, you can use Tailwind's utility classes in your application.
+
+## Global styles
+
+A global styles sheet can be applied by creating a css file such as `globals.css`and then import it in `app/layout.tsx`
+
+``` typescript
+// These styles apply to every route in the application
+import './global.css'
+// you can import external packages this way
+import 'bootstrap/dist/css/bootstrap.css'
+ 
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  )
+}
+```
+
+In the global style sheet, you can import dependencies from Tailwind. In our `styles/globals.css`, the theme configured in `tailwind.config.js` such as font family and colors can be retrieved by using `theme()` or `@apply`
+
+`styles/globals.css`
+
+```css
+h3 {
+    font-family: theme('fontFamily.gluten');
+    color: theme('colors.secondary')
+  }
+
+h4 {
+    @apply text-primary
+}
+```
+
+**Note**: If you disable JavaScript, styles will still be loaded in the production build (next start). However, JavaScript is still required for next dev to enable Fast Refresh.
