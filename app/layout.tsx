@@ -7,10 +7,9 @@
 
 import { StyledComponentsRegistry } from '@/lib/styling/styled-components';
 import '@/styles/globals.css';
-
-import './styles.css';
-import { open_sans, arvo, josefinSlab, gluten } from './fonts';
 import Providers from '@/components/atomic-design/templates/Providers';
+
+import { open_sans, arvo, josefinSlab, gluten } from './fonts';
 
 export default function RootLayout({
   // Layouts must accept a children prop.
