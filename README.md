@@ -235,8 +235,217 @@ To fetch fresh data on every fetch request, use the cache: 'no-store' option.
 
 ### Parallel fetching
 
-<<<<<<< HEAD
->>>>>>> main
-=======
 We can save time by initiating fetch requests in parallel, however, the user won't see the rendered result until both promises are resolved.
->>>>>>> main
+
+## Parallel routing
+
+### Parallel routing with slots
+
+**Demo**: [www.localhost:3000/parallel-routes]
+**Folder** : `/app/(parallel-routes)/parallel-routes`
+
+Parallel Routing allows you to simultaneously or conditionally render one or more pages in the same layout.
+
+Convention:
+
+- `/app`
+  - `/dashboard`
+    - `@user`
+      - `page.tsx`
+    - `@info`
+      - `page.tsx`
+    - `page.tsx`
+    - `layout.tsx`
+
+```tsx
+// /dashboard/layout.tsx
+export default function Layout(props: {
+  children: React.ReactNode
+  user: React.ReactNode
+  info: React.ReactNode
+}) {
+  return (
+    <>
+      {props.children}
+      {props.user}
+      {props.info}
+    </>
+  )
+}
+```
+
+With the above, `/dashboard` will show 2 slots and each slot will fetch it's content at the same time. They will render as soon as they are ready and are independent from each other. This means that if one slot encounters an error, that particular slot will render a fallback error page while the others render as normal.
+
+`default.tsx`
+
+You can define a `default.tsx` file to render as a fallback when Next.js cannot recover a slot's active state based on the current URL.
+
+What?
+
+### Parallel Routing with modals
+
+**Demo**: [www.localhost:3000/modals] (Please run dev without turbo such as `yarn next dev` instead of `yarn next dev --turbo`, or run `yarn build && yarn start`)
+**Folder**: `/app/(parallel-routes)/modals`
+
+ In the previous example, the slots are presented as columns or rows. But with some CSS and `default.tsx` and nesting folder structure, parallel Routing can also be used to render modals.
+
+Convention (the following is an example of an instagram-like page where you click a photo and the photo pops out as a modal):
+
+- `/app`
+  - `/photo-gallery`
+    - `@my-modal`
+      - `photos/[id]`
+        - `page.tsx`
+      - `default.tsx`
+    - `default.tsx`
+    - `page.tsx`
+    - `layout.tsx`
+
+```tsx
+// layout.tsx
+export default function Layout(props: {
+  children: React.ReactNode;
+  modal: React.ReactNode;
+}) {
+  return (
+    <>
+      <div>
+        {props.children}
+        {props.modal}
+      </div>
+    </>
+  );
+}
+```
+
+```tsx
+// /@my-modal/photos/[id]/page.tsx
+'use client'
+import { useRouter } from 'next/navigation'
+import { Modal } from 'components/modal'
+ 
+export default async function Page({
+  params: { id: photoId },
+}: {
+  params: { id: string };
+}) {
+  const router = useRouter() 
+   return (
+     <Modal>
+
+    {/*Meat of the content*/}
+      <Image src={`/dogs/${photoId}.png`} />
+      <span onClick={()=> router.back()}>Close modal</span>
+
+    </Modal>
+  )
+}
+```
+
+For the Modal component, you can create a layover that wraps the meat of the content.
+
+To ensure that the contents of the modal don't get rendered when it's not active, you can create a default.js file that returns null.
+
+```tsx
+export default function Default() {
+  return null
+}
+```
+
+### Intercepting Routes
+
+**Demo**: [www.localhost:3000/modals] (Please run dev without turbo such as `yarn next dev` instead of `yarn next dev --turbo`, or run `yarn build && yarn start`)
+**Folder**: `/app/(parallel-routes)/modals`
+
+Intercepting routes allows the loading of a route within the current layout while keeping the context for the current page.
+
+Using the previous photo gallery example:
+
+- `/app`
+  - `/photo-gallery`
+    - `@my-modal`
+      - `photos/[id]`
+        - `page.tsx`
+      - `default.tsx`
+    - `default.tsx`
+    - `page.tsx`
+    - `layout.tsx`
+
+You go to `/photo-gallery`, clicking on an image will show a modal of the image and will change the URL to `/photo-gallery/photos/123`. Even though the URL has been changed, due to the `@`prefix, as a parallel route, `/photo-gallery/photos/123` is just an overlay on top of `/photo-gallery`. `/photo-gallery` and the other @ slots are still visible beneath the overlay. 
+
+What if I also want `/photo-gallery/photos/123` to be a standalone page so I can have a shareable link?
+
+Then we can create intercepting routes with the following convention:
+
+- `/app`
+  - `/photo-gallery`
+    - `@my-modal`
+      - `(.)photos/[id]/page.tsx`
+      - `photos/[id]/page.tsx` <------
+      - `default.tsx`
+    - `default.tsx`
+    - `page.tsx`
+    - `layout.tsx`
+
+```tsx
+// /app/photo-gallery/photos[id]/page.tsx
+
+export default function Page({params: photoId}:{params:string}) {
+  // You can 
+  return <><desiredLayout><Image src={`/photo/${photoId}.png`} /></desiredLayout></>;
+}
+
+```
+
+When you hard navigate to `/photo-gallery/photos/123`, you will see the above route rendered instead.
+
+- (.) to match segments on the same level
+- (..) to match segments one level above
+- (..)(..) to match segments two levels above
+- (...) to match segments from the root app directory
+
+### Parallel routing issues
+
+This parallel routing feature is not production ready and the community has found some bugs:
+
+| Issue | Documentation|
+|----| ------------|
+|Individual loading doesn't work | (Next.js parallel routes are awesome (if they worked correctly))[https://www.youtube.com/watch?v=g5V6koptSXs] |
+| Modals do not work with turbopack| Modals don't show as modals in `/modals` with `next dev --turbo`|
+|Inconsistancy| Sometimes `yarn build && yarn start` and `yarn next dev` will produce differenct behavior. For example, the slot may or may not render as a modal, etc. The best bet is to delete the `.next` folder, `yarn build && yarn start` to view the app|
+
+
+#### Reading segments
+
+Both `useSelectedLayoutSegment` and `useSelectedLayoutSegments` accept a parallelRoutesKey, which allows you read the active route segment within that slot.
+
+```tsx
+'use client';
+
+import './global.css';
+import GithubCorner from '../components/github-corner/GithubCorner';
+import { useSelectedLayoutSegment } from 'next/navigation';
+
+export default function Layout(props: {
+  children: React.ReactNode;
+  slot_one: React.ReactNode;
+  slot_two: React.ReactNode;
+}) {
+  const segment = useSelectedLayoutSegment('slot_one');
+
+  console.log('Segment is', segment);
+
+  return (
+    <html>
+      <body>
+        <GithubCorner />
+        {props.children}
+        {props.slot_two}
+        {props.slot_one}
+      </body>
+    </html>
+  );
+}
+```
+
+The console log returns the string "children" if the argument is on slot_one and if navigated on slot_one, it will return the string 'children'.But according to the documentation, it should return the segment as a string, which should be '/slot_one'.

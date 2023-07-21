@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Button } from '@/components/atomic-design/atoms/Button-SC';
 
@@ -21,7 +21,7 @@ export default async function Page() {
 
       <p>
         Clicking the below button will cause the slot to render the error.tsx,
-        but you will see that it's independant to other slots.
+        but you will see that it&apos;s independent to other slots.
       </p>
       <div>
         <Button label="Click me" size="small" onClick={crash} />

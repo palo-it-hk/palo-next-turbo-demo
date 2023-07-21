@@ -8,6 +8,10 @@ export default function Layout(props: {
 }) {
   const { children, slot_one, slot_two, slot_three } = props;
 
+  // You can also apply routes conditionally such as :
+  // const isLoggedIn = getUser()
+  // return isLoggedIn ? dashboard : login
+
   return (
     <>
       <div>{children}</div>
