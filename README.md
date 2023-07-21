@@ -237,6 +237,57 @@ To fetch fresh data on every fetch request, use the cache: 'no-store' option.
 
 We can save time by initiating fetch requests in parallel, however, the user won't see the rendered result until both promises are resolved.
 
+## Dynamic routes
+
+**demo**: www.localhost:3000/cat-profile/<choose a value between 1 to 3>
+
+**folder** : `/app/(not-found)/cat-profile)` 
+
+A Dynamic Segment can be created by wrapping a folder's name in square brackets: [folderName]. For example, [id] or [slug].
+
+### Generate dynamic routes on build time
+
+The `generateStaticParams` function can be used in combination with dynamic route segments to statically generate routes at build time instead of on-demand at request time.
+
+The function returns a list of `params` to populate the dynamic segment.
+
+#### Single dynamic segment (ie: /product/[id]):
+
+This demo intends to be a page of a product based on product ID. 
+
+**demo**: www.localhost:3000/product/<choose a value between 1 to 100>
+
+**folder** : `/app/(generateStaticParams)/product`
+
+#### multiple dynamic segment (ie: /[brandName]/[productCategory]):
+
+This demo intends to be a page of a category of product of a brand. 
+
+For a full list brand name and categories, run a `GET` request to `https://dummyjson.com/products`
+
+**demo**: www.localhost:3000/<brand-name>/<product-category> (ie:www.localhost:3000/apple/smartphones )  
+
+**folder** : `/app/(generateStaticParams)/[brandName]/[productCategory]]`
+
+#### Catch all segments
+
+`app/product/[...slug]/page.tsx`
+
+```typescript
+export function generateStaticParams() {
+  return [{ slug: ['a', '1'] }, { slug: ['b', '2'] }, { slug: ['c', '3'] }]
+}
+ 
+// Three versions of this page will be statically generated
+// using the `params` returned by `generateStaticParams`
+// - /product/a/1
+// - /product/b/2
+// - /product/c/3
+export default function Page({ params }: { params: { slug: string[] } }) {
+  const { slug } = params
+  // ...
+}
+```
 ## Styling
 
 NextJS supports the following styling methods:
