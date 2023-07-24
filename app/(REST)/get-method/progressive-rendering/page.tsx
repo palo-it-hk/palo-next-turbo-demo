@@ -28,7 +28,7 @@ export default async function Page() {
         having them fetch their own data, they will render as soon as the data
         has been fetched regardless of it&apos;s location in the page.
       </p>
-      <p className="text-green-500 font-bold">
+      <p className="font-bold text-primary">
         Please view this page in dev mode.
       </p>
       <p className="font-bold">Artist :</p>

@@ -213,11 +213,18 @@ Next.js extends the `fetch` options object to allow each request to set its own 
 
 | Types of fetching | link demo                                      | folder                     |
 | ----------------- | ---------------------------------------------- | -------------------------- |
-| Static            | [http://www.localhost:3000/get-method/static]  | (REST)/get-method/static   |
+| static            | [http://www.localhost:3000/get-method/static]  | (REST)/get-method/static   |
 | dynamic           | [http://www.localhost:3000/get-method/dynamic] | (Rest)/get-method/dynamic  |
 | parallel          | [http://localhost:3000/get-method/parallel]    | (REST)/get-method/parallel |
-| sequential-rendering          | [http://localhost:3000/get-method/sequential-rendering]    | (REST)/get-method/sequential-rendering |
-| progressive-rendering          | [http://localhost:3000/get-method/progressive-rendering]    | (REST)/get-method/progressive-rendering |
+
+| Types of rendering    | link demo                                                | folder                                  |
+| --------------------- | -------------------------------------------------------- | --------------------------------------- |
+| sequential-rendering  | [http://localhost:3000/get-method/sequential-rendering]  | (REST)/get-method/sequential-rendering  |
+| progressive-rendering | [http://localhost:3000/get-method/progressive-rendering] | (REST)/get-method/progressive-rendering |
+
+| Types of revalidation | link demo                                                      | folder                                    |
+| --------------------- | -------------------------------------------------------------- | ----------------------------------------- |
+| background            | [http://www.localhost:3000/get-method/revalidation/background] | (REST)/get-method/revalidation/background |
 
 ### Static data fetching
 
@@ -253,9 +260,15 @@ One of the downsides of SSR is that it has to has to fetch all data before sendi
       </Suspense>
 ```
 
+### Revalidation
+
+Next.js allows you to update specific static routes without needing to rebuild your entire site.
+
+**Background**: Revalidates the data at a specific time interval.
+
 ## Dynamic routes
 
-**demo**: www.localhost:3000/cat-profile/<choose a value between 1 to 3>
+**demo**: [www.localhost:3000/cat-profile/<choose a value between 1 to 3>]
 
 **folder** : `/app/(not-found)/cat-profile)` 
 
