@@ -225,6 +225,7 @@ Next.js extends the `fetch` options object to allow each request to set its own 
 | Types of revalidation | link demo                                                      | folder                                    |
 | --------------------- | -------------------------------------------------------------- | ----------------------------------------- |
 | background            | [http://www.localhost:3000/get-method/revalidation/background] | (REST)/get-method/revalidation/background |
+| on-demand             | [http://www.localhost:3000/get-method/revalidation/on-demand]  | (REST)/get-method/revalidation/on-demand  |
 
 ### Static data fetching
 
@@ -265,6 +266,10 @@ One of the downsides of SSR is that it has to has to fetch all data before sendi
 Next.js allows you to update specific static routes without needing to rebuild your entire site.
 
 **Background**: Revalidates the data at a specific time interval.
+
+**On-demand**: When you don't want users to wait until the end of the revalidation period in certain circumstances, Next.js App Router supports revalidating content on-demand based on a route or cache tag.
+
+
 
 ## Dynamic routes
 
