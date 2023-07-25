@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 
-import NavBar from '@/components/atomic-design/organisms/NavBar/';
+import NavBar from 'components/atomic-design/organisms/NavBar/';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

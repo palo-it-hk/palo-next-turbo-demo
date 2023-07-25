@@ -1,5 +1,5 @@
-import Album from '@/components/atomic-design/organisms/Album';
-import { getAlbum, getArtist } from '@/services/music';
+import { getAlbum, getArtist } from '@/src/services/music';
+import Album from 'components/atomic-design/organisms/Album';
 
 export default async function Page() {
   // Initiate both requests in parallel
@@ -14,7 +14,7 @@ export default async function Page() {
 
   return (
     <>
-      <p className="font-bold text-green-500">
+      <p className="text-green-500 font-bold">
         Please view this page in dev mode.
       </p>
       <p className="my-3">Please read the page.tsx for code explanation.</p>

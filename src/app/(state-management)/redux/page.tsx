@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react';
 
-import Subtitle from '@/components/atomic-design/atoms/Subtitle-TW';
-import PostList from '@/components/atomic-design/organisms/PostList';
+import Subtitle from 'components/atomic-design/atoms/Subtitle-TW';
+import PostList from 'components/atomic-design/organisms/PostList';
 import {
   useAppDispatch,
   useAppSelector,

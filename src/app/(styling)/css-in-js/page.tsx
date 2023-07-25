@@ -2,8 +2,9 @@
 
 'use client';
 
-import { Button } from '@/components/atomic-design/atoms/Button-SC';
 import styled from 'styled-components';
+
+import { Button } from 'components/atomic-design/atoms/Button-SC';
 
 const Wrapper = styled.div`
   * {

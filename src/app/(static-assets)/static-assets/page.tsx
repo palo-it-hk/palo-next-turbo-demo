@@ -1,4 +1,4 @@
-import CircleTick from '@/public/circle-tick';
+import CircleTick from 'public/circle-tick';
 // import CircleTickSvg from '@/public/circle-tick-svg.svg';
 
 import Image from 'next/image';

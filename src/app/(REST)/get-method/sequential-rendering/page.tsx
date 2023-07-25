@@ -1,7 +1,8 @@
-import Album from '@/components/atomic-design/organisms/Album';
-import { getData } from '@/services/data';
-import { getAlbum, getArtist } from '@/services/music';
 import { Suspense } from 'react';
+
+import Album from 'components/atomic-design/organisms/Album';
+import { getData } from '@/src/services/data';
+import { getAlbum, getArtist } from '@/src/services/music';
 
 // To improve the user experience, you can add a suspense boundary to break up the rendering work and show fetch results in the desired sequence
 

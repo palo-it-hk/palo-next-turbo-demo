@@ -4,8 +4,8 @@ import { observer } from 'mobx-react-lite';
 import { usePathname } from 'next/navigation';
 import { useContext, useEffect } from 'react';
 
-import PostList from '@/components/atomic-design/organisms/PostList';
-import { MobxContext } from '@/components/atomic-design/templates/Providers';
+import PostList from 'components/atomic-design/organisms/PostList';
+import { MobxContext } from 'components/atomic-design/templates/Providers';
 
 const Page = () => {
   const pathname = usePathname();

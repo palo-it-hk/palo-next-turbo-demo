@@ -1,8 +1,9 @@
 'use client';
 
+import { useState, ReactNode } from 'react';
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState, ReactNode } from 'react';
 
 const SampleSharedTemplate = ({ children }: { children: ReactNode }) => {
   const [boxColor, setBoxColor] = useState('');

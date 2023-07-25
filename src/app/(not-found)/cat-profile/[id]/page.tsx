@@ -1,4 +1,4 @@
-import { getCats } from '@/services/cats';
+import { getCats } from '@/src/services/cats';
 import { notFound } from 'next/navigation';
 import { Cat } from 'store/cat';
 

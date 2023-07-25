@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { Button } from '@/components/atomic-design/atoms/Button-SC';
+import { Button } from '@/src/components/atomic-design/atoms/Button-SC';
 
 export default function ErrorFunction() {
   const [err, setErr] = useState(false);

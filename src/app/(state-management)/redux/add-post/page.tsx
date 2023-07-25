@@ -2,8 +2,8 @@
 
 import { useCallback, useState } from 'react';
 
-import Subtitle from '@/components/atomic-design/atoms/Subtitle-TW';
-import PostForm from '@/components/atomic-design/organisms/PostForm';
+import Subtitle from 'components/atomic-design/atoms/Subtitle-TW';
+import PostForm from 'components/atomic-design/organisms/PostForm';
 import { useAppDispatch } from 'store/state-management/redux/hook';
 import { addNewPost } from 'store/state-management/redux/posts/slice';
 

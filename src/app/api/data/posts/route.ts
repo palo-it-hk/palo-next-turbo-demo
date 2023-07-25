@@ -1,4 +1,4 @@
-import allPosts from 'data/allPosts';
+import allPosts from '@/data/allPosts';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {

@@ -1,13 +1,15 @@
 'use client';
 
-import { Button } from '@/components/atomic-design/atoms/Button-SC';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
+import { useRouter } from 'next/navigation';
+
+import { Button } from 'components/atomic-design/atoms/Button-SC';
 
 async function getData() {
   let res;
   try {
-    res = await fetch('http://localhost:3000/api/data', { cache: 'no-store' });
+    res = await fetch('/api/data', { cache: 'no-store' });
   } catch (e) {
     return;
   }

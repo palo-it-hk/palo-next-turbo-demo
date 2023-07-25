@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { catLibrary } from 'data/catData';
+import { catLibrary } from '@/data/catData';
 
 export async function GET(
   request: Request,
@@ -9,7 +9,6 @@ export async function GET(
   const catId = params.slug;
 
   for (let cat of catLibrary) {
-    console.log('cat ', cat);
     if (cat.id === catId) {
       return NextResponse.json({
         catInfo: cat,

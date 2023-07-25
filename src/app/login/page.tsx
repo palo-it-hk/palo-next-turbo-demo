@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useState } from 'react';
 
-import { Button } from '@/components/atomic-design/atoms/Button-SC';
+import { Button } from 'components/atomic-design/atoms/Button-SC';
 import { observer } from 'mobx-react-lite';
 import { jwtStore } from 'store/state-management/mobx/auth/store';
 
@@ -16,7 +16,7 @@ function LoginPage() {
   async function handleSubmit() {
     let receivedToken;
     try {
-      const res = await fetch('http://localhost:3000/api/user/auth', {
+      const res = await fetch('/api/user/auth', {
         method: 'POST',
         body: JSON.stringify({
           username: username,

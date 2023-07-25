@@ -1,4 +1,4 @@
-import EditPostFormMobx from '@/components/atomic-design/organisms/EditPostFormMobx';
+import EditPostFormMobx from 'components/atomic-design/organisms/EditPostFormMobx';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const postId = params.id;

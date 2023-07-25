@@ -1,8 +1,9 @@
 'use client';
 
+import { useState } from 'react';
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
 
 const SampleSharedLayout = ({ children }: { children: React.ReactNode }) => {
   const [boxColor, setBoxColor] = useState('');

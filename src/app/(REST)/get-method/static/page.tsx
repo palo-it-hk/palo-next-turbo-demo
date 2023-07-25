@@ -1,4 +1,4 @@
-import CatInfoDisplay from '@/components/atomic-design/organisms/CatInfoDisplay';
+import CatInfoDisplay from 'components/atomic-design/organisms/CatInfoDisplay';
 import { Cat } from 'store/cat';
 
 async function getCatInfo(id: string) {
@@ -44,7 +44,7 @@ export default async function Page() {
 
   return (
     <>
-      <p className="font-bold text-green-500">
+      <p className="text-green-500 font-bold">
         Please view this page in dev mode.
       </p>
 

@@ -5,11 +5,11 @@
 
 // RTFM: Inside the root layout (app/layout.tsx), import the globals.css stylesheet to apply the styles to every route in your application.
 
-import '@/styles/globals.css';
+import '../styles/globals.css';
 
 import { open_sans, arvo, josefinSlab, gluten } from './fonts';
 import { StyledComponentsRegistry } from 'lib/styling/styled-components';
-import Providers from '@/components/atomic-design/templates/Providers';
+import Providers from 'components/atomic-design/templates/Providers';
 
 export default function RootLayout({
   // Layouts must accept a children prop.

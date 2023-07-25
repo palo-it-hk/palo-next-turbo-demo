@@ -1,4 +1,4 @@
-import ComponentUsingCssModules from '@/components/atomic-design/organisms/ComponentUsingCssModules';
+import ComponentUsingCssModules from 'components/atomic-design/organisms/ComponentUsingCssModules';
 import styles from './styles.module.css';
 
 export default function Page() {

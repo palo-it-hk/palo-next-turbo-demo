@@ -19,7 +19,7 @@ export const arvo = Arvo({
 // Used CustomFont() rather than localfont() because the latter is not working
 // https://stackoverflow.com/questions/75439877/error-while-trying-to-add-external-local-fonts-in-nextjs
 export const josefinSlab = CustomFont({
-  src: '../public/fonts/josefinslab-variablefont_wght.ttf',
+  src: './../../public/fonts/josefinslab-variablefont_wght.ttf',
   variable: '--josefin-slab',
   display: 'fallback',
 });
@@ -27,8 +27,8 @@ export const josefinSlab = CustomFont({
 //single custom font with multiple fonts
 export const gluten = CustomFont({
   src: [
-    { path: '../public/fonts/gluten-regular.ttf', weight: '400' },
-    { path: '../public/fonts/gluten-bold.ttf', weight: '700' },
+    { path: './../../public/fonts/gluten-regular.ttf', weight: '400' },
+    { path: './../../public/fonts/gluten-bold.ttf', weight: '700' },
   ],
   variable: '--gluten',
   display: 'fallback',

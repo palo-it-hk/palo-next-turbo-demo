@@ -1,8 +1,8 @@
+import { Product } from 'store/product';
 import {
   createProductDirectory,
   generateProductParams,
-} from '@/utils/productHelper';
-import { Product } from 'store/product';
+} from 'utils/productHelper';
 
 export async function generateStaticParams() {
   const res = await fetch('https://dummyjson.com/products?limit=30');
@@ -40,7 +40,7 @@ export default async function Page({
   return (
     <>
       <p>
-        This page is for the brand{' '}
+        This page is for the brand
         <span className="font-bold">{brandName}</span> and it{"'"}s category of{' '}
         <span className="font-bold">{productCategory}</span> products.
       </p>

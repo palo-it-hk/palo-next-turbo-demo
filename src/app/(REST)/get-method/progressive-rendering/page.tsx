@@ -1,7 +1,6 @@
+import { getData } from '@/src/services/data';
+import { getArtist, getAlbum } from '@/src/services/music';
 import { Suspense } from 'react';
-
-import { getData } from '@/services/data';
-import { getAlbum, getArtist } from '@/services/music';
 
 // Whenever possible, it's best to fetch data in the segment that uses it.
 // This also allows you to show a loading state for only the part of the page that is loading, and not the entire page.

@@ -1,4 +1,4 @@
-import { Button } from '@/components/atomic-design/atoms/Button-SC';
+import { Button } from 'components/atomic-design/atoms/Button-SC';
 
 export default function Page() {
   return (

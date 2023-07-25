@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 async function getData() {
   let res;
   try {
-    res = await fetch('/api/data', {
+    res = await fetch('http:localhost:3000/api/data', {
       cache: 'no-cache',
     });
   } catch (e) {

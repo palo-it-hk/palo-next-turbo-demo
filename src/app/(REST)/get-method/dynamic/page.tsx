@@ -5,7 +5,7 @@ async function getData() {
   // As such, This page will be rendered in the server every time a request is received.
 
   try {
-    res = await fetch('/api/data/time', {
+    res = await fetch('http:localhost:3000/api/data/time', {
       cache: 'no-store',
     });
   } catch (e) {

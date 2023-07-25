@@ -1,10 +1,11 @@
 'use client';
 
-import Subtitle from '@/components/atomic-design/atoms/Subtitle-TW';
-import PostForm from '@/components/atomic-design/organisms/PostForm';
-import { MobxContext } from '@/components/atomic-design/templates/Providers';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useContext, useState } from 'react';
+
+import { MobxContext } from 'components/atomic-design/templates/Providers';
+import PostForm from 'components/atomic-design/organisms/PostForm';
+import Subtitle from 'components/atomic-design/atoms/Subtitle-TW';
 
 const Page = () => {
   // Gets the current state of the postStore

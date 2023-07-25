@@ -1,8 +1,9 @@
 'use client';
 
-import { Button } from '@/components/atomic-design/atoms/Button-SC';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
+import { Button } from 'components/atomic-design/atoms/Button-SC';
 import { jwtStore } from 'store/state-management/mobx/auth/store';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
