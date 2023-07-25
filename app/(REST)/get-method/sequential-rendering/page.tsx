@@ -67,7 +67,8 @@ export default function Page() {
       </p>
 
       <p className="text-green-500 font-bold">
-        Please view this page in dev mode.
+        Please view this page in dev mode as the fetch delay is not demonstrated
+        in prod mode.
       </p>
 
       <Suspense fallback={<p>Loading(1/3)</p>}>

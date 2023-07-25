@@ -29,7 +29,8 @@ export default async function Page() {
         has been fetched regardless of it&apos;s location in the page.
       </p>
       <p className="text-green-500 font-bold">
-        Please view this page in dev mode.
+        Please view this page in dev mode as the fetch delay is not demonstrated
+        in prod mode.
       </p>
       <p className="font-bold">Artist :</p>
       {/* 
