@@ -17,10 +17,10 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "store/*":["store/*"],
-      "data/*":["data/*"],
+      "store/*":["./src/store/*"],
+      "data/*":["./src/data/*"],
       "public/*": ["./public/*"],
-      "@/*":["*"],
+      "@/*":["./src/*"],
     },
     "plugins": [
       {
