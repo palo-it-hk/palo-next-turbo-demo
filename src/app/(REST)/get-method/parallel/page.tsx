@@ -1,4 +1,4 @@
-import { getAlbum, getArtist } from '@/src/services/music';
+import { getAlbum, getArtist } from '@/src/frontend-api/music';
 import Album from 'components/atomic-design/organisms/Album';
 
 export default async function Page() {

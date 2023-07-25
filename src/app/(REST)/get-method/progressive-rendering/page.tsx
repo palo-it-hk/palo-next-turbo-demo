@@ -1,5 +1,5 @@
-import { getData } from '@/src/services/data';
-import { getArtist, getAlbum } from '@/src/services/music';
+import { getData } from '@/src/frontend-api/data';
+import { getArtist, getAlbum } from '@/src/frontend-api/music';
 import { Suspense } from 'react';
 
 // Whenever possible, it's best to fetch data in the segment that uses it.
