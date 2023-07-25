@@ -245,7 +245,7 @@ With components as async functions, we can control the sequence of rendering, by
 
 ### Progressive rendering
 
-One of the downsides of SSR is that it has to has to fetch all data before sending the generated page to the client. And, on the client, React can only hydrate the UI once the code for all components in the page has been downloaded. To enable streaminig, you wrap individual components that need hydration with Suspense like below:
+One of the downsides of SSR is that it has to has to fetch all data before sending the generated page to the client. And, on the client, React can only hydrate the UI once the code for all components in the page has been downloaded. To enable streaming, you wrap individual components that need hydration with Suspense like below:
 
 ```typescript
   <Suspense fallback={<p>Loading..</p>}>
