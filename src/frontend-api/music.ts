@@ -1,4 +1,4 @@
-import { Album, Artist } from 'store/music.type';
+import { Album, Artist } from 'types/music.type';
 
 export async function getArtist(): Promise<Artist> {
   try {

@@ -1,4 +1,4 @@
-import { TransportLayer } from 'store/post.type';
+import { TransportLayer } from 'types/post.type';
 
 // transport layer allows you to use and swap fetch logic
 

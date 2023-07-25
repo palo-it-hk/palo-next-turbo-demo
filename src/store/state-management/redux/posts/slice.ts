@@ -16,7 +16,7 @@ import {
   createEntityAdapter,
   createSlice,
 } from '@reduxjs/toolkit';
-import { Post } from 'store/post.type';
+import { Post } from 'types/post.type';
 
 export type InitialStateType = {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';

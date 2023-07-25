@@ -1,4 +1,4 @@
-import { Product } from 'store/product.type';
+import { Product } from 'types/product.type';
 import {
   createProductDirectory,
   generateProductParams,

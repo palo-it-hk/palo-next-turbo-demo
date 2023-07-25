@@ -1,6 +1,6 @@
 import { action, makeAutoObservable } from 'mobx';
 import { postTransportLayer } from './transport-layer';
-import { Post, transportLayer } from 'store/post.type';
+import { Post, TransportLayer } from 'types/post.type';
 
 export class PostStore {
   // define initial state here
@@ -8,9 +8,9 @@ export class PostStore {
   status: 'idle' | 'loading' | 'succeeded' | 'failed' = 'idle';
   error: string | undefined = undefined;
   // the transportLayer holds your fetch methods
-  transportLayer: transportLayer;
+  transportLayer: TransportLayer;
 
-  constructor(transportLayer: transportLayer) {
+  constructor(transportLayer: TransportLayer) {
     // makeAutoObservable is the short form of the following
     // makeObservable(this, {
     //  posts: observable,

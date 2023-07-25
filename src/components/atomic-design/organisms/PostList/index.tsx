@@ -1,4 +1,4 @@
-import { Post } from 'store/post.type';
+import { Post } from 'types/post.type';
 import PostCard from '../PostCard';
 
 const PostList = ({

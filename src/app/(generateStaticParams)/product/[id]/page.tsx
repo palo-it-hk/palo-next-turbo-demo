@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { Product } from 'store/product.type';
+import { Product } from 'types/product.type';
 
 export async function generateStaticParams() {
   const res = await fetch('https://dummyjson.com/products/');
