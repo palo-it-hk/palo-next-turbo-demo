@@ -216,6 +216,8 @@ Next.js extends the `fetch` options object to allow each request to set its own 
 | Static            | [http://www.localhost:3000/get-method/static]  | (REST)/get-method/static   |
 | dynamic           | [http://www.localhost:3000/get-method/dynamic] | (Rest)/get-method/dynamic  |
 | parallel          | [http://localhost:3000/get-method/parallel]    | (REST)/get-method/parallel |
+| sequential-rendering          | [http://localhost:3000/get-method/sequential-rendering]    | (REST)/get-method/sequential-rendering |
+| progressive-rendering          | [http://localhost:3000/get-method/progressive-rendering]    | (REST)/get-method/progressive-rendering |
 
 ### Static data fetching
 
@@ -236,6 +238,20 @@ To fetch fresh data on every fetch request, use the cache: 'no-store' option.
 ### Parallel fetching
 
 We can save time by initiating fetch requests in parallel, however, the user won't see the rendered result until both promises are resolved.
+
+### Sequential rendering
+
+With components as async functions, we can control the sequence of rendering, by having a child components fetch to wait for the parent component's fetch to finish first.
+
+### Progressive rendering
+
+One of the downsides of SSR is that it has to has to fetch all data before sending the generated page to the client. And, on the client, React can only hydrate the UI once the code for all components in the page has been downloaded. To enable streaming, you wrap individual components that need hydration with Suspense like below:
+
+```typescript
+  <Suspense fallback={<p>Loading..</p>}>
+        <Album />
+      </Suspense>
+```
 
 ## Dynamic routes
 
