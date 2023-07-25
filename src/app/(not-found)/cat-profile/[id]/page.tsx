@@ -1,6 +1,6 @@
 import { getCats } from '@/src/frontend-api/cats';
 import { notFound } from 'next/navigation';
-import { Cat } from 'store/cat';
+import { Cat } from '@/src/types/cat.type';
 
 export default async function CatProfile({
   params,

@@ -1,5 +1,5 @@
 import CatInfoDisplay from 'components/atomic-design/organisms/CatInfoDisplay';
-import { Cat } from 'store/cat';
+import { Cat } from '@/src/types/cat.type';
 
 async function getCatInfo(id: string) {
   // By default, Next.js will cache the result of fetch() requests unless you specify otherwise

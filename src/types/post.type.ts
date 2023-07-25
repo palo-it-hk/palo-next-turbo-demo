@@ -4,7 +4,7 @@ export type Post = {
   content: string;
 };
 
-export type transportLayer = {
+export type TransportLayer = {
   fetchPosts: () => Promise<Response>;
   updateServer: (title: string, content: string) => Promise<Response>;
 };

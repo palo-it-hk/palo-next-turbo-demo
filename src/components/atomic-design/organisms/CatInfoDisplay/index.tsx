@@ -1,4 +1,4 @@
-import { Cat } from 'store/cat';
+import { Cat } from '@/src/types/cat.type';
 
 export default function CatInfoDisplay({ cat }: { cat: Cat }) {
   const { id, name, color } = cat;

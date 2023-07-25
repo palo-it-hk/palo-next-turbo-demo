@@ -1,4 +1,4 @@
-import { Product, ProductParams } from 'store/product';
+import { Product, ProductParams } from 'store/product.type';
 
 export function createProductDirectory(listOfProducts: Product[]): {
   [key: string]: string[];

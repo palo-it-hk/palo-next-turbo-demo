@@ -1,6 +1,6 @@
 import { action, makeAutoObservable } from 'mobx';
 import { postTransportLayer } from './transport-layer';
-import { Post, transportLayer } from 'store/posts';
+import { Post, transportLayer } from 'store/post.type';
 
 export class PostStore {
   // define initial state here

@@ -1,8 +1,8 @@
-import { transportLayer } from 'store/posts';
+import { TransportLayer } from 'store/post.type';
 
 // transport layer allows you to use and swap fetch logic
 
-export const postTransportLayer: transportLayer = {
+export const postTransportLayer: TransportLayer = {
   fetchPosts: async () => {
     return await fetch('/api/data/posts');
   },
