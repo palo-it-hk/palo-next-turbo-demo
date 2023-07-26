@@ -1,6 +1,6 @@
+import { catLibrary } from 'data/catData';
 import { NextResponse } from 'next/server';
-
-import { catLibrary } from '@/data/catData';
+import { Cat } from 'types/cat.type';
 
 export async function GET(
   request: Request,

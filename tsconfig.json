@@ -18,7 +18,7 @@
     "baseUrl": ".",
     "paths": {
       "store/*":["./src/store/*"],
-      "data/*":["./src/data/*"],
+      "data/*":["./data/*"],
       "public/*": ["./public/*"],
       "utils/*":["./src/utils/*"],
       "types/*":["./src/types/*"],
