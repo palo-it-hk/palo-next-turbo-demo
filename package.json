@@ -1,9 +1,11 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "start:standalone": "docker build -t nextjs-docker . && docker run -dp 127.0.0.1:3000:3000 --name nextjs-container nextjs-docker",
+    "stop:standalone": "docker stop nextjs-container && docker rm nextjs-container",
     "lint": "next lint",
     "format": "prettier --write \"**/*.{js,ts,tsx,md}\"",
     "storybook": "storybook dev -p 6006",
