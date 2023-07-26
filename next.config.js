@@ -14,7 +14,7 @@ const nextConfig = {
     // Required:
     appDir: true,
   },
-  
+  output: 'standalone',
 };
 
 module.exports = nextConfig;
