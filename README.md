@@ -479,3 +479,31 @@ h4 {
 ```
 
 **Note**: If you disable JavaScript, styles will still be loaded in the production build (next start). However, JavaScript is still required for next dev to enable Fast Refresh.
+
+## Optimization
+
+### Output
+
+During a build, Next.js will automatically trace each page and its dependencies to determine all of the files that are needed for deploying a production version of your application.
+
+This feature helps reduce the size of deployments drastically. Previously, when deploying with Docker you would need to have all files from your package's dependencies installed to run next start. Starting with Next.js 12, you can leverage Output File Tracing in the .next/ directory to only include the necessary files.
+
+#### Standalone mode
+
+Next.js can create a standalone folder that copies only the necessary files for a production deployment including select files in node_modules.
+
+To enable it next.config.js:
+
+```javascript
+module.exports = {
+  output: 'standalone',
+}
+```
+
+When you run `yarn build`, it will create a `.next/standalone` which can then be deployed on its own without installing node_modules.
+
+Inside the folder is a `server.js` which you can simply run with `node server.js`. However, because the action doesn't copy the `public` or `.next/static` folders by default as these should ideally be handled by a CDN instead for the sake of minimalism.
+
+In order to serve these without CDN, You can copy  `./public` and put it inside `.next/standalone` and copy `.next/static` and put it inside `.next/standalone/.next`. After that, run `node server.js`.
+
+The Dockerfile has been created to demo the standalone. Try it by running `yarn start:standalone` and `yarn stop:standalone` to stop it.
