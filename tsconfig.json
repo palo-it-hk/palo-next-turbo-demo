@@ -17,11 +17,16 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "store/*":["store/*"],
-      "data/*":["data/*"],
+      "store/*":["./src/store/*"],
+      "data/*":["./data/*"],
       "public/*": ["./public/*"],
+      "utils/*":["./src/utils/*"],
+      "types/*":["./src/types/*"],
+      "components/*":["./src/components/*"],
       "@/*":["*"],
-    },
+    },// =======================================================================
+      // 
+      // =======================================================================
     "plugins": [
       {
         "name": "next"
