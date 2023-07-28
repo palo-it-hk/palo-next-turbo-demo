@@ -265,9 +265,9 @@ One of the downsides of SSR is that it has to has to fetch all data before sendi
 
 Next.js allows you to update specific static routes without needing to rebuild your entire site.
 
-**Background**: Revalidates the data at a specific time interval.
+**Background revalidation**: You can set the revalidation of the data at a specific time interval.
 
-**On-demand**: When you don't want users to wait until the end of the revalidation period in certain circumstances, Next.js App Router supports revalidating content on-demand based on a route or cache tag.
+**On-demand revalidation**: When you have set the revalidation period, but in some use-cases you don't want users to wait until the end of the revalidation period. Next.js App Router supports revalidating content on-demand based on a route or cache tag.
 
 Before implementing revalidation to your fetching, you need to understand that:
 
