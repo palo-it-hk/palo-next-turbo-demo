@@ -4,12 +4,12 @@
 // With on-demand data fetching, we can selectively allow the regeneration of the page upon a received request.
 // Once the request is received, the page will be built and will be available as soon as possible.
 
-async function getDataOnDemand() {
+async function getTime() {
   let res;
 
   try {
     res = await fetch('http://localhost:3000/api/data/time', {
-      next: { revalidate: 5 },
+      next: { tags: ['collection'] },
     });
   } catch (e) {
     return;
@@ -18,14 +18,40 @@ async function getDataOnDemand() {
   return res.json();
 }
 
-export default async function Page() {
-  let content;
-  const data = await getDataOnDemand();
+async function getNum() {
+  let res;
 
-  if (!data) {
+  try {
+    res = await fetch(`http://localhost:3000/api/data/number`);
+  } catch (e) {
+    return;
+  }
+
+  return res.json();
+}
+
+export default async function Page() {
+  console.log('Page()');
+
+  let content;
+  const data = await getTime();
+  const num = await getNum();
+
+  if (!data || !num) {
     content = <>No data can be fetched</>;
   } else {
-    content = data.currentTime;
+    content = (
+      <div>
+        <p>
+          <span className="font-bold">Time: </span>
+          {data.currentTime}
+        </p>
+        <p>
+          <span className="font-bold">Number: </span>
+          {num.randomNumber}
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -48,9 +74,8 @@ export default async function Page() {
           </li>
         </ol>
       </div>
-      <p>
-        <span className="font-bold">Data</span>: {content}
-      </p>
+
+      {content}
     </>
   );
 }
