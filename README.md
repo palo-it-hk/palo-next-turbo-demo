@@ -261,7 +261,7 @@ One of the downsides of SSR is that it has to has to fetch all data before sendi
       </Suspense>
 ```
 
-### Revalidation
+### Revalidation and API caching
 
 Next.js allows you to update specific static routes without needing to rebuild your entire site.
 
@@ -269,7 +269,106 @@ Next.js allows you to update specific static routes without needing to rebuild y
 
 **On-demand**: When you don't want users to wait until the end of the revalidation period in certain circumstances, Next.js App Router supports revalidating content on-demand based on a route or cache tag.
 
+Before implementing revalidation to your fetching, you need to understand that:
 
+- By default, the results of the API is cached. When the app is being built with `yarn build`, the APIs will run once and will cache the results. Let's say a function includes a variable that stores the value of `new Date()`, that variable will store the value of whenever the API was being built. Therefore side affects such as `console.log` will also run during build, but not when called after built.
+
+- To avoid having the API cached, you can add `export const revalidate = 0;` on top of your `route.ts`. If you have a POST method in `route.ts`, the other methods within the same file will also have cache disabled. This makes sense when you are creating a route that allows users to modify data and get non-cached changes.
+
+As revalidation is a feature that controls how often you can call the API and rebuild the page. On-demand revalidation allows users to invalidate the cache and build pages without having to wait for the whole revalidation period.
+
+You should know:
+
+- If the page is static, meaning that no revalidation period has been set at the page or layout(not at `route.ts`, thats different), then even though the `route.ts` is configured to no-cache, it will not fetch new results. The page is truly static.
+
+- Each page adheres to their own revalidation settings. Other pages, even with the same fetches, will not be rebuilt unless your prompted `revalidatePath('/')`, which revalidates all pages.
+
+- The revalidation is on per page basis not per route basis. Therefore, within a page, if one route’s revalidation period is 5 seconds, and the other is 30 seconds. The latter will adhere to the 5 second revalidation instead of 30.
+
+Therefore, even though you can write the revalidation with this syntax:
+
+```typescript
+// page.tsx
+async function getTime() {
+  let res;
+
+  try {
+    res = await fetch(`http://localhost:3000/api/data/time`,{next:{revalidate:5}});
+  } catch (e) {
+    return;
+  }
+
+  return res.json();
+}
+
+async function getNum() {
+  let res;
+
+  try {
+    res = await fetch(`http://localhost:3000/api/data/number`,{next:{revalidate:30}});
+  } catch (e) {
+    return;
+  }
+
+  return res.json();
+}
+```
+
+The 30 seconds period will be meaningless. It may be more clear to set it this way:
+
+```typescript
+// page.tsx
+export const revalidate = 5
+
+...
+
+```
+
+There are 2 ways of revalidation.
+
+#### Revalidation with `revalidatePath(path)`
+
+`RevalidatePath(path)`,` causes all pages with that path to rebuild the page.
+
+If the value of path is `/`, this means all apis will be revalidated and pages depending on any api will be rebuilt including static pages.
+
+if the value of path is a specific path, such as `/some-page`, then only that page is rebuilt and with a fresh API call. The API in question should be non-cached. Other pages that call the same api will not revalidate.
+
+**Important**: If your path is part of a grouped route, you need to include it in the path
+
+For example:
+
+```typescript
+ fetch(
+      '/api/revalidate?path=/(REST)/get-method/revalidation/on-demand',
+    )
+```
+
+#### Revalidation with `revalidateTag()`
+
+The fetch method:
+
+```typescript
+// page.tsx
+
+// the function to get the time
+async function getTime() {
+ const res = await fetch('http://localhost:3000/api/data/time', {
+      next: { tags: ['collection'] },
+    });
+
+return res.json();
+}
+
+// the function to send a request to revalidate the above fetch
+ async function revalidateWithTag() {
+    await fetch('/api/revalidate?tag=collection')
+  }
+```
+
+`revalidateTag()` allows you the revalidate functions by tag bases so you can revalidate more than one page in comparison to `revalidatePath`.
+
+Same to revalidatePath, revalidateTag will also revalidate other apis that don’t have the tag as long as they are in the same page.tsx.
 
 ## Dynamic routes
 
