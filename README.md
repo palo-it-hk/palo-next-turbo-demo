@@ -20,9 +20,71 @@ This playground is a mirror of the [Next.js v13 App Directory Playground](https:
 
 For more information, see: https://turbo.build/pack/docs/features/css#tailwind-css
 
-## Documentation
+## Features covered in this documentation
 
-https://nextjs.link/with-turbopack
+
+1) Concepts
+   - prefetching (WIP)
+   - Static and dynamic routes(WIP)
+   - Navigation (soft & hard) (WIP)
+   - Streaming (WIP)
+   - Project organization (WIP)
+   - Internationalization (WIP)
+2) Routing
+  - Special files
+    - default.tsx
+    - error.tsx
+    - layout.tsx
+    - loading.tsx
+    - not-found.tsx
+    - page.tsx
+    - route.tsx
+    - template.tsx
+  - Route segment config (WIP)
+  - Route groups
+  - Dynamic routes & catch-all segments
+  - Parallel Routes
+  - Intercepting routes
+  - Middleware
+3) Rendering
+  - Static rendering
+  - Dynamic rendering
+4) Data fetching
+  - Fetching
+    - Static fetching
+    - Dynamic fetching
+    - Parallel fetching
+    - Sequential data fetching
+    - Third party data fetching (WIP)
+  - Caching
+  - Revalidation
+  - Server Actions
+5) Syntax
+  - <Link>
+6) Functions
+  - usePathname()
+  - useRouter()
+  - revalidatePat()h & revalidateTag()
+  - generateStaticParams()
+  - dynamic() (WIP)
+7) Styling
+  - CSS Modules
+  - Tailwind CSS
+  - CSS-in-JS
+  - Sass
+8) Assets
+  - images
+  - Fonts
+9) Optimizing
+  - Metadata (WIP)
+  - Analytics (WIP)
+  - OpenTelemetry (WIP)
+  - Instrumentation (WIP)
+  - Static Export (WIP)
+  - Codemods (WIP)
+10) Others
+  - Draft mode (WIP)
+  - Accessability
 
 ## Features not yet supported by Turbopack
 
@@ -213,11 +275,10 @@ Next.js extends the `fetch` options object to allow each request to set its own 
 
 | Types of fetching | link demo                                      | folder                     |
 | ----------------- | ---------------------------------------------- | -------------------------- |
-| Static            | [http://www.localhost:3000/get-method/static]  | (REST)/get-method/static   |
-| dynamic           | [http://www.localhost:3000/get-method/dynamic] | (Rest)/get-method/dynamic  |
-| parallel          | [http://localhost:3000/get-method/parallel]    | (REST)/get-method/parallel |
-| sequential-rendering          | [http://localhost:3000/get-method/sequential-rendering]    | (REST)/get-method/sequential-rendering |
-| progressive-rendering          | [http://localhost:3000/get-method/progressive-rendering]    | (REST)/get-method/progressive-rendering |
+| Static            | http://www.localhost:3000/get-method/static  | (REST)/get-method/static   |
+| dynamic           | http://www.localhost:3000/get-method/dynamic | (REST)/get-method/dynamic  |
+| parallel          | http://localhost:3000/get-method/parallel    | (REST)/get-method/parallel |
+
 
 ### Static data fetching
 
@@ -238,6 +299,11 @@ To fetch fresh data on every fetch request, use the cache: 'no-store' option.
 ### Parallel fetching
 
 We can save time by initiating fetch requests in parallel, however, the user won't see the rendered result until both promises are resolved.
+
+## Rendering
+
+| sequential-rendering | http://localhost:3000/get-method/sequential-rendering     | (REST)/get-method/sequential-rendering  |
+| progressive-rendering| http://localhost:3000/get-method/progressive-rendering]   | (REST)/get-method/progressive-rendering |
 
 ### Sequential rendering
 
@@ -321,11 +387,11 @@ NextJS supports the following styling methods:
 | Sass     | [www.localhost:3000/sass] | `app/(styling)/sass` |
 
 
-## CSS Modules
+### CSS Modules
 
 CSS Modules are an optional feature and are only enabled for files with the .module.css extension. Regular `<link>` stylesheets and global CSS files are still supported.
 
-## Tailwind
+### Tailwind
 
 One of the advantages of Tailwind is it is usable in server components unlike CSS-in-JS libraries You configure Tailwind in the `tailwind.config.js` in the root folder. You do not need to modify `postcss.config.js`.
 
@@ -340,7 +406,7 @@ To apply it, you do it in `app/globals.css` and import it in `app/layout.tsx`:
 
 After installing Tailwind CSS and adding the global styles, you can use Tailwind's utility classes in your application.
 
-## CSS-in-JS
+### CSS-in-JS
 
 CSS-in-JS libraries which require runtime JavaScript are not currently supported in Server Components.
 
@@ -402,11 +468,11 @@ export default function RootLayout({
 }
 ```
 
-## Sass
+### Sass
 
 Next.js has built-in support for Sass using both the `.scss` and `.sass` extensions. You can use component-level Sass via CSS Modules and the `.module.scss` or `.module.sass` extension.
 
-### If you run into the error: `selector “body” is not pure (pure selectors must contain at least one local class or id) – error in NextJs`
+*If you run into the error: `selector “body” is not pure (pure selectors must contain at least one local class or id) – error in NextJs`*
 
 You can't directly have simple element selectors like the below in module.css:
 
@@ -440,7 +506,7 @@ export default function StyledRootLayout({ children }) {
 }
 ```
 
-## Global styles
+#### Global styles
 
 A global styles sheet can be applied by creating a css file such as `globals.css`and then import it in `app/layout.tsx`
 
