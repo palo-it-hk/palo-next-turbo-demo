@@ -22,7 +22,6 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
 
 ## Features covered in this documentation
 
-
 1) Concepts
    - prefetching (WIP)
    - Static and dynamic routes(WIP)
@@ -60,7 +59,7 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
    - Revalidation
    - Server Actions
 5) Syntax
-   - <Link>
+   - `<Link>`
 6) Functions
    - usePathname()
    - useRouter()
@@ -147,6 +146,14 @@ You do not see this problem in dev mode because pages are pre-rendered twice.
 Sometimes you may receive a CORS error from the client side. You can try solving it by deleting the .next file and rebuild.
 
 ## Routing
+
+By default, components inside `app/` are React Server Components. To use client-side rendering, add `'use client';` before on the top of your components file.
+
+```tsx
+"use client"
+
+export default function Page(){}
+```
 
 ### Special files
 
