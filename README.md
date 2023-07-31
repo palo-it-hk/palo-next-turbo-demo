@@ -31,60 +31,60 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
    - Project organization (WIP)
    - Internationalization (WIP)
 2) Routing
-  - Special files
-    - default.tsx
-    - error.tsx
-    - layout.tsx
-    - loading.tsx
-    - not-found.tsx
-    - page.tsx
-    - route.tsx
-    - template.tsx
-  - Route segment config (WIP)
-  - Route groups
-  - Dynamic routes & catch-all segments
-  - Parallel Routes
-  - Intercepting routes
-  - Middleware
+   - Special files
+      - default.tsx
+      - error.tsx
+      - layout.tsx
+      - loading.tsx
+      - not-found.tsx
+      - page.tsx
+      - route.tsx
+      - template.tsx
+   - Route segment config (WIP)
+   - Route groups
+   - Dynamic routes & catch-all segments
+   - Parallel Routes
+   - Intercepting routes
+   - Middleware
 3) Rendering
-  - Static rendering
-  - Dynamic rendering
+   - Static rendering
+   - Dynamic rendering
 4) Data fetching
-  - Fetching
-    - Static fetching
-    - Dynamic fetching
-    - Parallel fetching
-    - Sequential data fetching
-    - Third party data fetching (WIP)
-  - Caching
-  - Revalidation
-  - Server Actions
+   - Fetching
+      - Static fetching
+      - Dynamic fetching
+      - Parallel fetching
+      - Sequential data fetching
+      - Third party data fetching (WIP)
+   - Caching
+   - Revalidation
+   - Server Actions
 5) Syntax
-  - <Link>
+   - <Link>
 6) Functions
-  - usePathname()
-  - useRouter()
-  - revalidatePat()h & revalidateTag()
-  - generateStaticParams()
-  - dynamic() (WIP)
+   - usePathname()
+   - useRouter()
+   - revalidatePat()h & revalidateTag()
+   - generateStaticParams()
+   - dynamic() (WIP)
 7) Styling
-  - CSS Modules
-  - Tailwind CSS
-  - CSS-in-JS
-  - Sass
+   - CSS Modules
+   - Tailwind CSS
+   - CSS-in-JS
+   - Sass
 8) Assets
-  - images
-  - Fonts
+   - images
+   - Fonts
 9) Optimizing
-  - Metadata (WIP)
-  - Analytics (WIP)
-  - OpenTelemetry (WIP)
-  - Instrumentation (WIP)
-  - Static Export (WIP)
-  - Codemods (WIP)
+   - Metadata (WIP)
+   - Analytics (WIP)
+   - OpenTelemetry (WIP)
+   - Instrumentation (WIP)
+   - Static Export (WIP)
+   - Codemods (WIP)
 10) Others
-  - Draft mode (WIP)
-  - Accessability
+   - Draft mode (WIP)
+   - Accessability
 
 ## Features not yet supported by Turbopack
 
