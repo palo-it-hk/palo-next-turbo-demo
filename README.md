@@ -146,6 +146,48 @@ You do not see this problem in dev mode because pages are pre-rendered twice.
 
 Sometimes you may receive a CORS error from the client side. You can try solving it by deleting the .next file and rebuild.
 
+## Routing
+
+### Special files
+
+| File Conventions | link demo                     | folder                                                  |
+| ---------------- | ------------------------------| ------------------------------------------------------- |
+| page.tsx         | Available throughout the repo | Available through the the repo                          |
+| layout.tsx       | /page-and-nested-page-demo    | `/src/app/(layout-vs-template)`                         |
+| loading.tsx      | /suspense-with-loadingtsx     | `/src/app/(suspense boundary)/suspense-with-loadingtsx` |
+| not-found.tsx    | /cat-profile/<1 - 2>          | `/src/app/(not-found)`                                  |
+| error.tsx        | /error-route                  | `/src/app/(error-boundary)`                             |
+| route.ts         | GET /api/data/                | `/src/app/api`                                          |
+| template.tsx     | /page-and-nested-page-demo    | `/src/app/(layout-vs-template)`                         |
+
+#### page.tsx
+
+Replaces index.ts in the Nextjs version that uses pages for the UI.
+
+#### layout.tsx
+
+UI that is shared for one or between multiple pages.
+
+#### loading.tsx
+
+This component will be rendered whenever the suspense boundary is triggered.
+
+#### not-found.tsx
+
+This component will rendered when a `notFound()` is triggered.
+
+#### error.tsx
+
+This component will rendere when the error boundary is triggered.
+
+#### route.tsx
+
+Route Handlers allow you to create custom request handlers for a given route using the Web Request and Response APIs.
+
+#### template.tsx
+
+when a user navigates between routes that share a `template.tsx`, a new instance of the component is mounted, DOM elements are recreated, state is not preserved, and effects are re-synchronized. This means that unlike layout.tsx. The state will not persist across pages. 
+
 ## Cache behavior
 
 Next stores caches inside `.next`. Failing to clear cache may produce inconsistent behavior especially when running `yarn run build && yarn run start`. Manually removing the `.next` folder is recommended to clear the cache.
