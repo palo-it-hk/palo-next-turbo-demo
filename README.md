@@ -245,6 +245,47 @@ Static files such as images in the `public` in the root directly. Once inside, t
 
 In webpack and some other frameworks, importing an image returns a string containing that image' URL, but in Next, it returns an object. This is so it can be fed into Next's `<Image>` component as part of optimization.
 
+```tsx
+<Image
+        src="/spinner.gif"
+        width={50}
+        height={50}
+        alt="spinner"
+      />
+```
+
+In the above,  `/spinner.gif` is provided for a remote image. This is possible because of the loader architecture.
+
+A loader is a function that generates the URLs for your image. It modifies the provided src, and generates multiple URLs to request the image at different sizes.
+
+The default loader for Next.js applications uses the built-in Image Optimization API, which optimizes images from anywhere on the web, and then serves them directly from the Next.js web server.
+
+If you are using the default loader, you have to install sharp by `yarn add sharp`.
+
+To define your own loader:
+
+```tsx
+'use client'
+ 
+import Image from 'next/image'
+ 
+const imageLoader = ({ src, width, quality }) => {
+  return `https://example.com/${src}?w=${width}&q=${quality || 75}`
+}
+ 
+export default function Page() {
+  return (
+    <Image
+      loader={imageLoader}
+      src="me.png"
+      alt="Picture of the author"
+      width={500}
+      height={500}
+    />
+  )
+}
+```
+
 ### SVGs with SVGR
 
 SVGR is a tool that allows us to import SVGs into your React applications as React components.
