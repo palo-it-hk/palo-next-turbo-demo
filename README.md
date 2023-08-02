@@ -191,9 +191,26 @@ This component will rendere when the error boundary is triggered.
 
 Route Handlers allow you to create custom request handlers for a given route using the Web Request and Response APIs.
 
+Any file inside the folder pages/api is mapped to /api/* and will be treated as an API endpoint instead of a page. They are server-side only bundles and won't increase your client-side bundle size.
+
+A route file allows you to create custom request handlers for a given route. The following HTTP methods are supported: GET, POST, PUT, PATCH, DELETE, HEAD, and OPTIONS.
+
+The following defines a GET request:
+
+```typescript
+// /app/api/hello/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+export async function GET(request: NextRequest) {
+   return NextResponse.json({
+    message: "Hello world!"
+      });
+    }
+```
+
 #### template.tsx
 
-when a user navigates between routes that share a `template.tsx`, a new instance of the component is mounted, DOM elements are recreated, state is not preserved, and effects are re-synchronized. This means that unlike layout.tsx. The state will not persist across pages. 
+when a user navigates between routes that share a `template.tsx`, a new instance of the component is mounted, DOM elements are recreated, state is not preserved, and effects are re-synchronized. This means that unlike layout.tsx. The state will not persist across pages.
 
 ## Cache behavior
 
