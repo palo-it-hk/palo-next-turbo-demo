@@ -212,6 +212,44 @@ export async function GET(request: NextRequest) {
 
 when a user navigates between routes that share a `template.tsx`, a new instance of the component is mounted, DOM elements are recreated, state is not preserved, and effects are re-synchronized. This means that unlike layout.tsx. The state will not persist across pages.
 
+### Route groups
+
+In the app directory, nested folders are normally mapped to URL paths. However, you can mark a folder as a Route Group to prevent the folder from being included in the route's URL path.
+
+Example:
+
+- app
+  - (users)
+    - layout.tsx
+    - login
+      - page.tsx
+    - dashboard
+      - page.tsx
+
+In the above the URL to reach the dashboard is localhost:3000/layout and localhost:3000/dashboard. You can also add a layout which can be shared amongst them.
+
+You can also create multiple root layouts this way:
+
+- app
+  - (users)
+    - layout.tsx
+    - user-login
+      - page.tsx
+    - user-dashboard
+      - page.tsx
+  - (admin)
+    - layout.tsx
+    - admin-login
+      - page.tsx
+    - admin-dashboard
+      - page.tsx
+
+Be careful that the folder structuring does not resolve into the same url.
+
+If you use multiple root layouts without a top-level `layout.tsx` file, your home `page.tsx` file should be defined in one of the route groups, For example: app/(marketing)/page.tsx.
+
+Take note that, navigating across multiple root layouts will cause a full page load.
+
 ## Cache behavior
 
 Next stores caches inside `.next`. Failing to clear cache may produce inconsistent behavior especially when running `yarn run build && yarn run start`. Manually removing the `.next` folder is recommended to clear the cache.
