@@ -598,7 +598,7 @@ This feature helps reduce the size of deployments drastically. Previously, when 
 
 #### Standalone mode
 
-Next.js can create a standalone folder that copies only the necessary files for a production deployment including select files in node_modules.
+Next build bundles the files so that the necessary dependencies are included in the final production build. With standalone, it also trims the app more by excluding the public and static folders. You can use standalone in case you want to have them handled by a CDN.  
 
 To enable it next.config.js:
 
