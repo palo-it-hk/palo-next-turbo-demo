@@ -23,10 +23,11 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
 ## Features covered in this documentation
 
 1) Concepts
-   - prefetching (WIP)
-   - Static and dynamic routes(WIP)
-   - Navigation (soft & hard) (WIP)
-   - Streaming (WIP)
+   - Caching
+   - prefetching
+   - Static and dynamic rendering
+   - Navigation (soft & hard)
+   - Streaming
    - Project organization (WIP)
    - Internationalization (WIP)
 2) Routing
@@ -60,30 +61,34 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
    - Server Actions
 5) Syntax
    - `<Link>`
-6) Functions
-   - usePathname()
-   - useRouter()
-   - revalidatePat()h & revalidateTag()
-   - generateStaticParams()
-   - dynamic() (WIP)
-7) Styling
+6) Styling
    - CSS Modules
    - Tailwind CSS
    - CSS-in-JS
    - Sass
-8) Assets
+7) Assets
    - images
    - Fonts
-9) Optimizing
+8) Optimizing
    - Metadata (WIP)
    - Analytics (WIP)
    - OpenTelemetry (WIP)
    - Instrumentation (WIP)
    - Static Export (WIP)
    - Codemods (WIP)
-10) Others
+   - State Management
+9) Others
    - Draft mode (WIP)
-   - Accessability
+   - Security
+
+### Functions(Usage can be found across this readme)
+
+- usePathname()
+- useRouter()
+- revalidatePath() & revalidateTag()
+- generateStaticParams()
+- dynamic() (WIP)
+- dynamic functions
 
 ## Features not yet supported by Turbopack
 
@@ -145,7 +150,152 @@ You do not see this problem in dev mode because pages are pre-rendered twice.
 
 Sometimes you may receive a CORS error from the client side. You can try solving it by deleting the .next file and rebuild.
 
-## Routing
+## 1. Concepts
+
+### Caching
+
+There are of caching bahaviors both in the client-side and server-side:
+
+#### client-side
+
+Also known as Router Cache, this is a client side caching feature. As users navigates between pages, the visited pages are cached as well as page links wrapper with `<Link>` when they are physically hovered over. This allows a quick and seamless browsing experience.
+
+#### Server-side
+
+##### Request memoization
+
+If you make the same call multiple times in the same React component tree, you might make the fetch on the top most component and pass the data down as props. With React's request memoization, fetch results are cached so that when you call the same fetch the second time, NextJS will automatically retrieve the fetch results from the cache so you don't have rely on state management or props.
+
+Please note that:
+
+- Memoization only applies to GET requests
+- Does not apply within `route.tsx`
+
+To opt out of memoization:
+
+```typescript
+const { signal } = new AbortController()
+fetch(url, { signal })
+```
+
+##### Full route cache
+
+Next.js automatically renders and caches routes at build time. Therefore if you have side effects that are in `route.ts` such as console logs and setTimeouts It will only run in build time.
+
+If you have a POST method in `route.ts` or have `export const revalidate = 0` or  `export const dynamic = 'force-dynamic'` on top of the `route.ts`, it will disable the caching.
+
+##### Data cache
+
+Next.js has a built-in Data Cache that persists the result of data fetches. 
+
+The first time a fetch request is called during rendering, Next.js checks the Data Cache for a cached response and will cache it if it's not found.
+
+Revalidation controls how often a fetch method can be reached to the API. The revalidation period can be set in seconds such as:
+
+```typescript
+// Revalidate at most every hour
+fetch('https://...', { next: { revalidate: 3600 } })
+```
+
+And can also be revalidated on demand using `revalidatePath` and `revalidateTag` which are both explained in more detail in this Readme.
+
+Please note that if the route has full route cache enabled, even if the revalidation time is up and the the call to the API is allowed, you are still fetching cached data because Next.js automatically renders and caches routes at build time.
+
+This means that if you are fetching the current time with this route using no-cache or no-store:
+
+```typescript
+// api/time/route.ts
+export async function GET(request: NextRequest) {
+  const currentTime = new Date();
+  return NextResponse.json({
+    currentTime: currentTime,
+  });
+}
+```
+
+The value of currentTime is still whenever the server was built because it is cached due to full route cache.
+
+To fix it, add `export const revalidate = 0`:
+
+```typescript
+export const revalidate = 0; 
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function GET(request: NextRequest) {
+  console.log('time GET()');
+  const currentTime = new Date();
+  return NextResponse.json({
+    currentTime: currentTime,
+  });
+}
+```
+
+```typescript
+await fetch('http:localhost:3000/api/data/time', {
+      cache: 'no-cache',
+    });
+
+await fetch('http:localhost:3000/api/data/time', {
+      cache: 'no-store',
+    });
+
+```
+
+The no-cache option is the same as no-store.
+
+### Prefetching
+
+NextJS improves user experience by allowing quicker navigation by prefetching pages that are not currently in view.
+
+When a user navigates to a new route, the browser doesn't reload the page, and only the route segments that change re-render - improving the navigation experience and performance.
+
+The pre-fetched page is stored in the client-side called the Router Cache.
+
+Only the route segments that change on navigation re-render on the client, and any shared segments are preserved. Which means if the 2 pages share the same component or layout, it will not be rerendered. This is also known as Partial Rendering.
+
+If a link is wrapped using Next's `<Link>`, prefetching will occur in the background when the link is hovered over. More info in the `<Link>` section.
+
+### Static and dynamic rendering
+
+#### Static rendering
+
+By default, Next.js statically renders routes to improve performance. At build time, Server and Client components are rendered on the server, and the result of the work is cached and reused on subsequent requests.
+
+Note that:
+
+- If you have a console.log in client components, it will also print in the server side.
+- If you are fetching data from `/api` and the fetch method is not revalidate-able, then your page will never show data.
+
+#### Dynamic rendering
+
+With Dynamic Rendering, both Server and Client Components for a route are rendered on the server at request time.
+
+During rendering, if a dynamic function (see Dynamic functions) or uncached data request is discovered, Next.js will switch to dynamically rendering the whole route because the rendering needs info that can only be acquired by client-side input.
+
+### Navigation (soft & hard)
+
+There are two ways to navigate between routes in Next.js:
+
+- Using the `<Link>` Component
+- Using the useRouter Hook, that allows you to programmatically change routes
+
+When a user navigates to a new route, the browser doesn't reload the page, and only the route segments that change re-render. Partial rendering will be done if there are shared segments.
+
+And in soft navigation, it also preserves React and browser state, and there is no full page reload, which contrasts with classical browser navigation (hard navigation) that refreshes state.
+
+### Streaming
+
+To improve user experience during loading times, NextJS has a specially reserved file `loading.tsx` that can be rendered automatically once the `page.tsx` is running async activities such as fetching.
+
+One of the limitations of traditional SSR is that the page has to have all the JSONs before the page can be rendered. Furthermore, it is a blocking processing where one fetching process has to wait for the completion of the previous.
+
+With React's `<Suspense>`, the server can first render and show the skeleton while have components that are wrapped in `<Suspense>` to fetch and render as soon as they are ready while doing so concurrently with other suspense wrapped components. Such is demo'd in `/src/app/(rendering)/progressive-rendering`
+
+If you want more important content to render first, you can control the sequence as demo'd in `/src/app/(rendering)/sequential-rendering`.
+
+More info is in this README on `loading.tsx`, sequential and progressive rendering.
+
+## 2. Routing
 
 By default, components inside `app/` are React Server Components. To use client-side rendering, add `'use client';` before on the top of your components file.
 
@@ -173,7 +323,20 @@ Replaces index.ts in the Nextjs version that uses pages for the UI.
 
 #### layout.tsx
 
-UI that is shared for one or between multiple pages.
+A layout is UI that is shared between multiple pages. On navigation, layouts preserve state, remain interactive, and do not re-render.
+
+- The top-most layout is called the Root Layout. This required layout is shared across all pages in an application. Root layouts must contain html and body tags.
+- To create multiple root layouts, you can have a layout.tsx in each route group
+
+For example:
+
+- App
+  - (marketing)
+    - layout.tsx
+  - (shop)
+    - layout.tsx
+
+*Notes on Rendering*: Aside from the root `layout.tsx`, `layout.tsx`s can be client side components, without automatically turning it's children into client components. However lets say you have a `page.tsx` that you've made into a client component by adding `use client`, then the children components are automatically turned into client components, even if you don't add `use client` into them. Which means child components of client components will be re-rendered everytime the wrapper updates. Whereas in server components, if their children components don't change, then the children will not reload.
 
 #### loading.tsx
 
@@ -185,7 +348,7 @@ This component will rendered when a `notFound()` is triggered.
 
 #### error.tsx
 
-This component will rendere when the error boundary is triggered.
+The error.js file convention allows you to gracefully handle runtime errors in nested routes It does it by automatically creating an React Error Boundary that wraps a nested child segment or page.tsx component.  The error.tsx must be a client component.
 
 #### route.tsx
 
@@ -210,7 +373,7 @@ export async function GET(request: NextRequest) {
 
 #### template.tsx
 
-when a user navigates between routes that share a `template.tsx`, a new instance of the component is mounted, DOM elements are recreated, state is not preserved, and effects are re-synchronized. This means that unlike layout.tsx. The state will not persist across pages.
+Templates are similar to layouts in that they wrap each child layout or page. Unlike layouts that persist across routes and maintain state, templates create a new instance for each of their children on navigation. This means that when a user navigates between routes that share a template, a new instance of the component is mounted, DOM elements are recreated, state is not preserved, and effects are re-synchronized.
 
 ### Route groups
 
@@ -250,49 +413,35 @@ If you use multiple root layouts without a top-level `layout.tsx` file, your hom
 
 Take note that, navigating across multiple root layouts will cause a full page load.
 
+## Middleware
+
+**Demo** : [www.localhost:3000/with-middleware]
+
+**folder** : `app/(protected-routes)/with-middleware`
+
+Middleware will be invoked for every route in your project by default but can be configured from specific paths.  `middleware.ts` must be placed in the root folder.
+
+## 5. Syntax
+
+### Link
+
+`<Link>` is a React component that extends the HTML `<a>` element to provide prefetching and client-side navigation between routes.
+
+The prefetch feature of NextJS allows the prefetching of the website. For example, if a link that uses `<Link>` is hovered over. It will prefetch the page in the background.
+
+The fetching behavior is different for static and dynamic sites.
+
+Static: prefetch defaults to `true`. The entire route is prefetched and cached.
+
+dynamic: Because the fetch methods in the dynamic page are not prefetched,  only the static content such as shared layout down until the first loading.js file is prefetched and cached for 30s. This reduces the cost of fetching an entire dynamic route, and it means you can show an instant loading state for better visual feedback to users.
+
 ## Cache behavior
 
 Next stores caches inside `.next`. Failing to clear cache may produce inconsistent behavior especially when running `yarn run build && yarn run start`. Manually removing the `.next` folder is recommended to clear the cache.
 
-## Fonts(Typography)
-
-**Demo**: [www.localhost:3000/fonts](www.localhost:3000/fonts)
-
-**folder**: `app/(fonts)`
-
-With `'next font`, CSS and font files are downloaded at build time and self-hosted with the rest of your static assets. The result is zero layout shift and removes external network requests. It is recommended to use variable fonts.
-
-### Google fonts
-
-Use google fonts by installing `next/font/google`. This way fonts are included in the deployment and served from the same domain as your deployment. No requests are made to Google by the browser.
-
-```typescript
-import { Inter } from 'next/font/google';
-
-// If loading a variable font, you don't need to specify the font weight
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-});
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en" className={inter.className}>
-      <body>{children}</body>
-    </html>
-  );
-}
-```
-
-### Fonts with Tailwind(local and google)
-
-This repo implements imported and local fonts using Tailwind and `next/font/google` and `next/font/local`. You can see how it is introduced in the root `layout.tsx`, configured in `tailwind.config.js`, and implemented in the demo.
-
 ## Assets
+
+### Images (Static Assets)
 
 **Demo**: [www.localhost:3000/static-assets](www.localhost:3000/static-assets)
 
@@ -307,11 +456,11 @@ Static files such as images in the `public` in the root directly. Once inside, t
 
 In webpack and some other frameworks, importing an image returns a string containing that image' URL, but in Next, it returns an object. This is so it can be fed into Next's `<Image>` component as part of optimization.
 
-### SVGs with SVGR
+#### SVGs with SVGR
 
 SVGR is a tool that allows us to import SVGs into your React applications as React components.
 
-### Install
+##### Install
 
 1. Install package
 
@@ -337,7 +486,7 @@ module.exports = nextConfig;
 
 3. Run. Since turbopack doesn't support SVGR yet, you need to run `yarn next dev` instead `yarn next dev --turbo`
 
-#### issues with Turbopack and SVGR
+##### issues with Turbopack and SVGR
 
 Although the below is the official way to integrate loaders with Turbopack, it will throw an error: `Processing image failedFailed to parse svg source code for image dimensions`.
 
@@ -363,13 +512,43 @@ The issue is documented in the below:
 
 To use SVGR without turbopack, follow the install steps above and run `yarn next dev`.
 
-## Middleware
+### Fonts(Typography)
 
-**Demo** : [www.localhost:3000/with-middleware]
+**Demo**: [www.localhost:3000/fonts](www.localhost:3000/fonts)
 
-**folder** : `app/(protected-routes)/with-middleware`
+**folder**: `app/(fonts)`
 
-Middleware will be invoked for every route in your project by default but can be configured from specific paths.  `middleware.ts` must be placed in the root folder.
+With `'next font`, CSS and font files are downloaded at build time and self-hosted with the rest of your static assets. The result is zero layout shift and removes external network requests. It is recommended to use variable fonts.
+
+#### Google fonts
+
+Use google fonts by installing `next/font/google`. This way fonts are included in the deployment and served from the same domain as your deployment. No requests are made to Google by the browser.
+
+```typescript
+import { Inter } from 'next/font/google';
+
+// If loading a variable font, you don't need to specify the font weight
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+});
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" className={inter.className}>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+#### Fonts with Tailwind(local and google)
+
+This repo implements imported and local fonts using Tailwind and `next/font/google` and `next/font/local`. You can see how it is introduced in the root `layout.tsx`, configured in `tailwind.config.js`, and implemented in the demo.
 
 ## Data fetching
 
@@ -457,7 +636,9 @@ For a full list brand name and categories, run a `GET` request to `https://dummy
 
 #### Catch all segments
 
-`app/product/[...slug]/page.tsx`
+Dynamic Segments can be extended to catch-all subsequent segments by adding an ellipsis inside the brackets [...folderName].
+
+For example `app/product/[...slug]/page.tsx` matches URLs localhost:3000/product/1, localhost:3000/product/abc localhost:3000/product/a/b/c.
 
 ```typescript
 export function generateStaticParams() {
@@ -474,7 +655,10 @@ export default function Page({ params }: { params: { slug: string[] } }) {
   // ...
 }
 ```
-## Styling
+
+Catch-all Segments can be made optional by including the parameter in double square brackets: `[[...folderName]]`. Using the above examples, it will also capture localhost:3000/product.
+
+## 7. Styling
 
 NextJS supports the following styling methods:
 
@@ -649,3 +833,105 @@ h4 {
 ```
 
 **Note**: If you disable JavaScript, styles will still be loaded in the production build (next start). However, JavaScript is still required for next dev to enable Fast Refresh.
+
+## 9. Optimization
+
+### State Management
+
+This repo demonstrates 2 state management libraries: Redux and Mobx, chosen based on our project experience. Other libraries, tho no demo'd here, should also be able to integrate with nextJS 13.
+
+#### Redux
+
+**Demo**: [www.localhost:3000/redux]
+
+**folders**: `/src/app/(state-management)/redux`, `/src/store/state-management/redux`
+
+##### Set up redux with typescript
+
+Redux's usage is largely the same in NextJS. Some variance are mostly due to the usage of Typescript.
+
+Redux Toolkit's configureStore API should not need any additional typings. You will, however, want to extract the RootState type and the Dispatch type from the store so that they can be referenced as needed. (You can see `redux-store.ts` for more info).
+
+While its possible to import the RootState and AppDispatch types into each component, its better to create typed versions of the `useDispatch` and `useSelector` hooks for usage in your application.
+
+Why?
+
+- For `useSelector`, it saves you the need to type `(state: RootState)` every time.
+
+- For `useDispatch`, the default `Dispatch` type does not know about thunks. In order to correctly dispatch thunks, you need to use the specific customized `AppDispatch` type from the store that includes the thunk middleware types, and use that with `useDispatch`. Adding a pre-typed `useDispatch` hook keeps you from forgetting to import `AppDispatch` where its needed.
+
+##### Installation of redux in Next 13
+
+In the previous NextJS (one with the `pages` folder),  a `<Provider>` must be wrapper around the `_app.tsx` to enable the subscription of the store across the whole app.
+
+With the latest NextJS (one with the `app` folder), the `_app.tsx` is replaced by the root `layout.tsx`. Hence, by logic, the `<Provider>` should be inside the root `layout.tsx`. However, because the Provider uses `useContext` which is a client only function, it cannot be used directly in the server-side only root `layout.tsx`. As a workaround, a client component can be created that can act as a wrapper using the `Provider` and be placed within the root `layout.tsx`.
+
+In the root `layout.tsx` you will see a client component called `<Providers>` is wrapped around the children.
+
+##### How do use Redux
+
+It is highly recommended that you read the [Redux Essentials](https://redux.js.org/tutorials/essentials/part-1-overview-concepts) in which this demo is based on.
+
+We use the Redux Toolkit (aka RTK) which provides methods and API to do state management in a more intuitive way.
+
+To set up redux on the fly, you can see all the files below and read the comments.
+
+Its best to read in the following order:
+
+**Setting up the store**
+`store/state-management/redux/store.ts`
+`store/state-management/redux/hook.ts`
+
+**Setting up slices, reducers and thunks**
+`store/state-management/redux/posts/slice.ts`
+
+**Setting up selectors**
+`store/state-management/redux/posts/selectors.ts`
+
+**Attaching it to the app**
+`components/atomic-design/templates/Providers/index.tsx`
+
+#### Mobx
+
+MobX is a state management library that manage the state of your application by providing a simple and efficient way to create observable state objects, and automatically updating the user interface when the state changes.
+
+The basic idea behind MobX is that you create observable objects that represent the state of your application. These objects can be simple JavaScript objects, or more complex data structures like arrays or maps. When you make changes to the state, MobX automatically tracks those changes and updates any components that depend on that state.
+
+##### Installation
+
+Follow the installation guide for Mobx working with Typescript [here](https://mobx.js.org/installation.html)
+
+##### How to use Mobx
+
+If you have never used Mobx before, we recommended that you start by reading [the gist of Mobx](https://mobx.js.org/the-gist-of-mobx.html)
+
+To set up redux on the fly, you can see all the files below and read the comments.
+
+Its best to read in the following order:
+
+**Setting up the store, selectors, methods and async actions**
+`store/state-management/mobx/post/store.ts`
+`store/state-management/mobx/post/transport-layer.ts`
+
+**Attaching it to the app**
+`components/atomic-design/templates/Providers/index.tsx`
+
+## 10. Others
+
+.
+
+### Security
+
+**folder**: `/src/app/(protected-routes))`
+
+#### With layout.tsx
+
+**Demo** : [www.localhost:3000/private-page]
+
+Route protection can be done by having a layout to wrap protected components. The layout is a client component due to the usage of `useEffect` to do verification fetching. Note that layout does not re-render upon navigation.
+
+#### With middleware
+
+**Demo** : [www.localhost:3000/private-page]
+
+Read about middleware usage in this readme for more information. 
