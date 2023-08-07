@@ -67,7 +67,7 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
    - images
    - Fonts
 8) Optimizing
-   - Metadata (WIP)
+   - Metadata
    - State Management
 9) Others
    - Draft mode (WIP)
@@ -1058,14 +1058,16 @@ File-based metadata has the higher priority and will override any config-based m
 
 ##### Icons
 
-- To set the favicon, create an icon and name it as `favicon.ico`, put it in `/app`. No need to add it into the header. .ico files only.
-- To have icons for individual pages, create an icon and name it was `icon.jpeg` and put it in the same location as `page.tsx`. Other file types are ok: .ico, .jpg, .jpeg, .png, .svg.
+- To set the **favicon**, create an icon and name it as `favicon.ico`, put it in `/app`. No need to add it into the header. .ico files only.
+- To have **icons for individual pages**, create an icon and name it was `icon.jpeg` and put it in the same location as `page.tsx`. Other file types are ok: .ico, .jpg, .jpeg, .png, .svg.
+- About **Apple icons**: As a large portion of the mobile devices consists of Apple products, you should be mindful about the Apple icon (touch icon) of your website. Ideally the size should be 180x180 so iOS can generate the icon suite properly. Name the file as 'apple-icon.jpg' and put it in the root `/app`. Accepted files are : jpg|jpeg|png.
 
 Notes:
 
 - If the favicon is defined in the public folder, it will interfere with the one in the `/app`.
 - Ideally the icons should be 16x16 or 32x32, otherwise there is a risk of getting an invalid image type error.
 - The icons may persist in `.next` and interferes with the rendering results. If the icons don't change, delete `.next` and rebuild.
+- If the Apple icon is set in the `/app` folder. All pages without a set icon will use it when you browse with an Apple device.
 
 ### Security
 
