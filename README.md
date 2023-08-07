@@ -20,9 +20,71 @@ This playground is a mirror of the [Next.js v13 App Directory Playground](https:
 
 For more information, see: https://turbo.build/pack/docs/features/css#tailwind-css
 
-## Documentation
+## Features covered in this documentation
 
-https://nextjs.link/with-turbopack
+
+1) Concepts
+   - prefetching (WIP)
+   - Static and dynamic routes(WIP)
+   - Navigation (soft & hard) (WIP)
+   - Streaming (WIP)
+   - Project organization (WIP)
+   - Internationalization (WIP)
+2) Routing
+   - Special files
+      - default.tsx
+      - error.tsx
+      - layout.tsx
+      - loading.tsx
+      - not-found.tsx
+      - page.tsx
+      - route.tsx
+      - template.tsx
+   - Route segment config (WIP)
+   - Route groups
+   - Dynamic routes & catch-all segments
+   - Parallel Routes
+   - Intercepting routes
+   - Middleware
+3) Rendering
+   - Static rendering
+   - Dynamic rendering
+4) Data fetching
+   - Fetching
+      - Static fetching
+      - Dynamic fetching
+      - Parallel fetching
+      - Sequential data fetching
+      - Third party data fetching (WIP)
+   - Caching
+   - Revalidation
+   - Server Actions
+5) Syntax
+   - <Link>
+6) Functions
+   - usePathname()
+   - useRouter()
+   - revalidatePat()h & revalidateTag()
+   - generateStaticParams()
+   - dynamic() (WIP)
+7) Styling
+   - CSS Modules
+   - Tailwind CSS
+   - CSS-in-JS
+   - Sass
+8) Assets
+   - images
+   - Fonts
+9) Optimizing
+   - Metadata (WIP)
+   - Analytics (WIP)
+   - OpenTelemetry (WIP)
+   - Instrumentation (WIP)
+   - Static Export (WIP)
+   - Codemods (WIP)
+10) Others
+   - Draft mode (WIP)
+   - Accessability
 
 ## Features not yet supported by Turbopack
 
@@ -83,6 +145,48 @@ You do not see this problem in dev mode because pages are pre-rendered twice.
 ### CORS
 
 Sometimes you may receive a CORS error from the client side. You can try solving it by deleting the .next file and rebuild.
+
+## Routing
+
+### Special files
+
+| File Conventions | link demo                     | folder                                                  |
+| ---------------- | ------------------------------| ------------------------------------------------------- |
+| page.tsx         | Available throughout the repo | Available through the the repo                          |
+| layout.tsx       | /page-and-nested-page-demo    | `/src/app/(layout-vs-template)`                         |
+| loading.tsx      | /suspense-with-loadingtsx     | `/src/app/(suspense boundary)/suspense-with-loadingtsx` |
+| not-found.tsx    | /cat-profile/<1 - 2>          | `/src/app/(not-found)`                                  |
+| error.tsx        | /error-route                  | `/src/app/(error-boundary)`                             |
+| route.ts         | GET /api/data/                | `/src/app/api`                                          |
+| template.tsx     | /page-and-nested-page-demo    | `/src/app/(layout-vs-template)`                         |
+
+#### page.tsx
+
+Replaces index.ts in the Nextjs version that uses pages for the UI.
+
+#### layout.tsx
+
+UI that is shared for one or between multiple pages.
+
+#### loading.tsx
+
+This component will be rendered whenever the suspense boundary is triggered.
+
+#### not-found.tsx
+
+This component will rendered when a `notFound()` is triggered.
+
+#### error.tsx
+
+This component will rendere when the error boundary is triggered.
+
+#### route.tsx
+
+Route Handlers allow you to create custom request handlers for a given route using the Web Request and Response APIs.
+
+#### template.tsx
+
+when a user navigates between routes that share a `template.tsx`, a new instance of the component is mounted, DOM elements are recreated, state is not preserved, and effects are re-synchronized. This means that unlike layout.tsx. The state will not persist across pages. 
 
 ## Cache behavior
 
@@ -213,19 +317,9 @@ Next.js extends the `fetch` options object to allow each request to set its own 
 
 | Types of fetching | link demo                                      | folder                     |
 | ----------------- | ---------------------------------------------- | -------------------------- |
-| static            | [http://www.localhost:3000/get-method/static]  | (REST)/get-method/static   |
-| dynamic           | [http://www.localhost:3000/get-method/dynamic] | (Rest)/get-method/dynamic  |
-| parallel          | [http://localhost:3000/get-method/parallel]    | (REST)/get-method/parallel |
-
-| Types of rendering    | link demo                                                | folder                                  |
-| --------------------- | -------------------------------------------------------- | --------------------------------------- |
-| sequential-rendering  | [http://localhost:3000/get-method/sequential-rendering]  | (REST)/get-method/sequential-rendering  |
-| progressive-rendering | [http://localhost:3000/get-method/progressive-rendering] | (REST)/get-method/progressive-rendering |
-
-| Types of revalidation | link demo                                                      | folder                                    |
-| --------------------- | -------------------------------------------------------------- | ----------------------------------------- |
-| background            | [http://www.localhost:3000/get-method/revalidation/background] | (REST)/get-method/revalidation/background |
-| on-demand             | [http://www.localhost:3000/get-method/revalidation/on-demand]  | (REST)/get-method/revalidation/on-demand  |
+| Static            | http://www.localhost:3000/get-method/static  | (REST)/get-method/static   |
+| dynamic           | http://www.localhost:3000/get-method/dynamic | (REST)/get-method/dynamic  |
+| parallel          | http://localhost:3000/get-method/parallel    | (REST)/get-method/parallel |
 
 ### Static data fetching
 
@@ -246,6 +340,11 @@ To fetch fresh data on every fetch request, use the cache: 'no-store' option.
 ### Parallel fetching
 
 We can save time by initiating fetch requests in parallel, however, the user won't see the rendered result until both promises are resolved.
+
+## Rendering
+
+| sequential-rendering | http://localhost:3000/get-method/sequential-rendering     | (REST)/get-method/sequential-rendering  |
+| progressive-rendering| http://localhost:3000/get-method/progressive-rendering]   | (REST)/get-method/progressive-rendering |
 
 ### Sequential rendering
 
@@ -268,6 +367,11 @@ Next.js allows you to update specific static routes without needing to rebuild y
 **Background revalidation**: You can set the revalidation of the data at a specific time interval.
 
 **On-demand revalidation**: When you have set the revalidation period, but in some use-cases you don't want users to wait until the end of the revalidation period. Next.js App Router supports revalidating content on-demand based on a route or cache tag.
+
+| Types of revalidation | link demo                                                      | folder                                    |
+| --------------------- | -------------------------------------------------------------- | ----------------------------------------- |
+| background            | [http://www.localhost:3000/get-method/revalidation/background] | (REST)/get-method/revalidation/background |
+| on-demand             | [http://www.localhost:3000/get-method/revalidation/on-demand]  | (REST)/get-method/revalidation/on-demand  |
 
 Before implementing revalidation to your fetching, you need to understand that:
 
@@ -438,11 +542,11 @@ NextJS supports the following styling methods:
 | Sass     | [www.localhost:3000/sass] | `app/(styling)/sass` |
 
 
-## CSS Modules
+### CSS Modules
 
 CSS Modules are an optional feature and are only enabled for files with the .module.css extension. Regular `<link>` stylesheets and global CSS files are still supported.
 
-## Tailwind
+### Tailwind
 
 One of the advantages of Tailwind is it is usable in server components unlike CSS-in-JS libraries You configure Tailwind in the `tailwind.config.js` in the root folder. You do not need to modify `postcss.config.js`.
 
@@ -457,7 +561,7 @@ To apply it, you do it in `app/globals.css` and import it in `app/layout.tsx`:
 
 After installing Tailwind CSS and adding the global styles, you can use Tailwind's utility classes in your application.
 
-## CSS-in-JS
+### CSS-in-JS
 
 CSS-in-JS libraries which require runtime JavaScript are not currently supported in Server Components.
 
@@ -519,11 +623,11 @@ export default function RootLayout({
 }
 ```
 
-## Sass
+### Sass
 
 Next.js has built-in support for Sass using both the `.scss` and `.sass` extensions. You can use component-level Sass via CSS Modules and the `.module.scss` or `.module.sass` extension.
 
-### If you run into the error: `selector “body” is not pure (pure selectors must contain at least one local class or id) – error in NextJs`
+*If you run into the error: `selector “body” is not pure (pure selectors must contain at least one local class or id) – error in NextJs`*
 
 You can't directly have simple element selectors like the below in module.css:
 
@@ -557,7 +661,7 @@ export default function StyledRootLayout({ children }) {
 }
 ```
 
-## Global styles
+#### Global styles
 
 A global styles sheet can be applied by creating a css file such as `globals.css`and then import it in `app/layout.tsx`
 
