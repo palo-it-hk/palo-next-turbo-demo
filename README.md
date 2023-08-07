@@ -75,9 +75,12 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
    - Fonts
 9) Optimizing
    - Metadata (WIP)
-   - Static Export (WIP)
-   - Codemods (WIP)
+   - State Management
 10) Others
+    - Draft mode (WIP)
+    - Security
+
+### Functions(Usage can be found across this readme)
 
 - Draft mode (WIP)
 - Accessability
@@ -1144,7 +1147,137 @@ Its best to read in the following order:
 
 ## 10. Others
 
-.
+### Metadata
+
+Two ways to add Metadata:
+
+- **Config-based metadata**: Export a static metadata object or a dynamic generateMetadata function in a layout.js or page.js file.
+- **File-based metadata**: Add static or dynamically generated special files to route segments.
+
+#### Config-based metadata
+
+**Both static and dynamic metadata through generateMetadata are only supported in Server Components.**
+
+##### Static method of creating metadata
+
+**Demo**: [localhost:3000/config-based/static]
+**Folder**: `/src/app/(metadata)/config-based/static`
+
+exports a static object as the metadata.
+
+Other static data that is not covered in the demo but can be added:
+
+```typescript
+// page.tsx
+
+export const metadata = {
+  generator: 'Next.js',
+  applicationName: 'Next.js',
+  referrer: 'origin-when-cross-origin',
+  keywords: ['Next.js', 'React', 'JavaScript'],
+  authors: [{ name: 'Seb' }, { name: 'Josh', url: 'https://nextjs.org' }],
+  colorScheme: 'dark',
+  creator: 'Jiachi Liu',
+  publisher: 'Sebastian Markbåge',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://acme.com'),
+  alternates: {
+    canonical: '/',
+    languages: {
+      'en-US': '/en-US',
+      'de-DE': '/de-DE',
+    },
+  },
+  openGraph: {
+    title: 'Next.js',
+    description: 'The React Framework for the Web',
+    url: 'https://nextjs.org',
+    siteName: 'Next.js',
+    images: [
+      {
+        url: 'https://nextjs.org/og.png',
+        width: 800,
+        height: 600,
+      },
+      {
+        url: 'https://nextjs.org/og-alt.png',
+        width: 1800,
+        height: 1600,
+        alt: 'My custom alt',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+};
+```
+
+Output:
+
+```html
+<!-- General metatags, more in demo -->
+<meta name="application-name" content="Next.js" />
+<meta name="author" content="Seb" />
+<link rel="author" href="https://nextjs.org" />
+<meta name="author" content="Josh" />
+<meta name="generator" content="Next.js" />
+<meta name="keywords" content="Next.js,React,JavaScript" />
+<meta name="referrer" content="origin-when-cross-origin" />
+<meta name="color-scheme" content="dark" />
+<meta name="creator" content="Jiachi Liu" />
+<meta name="publisher" content="Sebastian Markbåge" />
+<meta name="format-detection" content="telephone=no, address=no, email=no" />
+
+<!-- Metadata base -->
+<link rel="canonical" href="https://acme.com" />
+<link rel="alternate" hreflang="en-US" href="https://acme.com/en-US" />
+<link rel="alternate" hreflang="de-DE" href="https://acme.com/de-DE" />
+
+<!-- Opengraph -->
+<meta property="og:title" content="Next.js" />
+<meta property="og:description" content="The React Framework for the Web" />
+<meta property="og:url" content="https://nextjs.org/" />
+<meta property="og:site_name" content="Next.js" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:image:url" content="https://nextjs.org/og.png" />
+<meta property="og:image:width" content="800" />
+<meta property="og:image:height" content="600" />
+<meta property="og:image:url" content="https://nextjs.org/og-alt.png" />
+<meta property="og:image:width" content="1800" />
+<meta property="og:image:height" content="1600" />
+<meta property="og:image:alt" content="My custom alt" />
+<meta property="og:type" content="website" />
+```
+
+##### Dynamic method of creating metadata
+
+**Demo**: [localhost:3000/config-based/dynamic/<1-100>]
+**Folder**: `/src/app/(metadata)/config-based/dynamic`
+
+Dynamic metadata depends on dynamic information, such as the current route parameters, external data, or metadata in parent segments, can be set by exporting a generateMetadata function that returns a Metadata object.
+
+Next.js will wait for data fetching inside generateMetadata to complete before streaming UI to the client. This guarantees the first part of a streamed response includes `<head>` tags.
+
+See the demo for application.
+
+#### File based metadata
+
+File-based metadata has the higher priority and will override any config-based metadata.
+
+##### Icons
+
+- To set the favicon, create an icon and name it as `favicon.ico`, put it in `/app`. No need to add it into the header. .ico files only.
+- To have icons for individual pages, create an icon and name it was `icon.jpeg` and put it in the same location as `page.tsx`. Other file types are ok: .ico, .jpg, .jpeg, .png, .svg.
+
+Notes:
+
+- If the favicon is defined in the public folder, it will interfere with the one in the `/app`.
+- Ideally the icons should be 16x16 or 32x32, otherwise there is a risk of getting an invalid image type error.
+- The icons may persist in `.next` and interferes with the rendering results. If the icons don't change, delete `.next` and rebuild.
 
 ### Security
 
