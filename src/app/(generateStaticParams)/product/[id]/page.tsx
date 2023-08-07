@@ -4,6 +4,7 @@
 // generateStaticParams will return 404.
 export const dynamicParams = false;
 
+import { getProductById } from 'frontend-api/products';
 import { notFound } from 'next/navigation';
 import { Product } from 'types/product.type';
 
@@ -22,13 +23,6 @@ export async function generateStaticParams() {
   return products.map((product) => ({
     id: product.id.toString(),
   }));
-}
-
-async function getProductById(id: string) {
-  const res = await fetch(`https://dummyjson.com/products/${id}`);
-  if (res.ok) {
-    return res.json();
-  }
 }
 
 export default async function Page({ params }: { params: { id: string } }) {
