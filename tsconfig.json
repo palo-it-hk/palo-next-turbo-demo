@@ -17,6 +17,7 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
+      "frontend-api/*": ["./src/frontend-api/*"],
       "store/*":["./src/store/*"],
       "data/*":["./data/*"],
       "public/*": ["./public/*"],
