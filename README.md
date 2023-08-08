@@ -1284,7 +1284,7 @@ Notes:
 ##### robots.txt
 
 - Must be put in the root `/app`
-- Can generate `robots.txt` like the following:
+- Alternatively, you can generate `robots.txt` like the following:
 
 ```typescript
 // app/robots.ts
@@ -1299,6 +1299,33 @@ export default function robots(): MetadataRoute.Robots {
     },
     sitemap: 'https://acme.com/sitemap.xml',
   }
+}
+```
+
+##### Sitemap
+
+- Must be put in the root `/app`
+- Alternatively, you can generate `sitemap.xml` with the following:
+
+```typescript
+// app/sitemap.ts
+import { MetadataRoute } from 'next'
+ 
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [
+    {
+      url: 'https://acme.com',
+      lastModified: new Date(),
+    },
+    {
+      url: 'https://acme.com/about',
+      lastModified: new Date(),
+    },
+    {
+      url: 'https://acme.com/blog',
+      lastModified: new Date(),
+    },
+  ]
 }
 ```
 
