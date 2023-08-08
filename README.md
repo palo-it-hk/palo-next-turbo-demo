@@ -1281,6 +1281,27 @@ Notes:
 - The icons may persist in `.next` and interferes with the rendering results. If the icons don't change, delete `.next` and rebuild.
 - If the Apple icon is set in the `/app` folder. All pages without a set icon will use it when you browse with an Apple device.
 
+##### robots.txt
+
+- Must be put in the root `/app`
+- Can generate `robots.txt` like the following:
+
+```typescript
+// app/robots.ts
+import { MetadataRoute } from 'next'
+ 
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: {
+      userAgent: '*',
+      allow: '/',
+      disallow: '/private/',
+    },
+    sitemap: 'https://acme.com/sitemap.xml',
+  }
+}
+```
+
 ### Security
 
 **folder**: `/src/app/(protected-routes))`
