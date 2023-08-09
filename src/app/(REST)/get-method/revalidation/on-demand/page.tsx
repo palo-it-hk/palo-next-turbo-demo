@@ -64,13 +64,8 @@ export default async function Page() {
         <p className="font-bold">Whats happening in the background</p>
         <ol className="list-inside list-decimal">
           <li>
-            The button sends a request to &apos;/api/revalidate&apos;, which is
-            an API that revalidates APIs based on which page the request
-            originated from.
-          </li>
-          <li>
-            We refresh the page so that the fetch request for the data is
-            fetched and the page is built again.
+            The buttons sends a request the revalidation APIs. One is
+            revalidated by it&apos;s URL, the other is revalidated by tags.
           </li>
         </ol>
       </div>
