@@ -92,6 +92,7 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
 | ------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | [SVGR](https://react-svgr.com/) | A library that enables importing of svg files as React components                               | [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140) |
 | Server rendered CSS-in-JS       | CSS-in-JS styling such as styled-components, kuma-ui, styled-jsx, etc cannot be server rendered | [css-in-js](https://nextjs.org/docs/app/building-your-application/styling/css-in-js)       |
+| Server Actions       | Server Actions are not supported by Turbo | [Server Actions](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions)       |
 
 ## Issues
 
@@ -713,6 +714,19 @@ export default function LikeButton({
   )
 }
 ```
+
+#### Enhancements - Experimental useOptimistic
+
+**Demo** : [http://www.localhost:3000/server-actions/use-optimistic]
+**Folder**: `/src/app/(REST)/server-actions/use-optimistic`
+
+useOptimistic is an experimental React hook that enhances user experience by making the app appear more responsive.
+
+This pattern makes more sense for non-destructive parts of our interfaces. Things like liking a post, marking a tweet as favorite, or as seen below, starring a repository.
+
+For example, creating a like button that responds immediately rather than waiting for other state updates or approval from the backend.
+
+Optimistic updates can also be used with Server Actions.
 
 ## Dynamic routes
 
