@@ -85,7 +85,8 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <p className="text-green-500 font-bold">
-        Please view this page in prod mode.
+        Since turbo doesn&apos;t support server actions, the page should be run
+        with &quot;yarn next dev&quot; or &quot;yarn start&quot;.
       </p>
       <div className="my-5">
         <p className="font-bold">Whats happening in the background</p>
@@ -93,7 +94,7 @@ export default function Page({ params }: { params: { id: string } }) {
           With server actions which is an experimental feature, you are able to
           execute server functions without creating APIs.
           <br />
-          It can be called only within the {'<Form>'} tag via the action
+          It can be called only within the &gt;Form&gt; tag via the action
           property, the formActions property and useTransition.
         </p>
       </div>
