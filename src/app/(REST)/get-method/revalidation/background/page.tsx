@@ -1,25 +1,10 @@
-async function getData() {
-  let res;
-
-  // You can set the revalidate period in seconds.
-  // The data will be initially fetched as if a static page.
-  // You can see the demo by refreshing the page every 5 seconds.
-  // Read about background revalidation:
-  // https://nextjs.org/docs/app/building-your-application/data-fetching/revalidating
-  try {
-    res = await fetch(`http://localhost:3000/api/data/time`, {
-      next: { revalidate: 5 },
-    });
-  } catch (e) {
-    return;
-  }
-
-  return res.json();
-}
+import { getTime } from 'frontend-api/time';
 
 export default async function Page() {
   let content;
-  const data = await getData();
+
+  // You can set how often the page revalidate by seconds.
+  const data = await getTime(5);
 
   if (!data) {
     content = <>No data can be fetched</>;
@@ -42,13 +27,13 @@ export default async function Page() {
             any data when you view this page thats freshly built.
           </li>
           <li>
-            After 30 seconds, the page is ready to be rebuilt again but must be
+            After 5 seconds, the page is ready to be rebuilt again but must be
             prompted by a user navigating or refreshing said page. Note that the
             user doing so is only prompting the rebuilding.
           </li>
           <li>
             After the page is finish rebuilding,a request to the page will show
-            revalidated content. And the 30 seconds cycle starts again.
+            revalidated content. And the 5 seconds cycle starts again.
           </li>
         </ol>
       </div>

@@ -4,37 +4,17 @@
 // With on-demand data fetching, we can selectively allow the regeneration of the page upon a received request.
 // Once the request is received, the page will be built and will be available as soon as possible.
 
-async function getTime() {
-  let res;
-
-  try {
-    res = await fetch('http://localhost:3000/api/data/time', {
-      next: { tags: ['collection'] },
-    });
-  } catch (e) {
-    return;
-  }
-
-  return res.json();
-}
-
-async function getNum() {
-  let res;
-
-  try {
-    res = await fetch(`http://localhost:3000/api/data/number`);
-  } catch (e) {
-    return;
-  }
-
-  return res.json();
-}
+import { getNum } from 'frontend-api/number';
+import { getTime } from 'frontend-api/time';
 
 export default async function Page() {
   console.log('Page()');
 
   let content;
-  const data = await getTime();
+
+  // You can set how often the page revalidate by tags.
+  // In this case, we randomly picked the word 'collection' as a string for the tag.
+  const data = await getTime('collection');
   const num = await getNum();
 
   if (!data || !num) {
