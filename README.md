@@ -528,6 +528,192 @@ async function getData() {
 export default function Page() {}
 ```
 
+### Server actions
+
+**Demo**:[http://localhost:3000/server-actions/<any-number>]
+
+**Folder**: `/src/app/(REST)/server-actions`
+
+Server Actions is an Alpha feature of NextJS. It allows you to run functions in servers as if you are doing an API call, but without having to write an API for it. The benefits include reducing client-side javascript, enabling server-side data manipulations and such.
+
+Server Actions can be defined both inside Server Components and/or called from Client components.
+
+Why are APIs not needed?
+
+Server Actions automatically create an endpoint for Next.js to use behind the scenes. When calling a Server Action, Next.js sends a POST request to the page you're on with metadata for which action to run.
+
+#### Setting up Server Actions
+
+1. Enable the feature on next.config.js
+2. Create Server Actions
+3. Invoke it
+
+##### Enable the feature on next.config.js
+
+Before using Server Actions, you MUST first enable the feature by adding the following in `next.config.js`:
+
+```javascript
+// next.config.js
+
+module.exports = {
+  experimental: {
+    serverActions: true,
+  },
+}
+```
+
+##### Create Server Actions
+
+You can define Server Actions on a Server Component or a separate file, but not on a Client Component. 
+
+In a Server Component:
+
+```typescript
+// page.tsx
+export default function ServerComponent() {
+  async function myAction() {
+    'use server'
+    // ...
+  }
+}
+```
+
+In a separate file:
+
+```typescript
+'use server'
+ 
+export async function myAction() {
+  // ...
+}
+```
+
+##### Invoke it
+
+1.`action`
+
+You can invoke the Server Action using the `action` prop in the `<form>`.
+
+```typescript
+// page.tsx
+import { cookies } from 'next/headers'
+ 
+export default function AddToCart({ productId }) {
+  async function addItem(data) {
+    'use server'
+ 
+    const cartId = cookies().get('cartId')?.value
+    await saveToDb({ cartId, data })
+  }
+ 
+  return (
+    <form action={addItem}>
+      <button type="submit">Add to Cart</button>
+    </form>
+  )
+}
+```
+
+2.`formActions`
+
+You can invoke the Server Action using the `formAction` prop.
+
+```typescript
+export default function Form() {
+  async function handleSubmit() {
+    'use server'
+    // ...
+  }
+ 
+  async function submitImage() {
+    'use server'
+    // ...
+  }
+ 
+  return (
+    <form action={handleSubmit}>
+      <input type="text" name="name" />
+      <input type="image" formAction={submitImage} />
+      <button type="submit">Submit</button>
+    </form>
+  )
+}
+```
+
+3.useTransition
+
+useTransition is a React hook that allows prioritization of hooks so that urgent hooks can run first over expensive ones. If you Server Action is expensive then it can be wrapped with the startTransition hook.
+
+```typescript
+// example-client-component.tsx
+'use client'
+ 
+import { useTransition } from 'react'
+import { addItem } from '../actions'
+ 
+function ExampleClientComponent({ id }) {
+  let [isPending, startTransition] = useTransition()
+ 
+  return (
+    <button onClick={() => startTransition(() => addItem(id))}>
+      Add To Cart
+    </button>
+  )
+}
+```
+
+```typescript
+// actions.ts
+export async function addItem(id) {
+  await addItemToDb(id)
+  // Marks all product pages for revalidating
+  revalidatePath('/product/[id]')
+}
+
+```
+
+4.Call Directly
+
+You can directly pass the function as a prop like any other function or call it onClick. 
+
+```typescript
+// app/posts/[id]/page.tsx
+
+// Vercel KV is a serverless Redis storage.
+import kv from '@vercel/kv'
+import LikeButton from './like-button'
+ 
+export default function Page({ params }: { params: { id: string } }) {
+  async function increment() {
+    'use server'
+    await kv.incr(`post:id:${params.id}`)
+  }
+ 
+  return <LikeButton increment={increment} />
+}
+```
+
+```typescript
+// app/post[id]/like-button.tsx
+'use client'
+ 
+export default function LikeButton({
+  increment,
+}: {
+  increment: () => Promise<void>
+}) {
+  return (
+    <button
+      onClick={async () => {
+        await increment()
+      }}
+    >
+      Like
+    </button>
+  )
+}
+```
+
 ## Dynamic routes
 
 **demo**: [www.localhost:3000/cat-profile/<choose a value between 1 to 3>]

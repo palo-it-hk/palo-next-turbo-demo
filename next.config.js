@@ -13,6 +13,8 @@ const nextConfig = {
   experimental: {
     // Required:
     appDir: true,
+    // Enable to use Server Actions
+    serverActions: true,
   },
   
 };
