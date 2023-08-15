@@ -728,6 +728,15 @@ For example, creating a like button that responds immediately rather than waitin
 
 Optimistic updates can also be used with Server Actions.
 
+#### Enhancements - Experimental useFormStatus
+
+**Demo** : [http://www.localhost:3000/server-actions/use-form-status]
+**Folder**: `/src/app/(REST)/server-actions/use-form-status`
+
+The experimental useFormStatus hook can be used within Form Actions, and provides the pending property. The hook subscribes to the closest `<form>` tag and provides the pending status.
+
+The pending status can be used for showing loading mechanisms and provides a more fine-tuned control compared to react suspense.
+
 ## Dynamic routes
 
 **demo**: [www.localhost:3000/cat-profile/<choose a value between 1 to 3>]
