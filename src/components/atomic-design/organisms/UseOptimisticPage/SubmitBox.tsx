@@ -6,7 +6,7 @@ type Props = {
   formRef: MutableRefObject<any>;
 };
 
-export default function Form({ action, formRef }: Props) {
+export default function SubmitBox({ action, formRef }: Props) {
   return (
     <form action={action} ref={formRef}>
       <InputField />
