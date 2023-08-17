@@ -22,80 +22,76 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
 
 ## Features covered in this documentation
 
-1) Concepts
-   - Caching
-   - prefetching
-   - Static and dynamic rendering
-   - Navigation (soft & hard)
-   - Streaming
+1. Concepts
+   - prefetching (WIP)
+   - Static and dynamic routes(WIP)
+   - Navigation (soft & hard) (WIP)
+   - Streaming (WIP)
    - Project organization (WIP)
    - Internationalization (WIP)
-2) Routing
+2. Routing
    - Special files
-      - default.tsx
-      - error.tsx
-      - layout.tsx
-      - loading.tsx
-      - not-found.tsx
-      - page.tsx
-      - route.tsx
-      - template.tsx
+     - default.tsx
+     - error.tsx
+     - layout.tsx
+     - loading.tsx
+     - not-found.tsx
+     - page.tsx
+     - route.tsx
+     - template.tsx
    - Route segment config (WIP)
    - Route groups
    - Dynamic routes & catch-all segments
    - Parallel Routes
    - Intercepting routes
    - Middleware
-3) Rendering
+3. Rendering
    - Static rendering
    - Dynamic rendering
-4) Data fetching
+4. Data fetching
    - Fetching
-      - Static fetching
-      - Dynamic fetching
-      - Parallel fetching
-      - Sequential data fetching
-      - Third party data fetching (WIP)
+     - Static fetching
+     - Dynamic fetching
+     - Parallel fetching
+     - Sequential data fetching
+     - Third party data fetching (WIP)
    - Caching
    - Revalidation
    - Server Actions
-5) Syntax
-   - `<Link>`
-6) Styling
+5. Syntax
+   - <Link>
+6. Functions
+   - usePathname()
+   - useRouter()
+   - revalidatePat()h & revalidateTag()
+   - generateStaticParams()
+   - dynamic() (WIP)
+7. Styling
    - CSS Modules
    - Tailwind CSS
    - CSS-in-JS
    - Sass
-7) Assets
+8. Assets
    - images
    - Fonts
-8) Optimizing
+9. Optimizing
    - Metadata (WIP)
    - Analytics (WIP)
    - OpenTelemetry (WIP)
    - Instrumentation (WIP)
    - Static Export (WIP)
    - Codemods (WIP)
-   - State Management
-9) Others
-   - Draft mode (WIP)
-   - Security
+10. Others
 
-### Functions(Usage can be found across this readme)
-
-- usePathname()
-- useRouter()
-- revalidatePath() & revalidateTag()
-- generateStaticParams()
-- dynamic() (WIP)
-- dynamic functions
+- Draft mode (WIP)
+- Accessability
 
 ## Features not yet supported by Turbopack
 
-| feature/library                 | Description                                                       | docs                                                                                       |
-| ------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| [SVGR](https://react-svgr.com/) | A library that enables importing of svg files as React components | [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140) |
-| Server rendered CSS-in-JS | CSS-in-JS styling such as styled-components, kuma-ui, styled-jsx, etc cannot be server rendered | [css-in-js](https://nextjs.org/docs/app/building-your-application/styling/css-in-js) |
+| feature/library                 | Description                                                                                     | docs                                                                                       |
+| ------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [SVGR](https://react-svgr.com/) | A library that enables importing of svg files as React components                               | [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140) |
+| Server rendered CSS-in-JS       | CSS-in-JS styling such as styled-components, kuma-ui, styled-jsx, etc cannot be server rendered | [css-in-js](https://nextjs.org/docs/app/building-your-application/styling/css-in-js)       |
 
 ## Issues
 
@@ -174,19 +170,19 @@ Please note that:
 To opt out of memoization:
 
 ```typescript
-const { signal } = new AbortController()
-fetch(url, { signal })
+const { signal } = new AbortController();
+fetch(url, { signal });
 ```
 
 ##### Full route cache
 
 Next.js automatically renders and caches routes at build time. Therefore if you have side effects that are in `route.ts` such as console logs and setTimeouts It will only run in build time.
 
-If you have a POST method in `route.ts` or have `export const revalidate = 0` or  `export const dynamic = 'force-dynamic'` on top of the `route.ts`, it will disable the caching.
+If you have a POST method in `route.ts` or have `export const revalidate = 0` or `export const dynamic = 'force-dynamic'` on top of the `route.ts`, it will disable the caching.
 
 ##### Data cache
 
-Next.js has a built-in Data Cache that persists the result of data fetches. 
+Next.js has a built-in Data Cache that persists the result of data fetches.
 
 The first time a fetch request is called during rendering, Next.js checks the Data Cache for a cached response and will cache it if it's not found.
 
@@ -194,7 +190,7 @@ Revalidation controls how often a fetch method can be reached to the API. The re
 
 ```typescript
 // Revalidate at most every hour
-fetch('https://...', { next: { revalidate: 3600 } })
+fetch('https://...', { next: { revalidate: 3600 } });
 ```
 
 And can also be revalidated on demand using `revalidatePath` and `revalidateTag` which are both explained in more detail in this Readme.
@@ -218,7 +214,7 @@ The value of currentTime is still whenever the server was built because it is ca
 To fix it, add `export const revalidate = 0`:
 
 ```typescript
-export const revalidate = 0; 
+export const revalidate = 0;
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -232,13 +228,12 @@ export async function GET(request: NextRequest) {
 
 ```typescript
 await fetch('http:localhost:3000/api/data/time', {
-      cache: 'no-cache',
-    });
+  cache: 'no-cache',
+});
 
 await fetch('http:localhost:3000/api/data/time', {
-      cache: 'no-store',
-    });
-
+  cache: 'no-store',
+});
 ```
 
 The no-cache option is the same as no-store.
@@ -300,15 +295,15 @@ More info is in this README on `loading.tsx`, sequential and progressive renderi
 By default, components inside `app/` are React Server Components. To use client-side rendering, add `'use client';` before on the top of your components file.
 
 ```tsx
-"use client"
+'use client';
 
-export default function Page(){}
+export default function Page() {}
 ```
 
 ### Special files
 
 | File Conventions | link demo                     | folder                                                  |
-| ---------------- | ------------------------------| ------------------------------------------------------- |
+| ---------------- | ----------------------------- | ------------------------------------------------------- |
 | page.tsx         | Available throughout the repo | Available through the the repo                          |
 | layout.tsx       | /page-and-nested-page-demo    | `/src/app/(layout-vs-template)`                         |
 | loading.tsx      | /suspense-with-loadingtsx     | `/src/app/(suspense boundary)/suspense-with-loadingtsx` |
@@ -336,7 +331,7 @@ For example:
   - (shop)
     - layout.tsx
 
-*Notes on Rendering*: Aside from the root `layout.tsx`, `layout.tsx`s can be client side components, without automatically turning it's children into client components. However lets say you have a `page.tsx` that you've made into a client component by adding `use client`, then the children components are automatically turned into client components, even if you don't add `use client` into them. Which means child components of client components will be re-rendered everytime the wrapper updates. Whereas in server components, if their children components don't change, then the children will not reload.
+_Notes on Rendering_: Aside from the root `layout.tsx`, `layout.tsx`s can be client side components, without automatically turning it's children into client components. However lets say you have a `page.tsx` that you've made into a client component by adding `use client`, then the children components are automatically turned into client components, even if you don't add `use client` into them. Which means child components of client components will be re-rendered everytime the wrapper updates. Whereas in server components, if their children components don't change, then the children will not reload.
 
 #### loading.tsx
 
@@ -348,13 +343,13 @@ This component will rendered when a `notFound()` is triggered.
 
 #### error.tsx
 
-The error.js file convention allows you to gracefully handle runtime errors in nested routes It does it by automatically creating an React Error Boundary that wraps a nested child segment or page.tsx component.  The error.tsx must be a client component.
+The error.js file convention allows you to gracefully handle runtime errors in nested routes It does it by automatically creating an React Error Boundary that wraps a nested child segment or page.tsx component. The error.tsx must be a client component.
 
 #### route.tsx
 
 Route Handlers allow you to create custom request handlers for a given route using the Web Request and Response APIs.
 
-Any file inside the folder pages/api is mapped to /api/* and will be treated as an API endpoint instead of a page. They are server-side only bundles and won't increase your client-side bundle size.
+Any file inside the folder pages/api is mapped to /api/\* and will be treated as an API endpoint instead of a page. They are server-side only bundles and won't increase your client-side bundle size.
 
 A route file allows you to create custom request handlers for a given route. The following HTTP methods are supported: GET, POST, PUT, PATCH, DELETE, HEAD, and OPTIONS.
 
@@ -365,10 +360,10 @@ The following defines a GET request:
 import { NextRequest, NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 export async function GET(request: NextRequest) {
-   return NextResponse.json({
-    message: "Hello world!"
-      });
-    }
+  return NextResponse.json({
+    message: 'Hello world!',
+  });
+}
 ```
 
 #### template.tsx
@@ -419,7 +414,7 @@ Take note that, navigating across multiple root layouts will cause a full page l
 
 **folder** : `app/(protected-routes)/with-middleware`
 
-Middleware will be invoked for every route in your project by default but can be configured from specific paths.  `middleware.ts` must be placed in the root folder.
+Middleware will be invoked for every route in your project by default but can be configured from specific paths. `middleware.ts` must be placed in the root folder.
 
 ## 5. Syntax
 
@@ -433,7 +428,7 @@ The fetching behavior is different for static and dynamic sites.
 
 Static: prefetch defaults to `true`. The entire route is prefetched and cached.
 
-dynamic: Because the fetch methods in the dynamic page are not prefetched,  only the static content such as shared layout down until the first loading.js file is prefetched and cached for 30s. This reduces the cost of fetching an entire dynamic route, and it means you can show an instant loading state for better visual feedback to users.
+dynamic: Because the fetch methods in the dynamic page are not prefetched, only the static content such as shared layout down until the first loading.js file is prefetched and cached for 30s. This reduces the cost of fetching an entire dynamic route, and it means you can show an instant loading state for better visual feedback to users.
 
 ## Cache behavior
 
@@ -556,12 +551,11 @@ Data fetching is built on top of the `fetch()` Web API and React Server Componen
 
 Next.js extends the `fetch` options object to allow each request to set its own caching and revalidating.
 
-| Types of fetching | link demo                                      | folder                     |
-| ----------------- | ---------------------------------------------- | -------------------------- |
+| Types of fetching | link demo                                    | folder                     |
+| ----------------- | -------------------------------------------- | -------------------------- |
 | Static            | http://www.localhost:3000/get-method/static  | (REST)/get-method/static   |
 | dynamic           | http://www.localhost:3000/get-method/dynamic | (REST)/get-method/dynamic  |
 | parallel          | http://localhost:3000/get-method/parallel    | (REST)/get-method/parallel |
-
 
 ### Static data fetching
 
@@ -585,8 +579,8 @@ We can save time by initiating fetch requests in parallel, however, the user won
 
 ## Rendering
 
-| sequential-rendering | http://localhost:3000/get-method/sequential-rendering     | (REST)/get-method/sequential-rendering  |
-| progressive-rendering| http://localhost:3000/get-method/progressive-rendering]   | (REST)/get-method/progressive-rendering |
+| sequential-rendering | http://localhost:3000/get-method/sequential-rendering | (REST)/get-method/sequential-rendering |
+| progressive-rendering| http://localhost:3000/get-method/progressive-rendering] | (REST)/get-method/progressive-rendering |
 
 ### Sequential rendering
 
@@ -597,16 +591,184 @@ With components as async functions, we can control the sequence of rendering, by
 One of the downsides of SSR is that it has to has to fetch all data before sending the generated page to the client. And, on the client, React can only hydrate the UI once the code for all components in the page has been downloaded. To enable streaming, you wrap individual components that need hydration with Suspense like below:
 
 ```typescript
-  <Suspense fallback={<p>Loading..</p>}>
-        <Album />
-      </Suspense>
+<Suspense fallback={<p>Loading..</p>}>
+  <Album />
+</Suspense>
+```
+
+### Revalidation and API caching
+
+Next.js allows you to update specific static routes without needing to rebuild your entire site.
+
+There are 2 ways of revalidation:
+
+**Background revalidation**: You can set the revalidation of the data at a specific time interval.
+
+**On-demand revalidation**: When you have set the revalidation period, but in some use-cases you don't want users to wait until the end of the revalidation period. Next.js App Router supports revalidating content on-demand based on a route or cache tag.
+
+| Types of revalidation | link demo                                                      | folder                                    |
+| --------------------- | -------------------------------------------------------------- | ----------------------------------------- |
+| background            | [http://www.localhost:3000/get-method/revalidation/background] | (REST)/get-method/revalidation/background |
+| on-demand             | [http://www.localhost:3000/get-method/revalidation/on-demand]  | (REST)/get-method/revalidation/on-demand  |
+
+Before implementing revalidation to your fetching, you need to understand that:
+
+- By default, when the app is being built with `yarn build`, the APIs will run once and have it's results cached. Let's say a function includes a variable that stores the value of `new Date()`, that variable will store the value of whenever the API was being built. Therefore, for cached APIs, side affects such as `console.log` will also run during build, but not when called after built.
+
+- To avoid having the API's results cached, you can add `export const revalidate = 0;` on top of your `route.ts`. If you have a POST method in `route.ts`, the other methods within the same file will also disable cache. This makes sense when you are creating a route that allows users to modify data.
+
+Since revalidation is a feature that controls how often you can call the API and rebuild the page. On-demand revalidation allows users to invalidate the cache and build pages without having to wait for the whole revalidation period. This is done by creating an API with NextJS' `revalidatePath` and `revalidateTag`, hit the API, and then fetch whatever that needs to be revalidated. More on these 2 below.
+
+You should know:
+
+- If the page is static, meaning that no revalidation period has been set at the `page.tsx` or `layout.tsx`, then even if the `route.tsx` is set to allow updated data, it will not fetch new results. The page is truly static. In the below example, `/page` the time will not change upon refresh.
+
+```tsx
+// /app/page.tsx
+
+async function getCurrentTime() {
+  const res = await fetch('http://localhost:3000/api/current-time');
+  return res.json();
+}
+
+export default function StaticPage() {
+  const currentTime = await getCurrentTime();
+
+  return <>Current Time is {currentTime} </>;
+}
+```
+
+```tsx
+// /app/api/current-time/route.tsx
+
+// disables API cache.
+export const revalidate = 0;
+
+export async function GET(request: NextRequest) {
+  const currentTime = new Date();
+  return NextResponse.json({
+    currentTime: currentTime,
+  });
+}
+```
+
+- Each page adheres to their own revalidation settings. Other pages, even with the same fetches, will not be rebuilt unless your prompted `revalidatePath('/')`, which revalidates all pages.
+
+- The revalidation is on per page basis not per route basis. Therefore, within a page, if one route’s revalidation period is 5 seconds, and the other is 30 seconds. The latter will adhere to the 5 second revalidation instead of 30.
+
+Therefore, even though you can write the revalidation with this syntax:
+
+```typescript
+// page.tsx
+async function getTime() {
+  let res;
+
+  try {
+    res = await fetch(`http://localhost:3000/api/data/time`, {
+      next: { revalidate: 5 },
+    });
+  } catch (e) {
+    return;
+  }
+
+  return res.json();
+}
+
+async function getNum() {
+  let res;
+
+  try {
+    res = await fetch(`http://localhost:3000/api/data/number`, {
+      next: { revalidate: 30 },
+    });
+  } catch (e) {
+    return;
+  }
+
+  return res.json();
+}
+```
+
+The 30 seconds period will be meaningless. It may be more clear to set it this way:
+
+```typescript
+// page.tsx
+export const revalidate = 5
+
+...
+
+```
+
+There are 2 ways of revalidation.
+
+#### Revalidation with `revalidatePath(path)`
+
+`RevalidatePath(path)`,` causes all pages with that path to rebuild the page.
+
+If the value of path is `/`, this means all apis will be revalidated and pages depending on any api will be rebuilt including static pages.
+
+if the value of path is a specific path, such as `/some-page`, then only that page is rebuilt and with a fresh API call. The API in question should be non-cached. Other pages that call the same api will not revalidate.
+
+**Important**: If your path is part of a grouped route, you need to include it in the path
+
+For example:
+
+```typescript
+fetch('/api/revalidate?path=/(REST)/get-method/revalidation/on-demand');
+```
+
+#### Revalidation with `revalidateTag()`
+
+The fetch method:
+
+```typescript
+// page.tsx
+
+// the function to get the time
+async function getTime() {
+  const res = await fetch('http://localhost:3000/api/data/time', {
+    next: { tags: ['collection'] },
+  });
+
+  return res.json();
+}
+
+// the function to send a request to revalidate the above fetch
+async function revalidateWithTag() {
+  await fetch('/api/revalidate?tag=collection');
+}
+```
+
+`revalidateTag()` allows you the revalidate functions using tags so you can revalidate more than one page compared to `revalidatePath`.
+
+Same with revalidatePath, revalidateTag will also revalidate other apis that don’t have the tag as long as they are in the same page.tsx.
+
+It meants that, in the below example, even only `getTime()` has a tag, `getData()` will also be revalidated.
+
+```typescript
+// page.tsx
+
+async function getTime() {
+  const res = await fetch('http://localhost:3000/api/data/time', {
+    next: { tags: ['collection'] },
+  });
+
+  return res.json();
+}
+
+async function getData() {
+  const res = await fetch('http://localhost:3000/api/data/');
+  return res.json();
+}
+
+export default function Page() {}
 ```
 
 ## Dynamic routes
 
-**demo**: www.localhost:3000/cat-profile/<choose a value between 1 to 3>
+**demo**: [www.localhost:3000/cat-profile/<choose a value between 1 to 3>]
 
-**folder** : `/app/(not-found)/cat-profile)` 
+**folder** : `/app/(not-found)/cat-profile)`
 
 A Dynamic Segment can be created by wrapping a folder's name in square brackets: [folderName]. For example, [id] or [slug].
 
@@ -618,7 +780,7 @@ The function returns a list of `params` to populate the dynamic segment.
 
 #### Single dynamic segment (ie: /product/[id]):
 
-This demo intends to be a page of a product based on product ID. 
+This demo intends to be a page of a product based on product ID.
 
 **demo**: www.localhost:3000/product/<choose a value between 1 to 100>
 
@@ -626,11 +788,11 @@ This demo intends to be a page of a product based on product ID.
 
 #### multiple dynamic segment (ie: /[brandName]/[productCategory]):
 
-This demo intends to be a page of a category of product of a brand. 
+This demo intends to be a page of a category of product of a brand.
 
 For a full list brand name and categories, run a `GET` request to `https://dummyjson.com/products`
 
-**demo**: www.localhost:3000/<brand-name>/<product-category> (ie:www.localhost:3000/apple/smartphones )  
+**demo**: www.localhost:3000/<brand-name>/<product-category> (ie:www.localhost:3000/apple/smartphones )
 
 **folder** : `/app/(generateStaticParams)/[brandName]/[productCategory]]`
 
@@ -642,16 +804,16 @@ For example `app/product/[...slug]/page.tsx` matches URLs localhost:3000/product
 
 ```typescript
 export function generateStaticParams() {
-  return [{ slug: ['a', '1'] }, { slug: ['b', '2'] }, { slug: ['c', '3'] }]
+  return [{ slug: ['a', '1'] }, { slug: ['b', '2'] }, { slug: ['c', '3'] }];
 }
- 
+
 // Three versions of this page will be statically generated
 // using the `params` returned by `generateStaticParams`
 // - /product/a/1
 // - /product/b/2
 // - /product/c/3
 export default function Page({ params }: { params: { slug: string[] } }) {
-  const { slug } = params
+  const { slug } = params;
   // ...
 }
 ```
@@ -667,13 +829,12 @@ NextJS supports the following styling methods:
 - CSS-in-JS
 - Sass
 
-| styling choice    | demo | folder |
-| ----------- | ----------- |----------- |
-| CSS Modules     | [www.localhost:3000/css-modules] | `app/(styling)/css-modules` |
-| tailwind     | [www.localhost:3000/tailwind] | `app/(styling)/tailwind` |
-| CSS-in-JS     | [www.localhost:3000/css-in-js] | `app/(styling)/css-in-js` |
-| Sass     | [www.localhost:3000/sass] | `app/(styling)/sass` |
-
+| styling choice | demo                             | folder                      |
+| -------------- | -------------------------------- | --------------------------- |
+| CSS Modules    | [www.localhost:3000/css-modules] | `app/(styling)/css-modules` |
+| tailwind       | [www.localhost:3000/tailwind]    | `app/(styling)/tailwind`    |
+| CSS-in-JS      | [www.localhost:3000/css-in-js]   | `app/(styling)/css-in-js`   |
+| Sass           | [www.localhost:3000/sass]        | `app/(styling)/sass`        |
 
 ### CSS Modules
 
@@ -689,7 +850,6 @@ To apply it, you do it in `app/globals.css` and import it in `app/layout.tsx`:
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 ```
 
 After installing Tailwind CSS and adding the global styles, you can use Tailwind's utility classes in your application.
@@ -706,32 +866,32 @@ Defining the style registry:
 
 ```typescript
 // lib/registry.tsx
-import React, { useState } from 'react'
-import { useServerInsertedHTML } from 'next/navigation'
-import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
- 
+import React, { useState } from 'react';
+import { useServerInsertedHTML } from 'next/navigation';
+import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
+
 export default function StyledComponentsRegistry({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   // Only create stylesheet once with lazy initial state
   // x-ref: https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
-  const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet())
- 
+  const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet());
+
   useServerInsertedHTML(() => {
-    const styles = styledComponentsStyleSheet.getStyleElement()
-    styledComponentsStyleSheet.instance.clearTag()
-    return <>{styles}</>
-  })
- 
-  if (typeof window !== 'undefined') return <>{children}</>
- 
+    const styles = styledComponentsStyleSheet.getStyleElement();
+    styledComponentsStyleSheet.instance.clearTag();
+    return <>{styles}</>;
+  });
+
+  if (typeof window !== 'undefined') return <>{children}</>;
+
   return (
     <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
       {children}
     </StyleSheetManager>
-  )
+  );
 }
 ```
 
@@ -739,12 +899,12 @@ Wrap it in the root layout:
 
 ```typescript
 //app/layout,tsx
-import StyledComponentsRegistry from './lib/registry'
- 
+import StyledComponentsRegistry from './lib/registry';
+
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html>
@@ -752,7 +912,7 @@ export default function RootLayout({
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>
-  )
+  );
 }
 ```
 
@@ -760,14 +920,18 @@ export default function RootLayout({
 
 Next.js has built-in support for Sass using both the `.scss` and `.sass` extensions. You can use component-level Sass via CSS Modules and the `.module.scss` or `.module.sass` extension.
 
-*If you run into the error: `selector “body” is not pure (pure selectors must contain at least one local class or id) – error in NextJs`*
+_If you run into the error: `selector “body” is not pure (pure selectors must contain at least one local class or id) – error in NextJs`_
 
 You can't directly have simple element selectors like the below in module.css:
 
 ```css
-body {/* rules here */}
+body {
+  /* rules here */
+}
 /* or */
-div {/* rules here */}
+div {
+  /* rules here */
+}
 ```
 
 You would've put them in globals for general selectors like that.
@@ -776,7 +940,7 @@ To solve this error, you need to add classNames:
 
 ```css
 body.test {
-    border: 2px solid blue;
+  border: 2px solid blue;
 }
 ```
 
@@ -790,7 +954,7 @@ export default function StyledRootLayout({ children }) {
       <head />
       <body className={`${styles.test}`}>{children}</body>
     </html>
-  )
+  );
 }
 ```
 
@@ -798,22 +962,22 @@ export default function StyledRootLayout({ children }) {
 
 A global styles sheet can be applied by creating a css file such as `globals.css`and then import it in `app/layout.tsx`
 
-``` typescript
+```typescript
 // These styles apply to every route in the application
-import './global.css'
+import './global.css';
 // you can import external packages this way
-import 'bootstrap/dist/css/bootstrap.css'
- 
+import 'bootstrap/dist/css/bootstrap.css';
+
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <body>{children}</body>
     </html>
-  )
+  );
 }
 ```
 
@@ -823,12 +987,12 @@ In the global style sheet, you can import dependencies from Tailwind. In our `st
 
 ```css
 h3 {
-    font-family: theme('fontFamily.gluten');
-    color: theme('colors.secondary')
-  }
+  font-family: theme('fontFamily.gluten');
+  color: theme('colors.secondary');
+}
 
 h4 {
-    @apply text-primary
+  @apply text-primary;
 }
 ```
 
@@ -862,7 +1026,7 @@ Why?
 
 ##### Installation of redux in Next 13
 
-In the previous NextJS (one with the `pages` folder),  a `<Provider>` must be wrapper around the `_app.tsx` to enable the subscription of the store across the whole app.
+In the previous NextJS (one with the `pages` folder), a `<Provider>` must be wrapper around the `_app.tsx` to enable the subscription of the store across the whole app.
 
 With the latest NextJS (one with the `app` folder), the `_app.tsx` is replaced by the root `layout.tsx`. Hence, by logic, the `<Provider>` should be inside the root `layout.tsx`. However, because the Provider uses `useContext` which is a client only function, it cannot be used directly in the server-side only root `layout.tsx`. As a workaround, a client component can be created that can act as a wrapper using the `Provider` and be placed within the root `layout.tsx`.
 
@@ -934,4 +1098,4 @@ Route protection can be done by having a layout to wrap protected components. Th
 
 **Demo** : [www.localhost:3000/private-page]
 
-Read about middleware usage in this readme for more information. 
+Read about middleware usage in this readme for more information.
