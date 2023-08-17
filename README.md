@@ -197,14 +197,15 @@ The issue is documented in the below:
 To use SVGR without turbopack, follow the install steps above and run `yarn next dev`.
 
 <<<<<<< HEAD
+
 ## Middleware
 
 **Demo** : [www.localhost:3000/with-middleware]
 
 **folder** : `app/(protected-routes)/with-middleware`
 
-Middleware will be invoked for every route in your project by default but can be configured from specific paths.  `middleware.ts` must be placed in the root folder.
-=======
+# Middleware will be invoked for every route in your project by default but can be configured from specific paths. `middleware.ts` must be placed in the root folder.
+
 ## Data fetching
 
 Data fetching is built on top of the `fetch()` Web API and React Server Components. When using `fetch()`, requests are automatically deduped by default.
@@ -260,9 +261,9 @@ Convention:
 ```tsx
 // /dashboard/layout.tsx
 export default function Layout(props: {
-  children: React.ReactNode
-  user: React.ReactNode
-  info: React.ReactNode
+  children: React.ReactNode;
+  user: React.ReactNode;
+  info: React.ReactNode;
 }) {
   return (
     <>
@@ -270,150 +271,122 @@ export default function Layout(props: {
       {props.user}
       {props.info}
     </>
-  )
+  );
 }
 ```
 
+The `@` notation marks the folder as a slot and can be used within layout.tsx.
+
 With the above, `/dashboard` will show 2 slots and each slot will fetch it's content at the same time. They will render as soon as they are ready and are independent from each other. This means that if one slot encounters an error, that particular slot will render a fallback error page while the others render as normal.
 
-`default.tsx`
+Consider another example:
 
-You can define a `default.tsx` file to render as a fallback when Next.js cannot recover a slot's active state based on the current URL.
+- /app
+  - route
+    - @slot
+      - slot1
+        - page.tsx
+      - page.tsx
+    - layout.tsx
+    - page.tsx
 
-What?
+What happens:
 
-### Parallel Routing with modals
+1. localhost:3000/route renders the content of `/app/route/page.tsx` and `/app/route/@slot/page.tsx. The layout.tsx shows how those 2 components are rendered.
 
-**Demo**: [www.localhost:3000/modals] (Please run dev without turbo such as `yarn next dev` instead of `yarn next dev --turbo`, or run `yarn build && yarn start`)
-**Folder**: `/app/(parallel-routes)/modals`
+```typescript
+// /app/route/layout.tsx
 
- In the previous example, the slots are presented as columns or rows. But with some CSS and `default.tsx` and nesting folder structure, parallel Routing can also be used to render modals.
-
-Convention (the following is an example of an instagram-like page where you click a photo and the photo pops out as a modal):
-
-- `/app`
-  - `/photo-gallery`
-    - `@my-modal`
-      - `photos/[id]`
-        - `page.tsx`
-      - `default.tsx`
-    - `default.tsx`
-    - `page.tsx`
-    - `layout.tsx`
-
-```tsx
-// layout.tsx
 export default function Layout(props: {
   children: React.ReactNode;
-  modal: React.ReactNode;
+  slot: React.ReactNode;
 }) {
   return (
     <>
       <div>
         {props.children}
-        {props.modal}
+        {props.slot}
       </div>
     </>
   );
 }
 ```
 
-```tsx
-// /@my-modal/photos/[id]/page.tsx
-'use client'
-import { useRouter } from 'next/navigation'
-import { Modal } from 'components/modal'
- 
-export default async function Page({
-  params: { id: photoId },
-}: {
-  params: { id: string };
-}) {
-  const router = useRouter() 
-   return (
-     <Modal>
+2. `@slot/slot1/page.tsx` can only be viewed when navigation to the URL `localhost:3000/slot1` is done within `localhost:3000/route`. You can think of it as pseudo routes that exists only in the context of this `localhost:3000/route`. So a button that navigates to `localhost:3000/route/slot1` only works when it is created within `/app/route`. Other attempts of navigation will return a 404.
 
-    {/*Meat of the content*/}
-      <Image src={`/dogs/${photoId}.png`} />
-      <span onClick={()=> router.back()}>Close modal</span>
+3. `@slot/page.tsx` acts as a fallback component if the URL doesn’t match with localhost:3000/route/modal1`. So if we navigate to `localhost:3000/route/slot1` the URL will be changed to`localhost:3000/route/slot1`. if the conditions that we've described in step 2 is met, a match will be detected and will render the content in `@slot/slot1/page.tsx`over`@slot/page.ts`
 
-    </Modal>
-  )
-}
-```
+4. With some CSS tricks. This behavior can be taken advantaged and used to create modals.
 
-For the Modal component, you can create a layover that wraps the meat of the content.
+**Demo**: [www.localhost:3000/modals] (Please run dev without turbo such as `yarn next dev` instead of `yarn next dev --turbo`, or run `yarn build && yarn start`)
+**Folder**: `/app/(parallel-routes)/modals`
 
-To ensure that the contents of the modal don't get rendered when it's not active, you can create a default.js file that returns null.
+Note:
 
-```tsx
-export default function Default() {
-  return null
-}
-```
+In the next docs, the fallback `page.tsx` is named as default.tsx. The behavior is the same if the file is labeled either way.
 
 ### Intercepting Routes
 
 **Demo**: [www.localhost:3000/modals] (Please run dev without turbo such as `yarn next dev` instead of `yarn next dev --turbo`, or run `yarn build && yarn start`)
 **Folder**: `/app/(parallel-routes)/modals`
 
-Intercepting routes allows the loading of a route within the current layout while keeping the context for the current page.
+Intercepting routes allows you to create standalone pages for the modal.
 
 Using the previous photo gallery example:
 
 - `/app`
   - `/photo-gallery`
     - `@my-modal`
-      - `photos/[id]`
-        - `page.tsx`
+      - `photos/[id]/page.tsx
       - `default.tsx`
     - `default.tsx`
     - `page.tsx`
     - `layout.tsx`
 
-You go to `/photo-gallery`, clicking on an image will show a modal of the image and will change the URL to `/photo-gallery/photos/123`. Even though the URL has been changed, due to the `@`prefix, as a parallel route, `/photo-gallery/photos/123` is just an overlay on top of `/photo-gallery`. `/photo-gallery` and the other @ slots are still visible beneath the overlay. 
-
-What if I also want `/photo-gallery/photos/123` to be a standalone page so I can have a shareable link?
-
-Then we can create intercepting routes with the following convention:
+The pages within @folders renders as an overlay of the current layout. If you visit the `localhost:3000/photos/1` directly. You will see it as an overlay. What if I actually define the route by create a `photos` folder outside of @my-modal?
 
 - `/app`
   - `/photo-gallery`
     - `@my-modal`
-      - `(.)photos/[id]/page.tsx`
-      - `photos/[id]/page.tsx` <------
+      - `photos/[id]/page.tsx <-----
       - `default.tsx`
+    - `photos/[id]/page.tsx <-----
     - `default.tsx`
     - `page.tsx`
     - `layout.tsx`
 
-```tsx
-// /app/photo-gallery/photos[id]/page.tsx
+If you visit `localhost:3000/photos/1`, it will render the contents in `/photo-gallery/photos/[id]/page.tsx` and overlayed by `@my-modal/photos/[id]/page.tsx`.
 
-export default function Page({params: photoId}:{params:string}) {
-  // You can 
-  return <><desiredLayout><Image src={`/photo/${photoId}.png`} /></desiredLayout></>;
-}
+In order to have a proper standalone page for `/photo-gallery/photos/1`. We can implement intercepting routes by adding the (..) notation to the `photos` folder within `@my-modal`
 
-```
+- `/app`
+  - `/photo-gallery`
+    - `@my-modal`
+      - `(..)photos/[id]/page.tsx <-----
+      - `default.tsx`
+    - `photos/[id]/page.tsx <-----
+    - `default.tsx`
+    - `page.tsx`
+    - `layout.tsx`
 
-When you hard navigate to `/photo-gallery/photos/123`, you will see the above route rendered instead.
+This tells NextJS that if the route of the annotated folder is visited, it should intercept and display the matched route instead.
 
 - (.) to match segments on the same level
 - (..) to match segments one level above
 - (..)(..) to match segments two levels above
 - (...) to match segments from the root app directory
 
+This way, you can customise how you want the standalone page to look like.
+
 ### Parallel routing issues
 
 This parallel routing feature is not production ready and the community has found some bugs:
 
-| Issue | Documentation|
-|----| ------------|
-|Individual loading doesn't work | (Next.js parallel routes are awesome (if they worked correctly))[https://www.youtube.com/watch?v=g5V6koptSXs] |
-| Modals do not work with turbopack| Modals don't show as modals in `/modals` with `next dev --turbo`|
-|Inconsistancy| Sometimes `yarn build && yarn start` and `yarn next dev` will produce differenct behavior. For example, the slot may or may not render as a modal, etc. The best bet is to delete the `.next` folder, `yarn build && yarn start` to view the app|
-
+| Issue                             | Documentation                                                                                                                                                                                                                                    |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Individual loading doesn't work   | (Next.js parallel routes are awesome (if they worked correctly))[https://www.youtube.com/watch?v=g5V6koptSXs]                                                                                                                                    |
+| Modals do not work with turbopack | Modals don't show as modals in `/modals` with `next dev --turbo`                                                                                                                                                                                 |
+| Inconsistancy                     | Sometimes `yarn build && yarn start` and `yarn next dev` will produce differenct behavior. For example, the slot may or may not render as a modal, etc. The best bet is to delete the `.next` folder, `yarn build && yarn start` to view the app |
 
 #### Reading segments
 

@@ -1,3 +1,9 @@
+import ModalWrapper from '@/components/atomic-design/organisms/modal-page/Modal';
+
 export default function Page() {
-  return <>More info: This is a good boi</>;
+  return (
+    <ModalWrapper>
+      <p>More info: this is a good boi.</p>
+    </ModalWrapper>
+  );
 }
