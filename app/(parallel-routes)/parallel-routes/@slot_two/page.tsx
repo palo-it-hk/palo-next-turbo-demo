@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { Button } from '@/components/atomic-design/atoms/Button-SC';
 
-export default async function Page() {
+export default function Page() {
   const [err, setErr] = useState(false);
 
   if (err) {
