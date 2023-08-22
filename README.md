@@ -23,12 +23,12 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
 ## Features covered in this documentation
 
 1. Concepts
-   - prefetching (WIP)
-   - Static and dynamic routes(WIP)
-   - Navigation (soft & hard) (WIP)
-   - Streaming (WIP)
-   - Project organization (WIP)
-   - Internationalization (WIP)
+   - Caching
+   - prefetching
+   - Static and dynamic rendering
+   - Navigation (soft & hard)
+   - Streaming
+   - Project organization
 2. Routing
    - Special files
      - default.tsx
@@ -39,16 +39,15 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
      - page.tsx
      - route.tsx
      - template.tsx
-   - Route segment config (WIP)
-   - Route groups
    - Dynamic routes & catch-all segments
    - Parallel Routes
    - Intercepting routes
    - Middleware
-3. Rendering
+
+3) Rendering
    - Static rendering
    - Dynamic rendering
-4. Data fetching
+4) Data fetching
    - Fetching
      - Static fetching
      - Dynamic fetching
@@ -58,30 +57,27 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
    - Caching
    - Revalidation
    - Server Actions
-5. Syntax
+5) Syntax
    - <Link>
-6. Functions
+6) Functions
    - usePathname()
    - useRouter()
    - revalidatePat()h & revalidateTag()
    - generateStaticParams()
    - dynamic() (WIP)
-7. Styling
+7) Styling
    - CSS Modules
    - Tailwind CSS
    - CSS-in-JS
    - Sass
-8. Assets
+8) Assets
    - images
    - Fonts
-9. Optimizing
+9) Optimizing
    - Metadata (WIP)
-   - Analytics (WIP)
-   - OpenTelemetry (WIP)
-   - Instrumentation (WIP)
    - Static Export (WIP)
    - Codemods (WIP)
-10. Others
+10) Others
 
 - Draft mode (WIP)
 - Accessability
@@ -290,6 +286,61 @@ If you want more important content to render first, you can control the sequence
 
 More info is in this README on `loading.tsx`, sequential and progressive rendering.
 
+### Project Organization
+
+#### Routing
+
+Routes are made accessible in the browser by defining a `page.tsx` within the `/app` as well as sub-folders inside it. Since only the content in `page.tsx` is shown to the client, it means that you can create other files that are not `page.tsx` without conflict.
+
+- app
+  - dashboard
+    - page.tsx
+    - Hero.tsx
+
+The above Hero.tsx file will not effect the showing of `page.tsx` when the browser loads `/dashboard`.
+
+#### Private folders
+
+You can create private folders in `/app` to opt out of routing but prefixing the folder name with an underscore. For example naming a folder as `_example`
+
+#### Route groups
+
+In the app directory, nested folders are normally mapped to URL paths. However, you can mark a folder as a Route Group to prevent the folder from being included in the route's URL path.
+
+Example:
+
+- app
+  - (users)
+    - layout.tsx
+    - login
+      - page.tsx
+    - dashboard
+      - page.tsx
+
+In the above the URL to reach the dashboard is localhost:3000/layout and localhost:3000/dashboard. You can also add a layout which can be shared amongst them.
+
+You can also create multiple root layouts this way:
+
+- app
+  - (users)
+    - layout.tsx
+    - user-login
+      - page.tsx
+    - user-dashboard
+      - page.tsx
+  - (admin)
+    - layout.tsx
+    - admin-login
+      - page.tsx
+    - admin-dashboard
+      - page.tsx
+
+Be careful that the folder structuring does not resolve into the same url.
+
+If you use multiple root layouts without a top-level `layout.tsx` file, your home `page.tsx` file should be defined in one of the route groups, For example: app/(marketing)/page.tsx.
+
+Take note that, navigating across multiple root layouts will cause a full page load.
+
 ## 2. Routing
 
 By default, components inside `app/` are React Server Components. To use client-side rendering, add `'use client';` before on the top of your components file.
@@ -370,43 +421,7 @@ export async function GET(request: NextRequest) {
 
 Templates are similar to layouts in that they wrap each child layout or page. Unlike layouts that persist across routes and maintain state, templates create a new instance for each of their children on navigation. This means that when a user navigates between routes that share a template, a new instance of the component is mounted, DOM elements are recreated, state is not preserved, and effects are re-synchronized.
 
-### Route groups
-
-In the app directory, nested folders are normally mapped to URL paths. However, you can mark a folder as a Route Group to prevent the folder from being included in the route's URL path.
-
-Example:
-
-- app
-  - (users)
-    - layout.tsx
-    - login
-      - page.tsx
-    - dashboard
-      - page.tsx
-
-In the above the URL to reach the dashboard is localhost:3000/layout and localhost:3000/dashboard. You can also add a layout which can be shared amongst them.
-
-You can also create multiple root layouts this way:
-
-- app
-  - (users)
-    - layout.tsx
-    - user-login
-      - page.tsx
-    - user-dashboard
-      - page.tsx
-  - (admin)
-    - layout.tsx
-    - admin-login
-      - page.tsx
-    - admin-dashboard
-      - page.tsx
-
-Be careful that the folder structuring does not resolve into the same url.
-
-If you use multiple root layouts without a top-level `layout.tsx` file, your home `page.tsx` file should be defined in one of the route groups, For example: app/(marketing)/page.tsx.
-
-Take note that, navigating across multiple root layouts will cause a full page load.
+### Route segment config
 
 ## Middleware
 
@@ -579,8 +594,8 @@ We can save time by initiating fetch requests in parallel, however, the user won
 
 ## Rendering
 
-| sequential-rendering | http://localhost:3000/get-method/sequential-rendering | (REST)/get-method/sequential-rendering |
-| progressive-rendering| http://localhost:3000/get-method/progressive-rendering] | (REST)/get-method/progressive-rendering |
+| sequential-rendering | [http://localhost:3000/get-method/sequential-rendering] | (REST)/get-method/sequential-rendering |
+| progressive-rendering| [http://localhost:3000/get-method/progressive-rendering] | (REST)/get-method/progressive-rendering |
 
 ### Sequential rendering
 
@@ -795,6 +810,9 @@ For a full list brand name and categories, run a `GET` request to `https://dummy
 **demo**: www.localhost:3000/<brand-name>/<product-category> (ie:www.localhost:3000/apple/smartphones )
 
 **folder** : `/app/(generateStaticParams)/[brandName]/[productCategory]]`
+
+To return 404 if a route that is not generated from generateStaticParams(),
+add `export const dynamicParams = false;` to the top of the page.
 
 #### Catch all segments
 
