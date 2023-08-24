@@ -445,6 +445,14 @@ Static: prefetch defaults to `true`. The entire route is prefetched and cached.
 
 dynamic: Because the fetch methods in the dynamic page are not prefetched, only the static content such as shared layout down until the first loading.js file is prefetched and cached for 30s. This reduces the cost of fetching an entire dynamic route, and it means you can show an instant loading state for better visual feedback to users.
 
+#### Limitations
+
+Next.js has an in-memory client-side cache called the Router Cache. As users navigate around the app, the React Server Component Payload of prefetched route segments and visited routes are stored in the cache.
+
+`<Link>` is a form of soft navigation that uses cache, which is an issue in cases where you'd like to rebuild the page upon navigation in order to show updated content.
+
+To opt out of caching, you can use the good ol' `<a>` tag but will lose the prefetch function.
+
 ## Cache behavior
 
 Next stores caches inside `.next`. Failing to clear cache may produce inconsistent behavior especially when running `yarn run build && yarn run start`. Manually removing the `.next` folder is recommended to clear the cache.
