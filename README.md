@@ -281,31 +281,133 @@ With the above, `/dashboard` will show 2 slots and each slot will fetch it's con
 
 #### Using parallel routes to create modals
 
-```tsx
-// /dashboard/layout.tsx
-export default function Layout(props: {
-  children: React.ReactNode;
-  user: React.ReactNode;
-  info: React.ReactNode;
-}) {
+QUICK START:
+
+To quickly create modals, here is an example using a photo gallery where you click an image and a modal pops out. Here are the steps:
+
+1. Create a route: In this case it is `localhost:3000/photo-gallery`. The page shows a clickable thumbnail of the pic
+
+- app
+  - photo-gallery
+    - page.tsx
+
+```typescript
+// page.tsx
+
+export default function Page() {
   return (
     <>
-      {props.children}
-      {props.user}
-      {props.info}
+      <Link href="/photo-gallery/photo">
+        <Thumbnail />
+      </Link>
     </>
   );
 }
 ```
 
-With the above layout.tsx, the children: children, user and info exist within the page. It's up to you on how the component are rendered in the UI.
+2. Create the base of the modal: Create a folder with the @ notation(we named it 'modal' but any name works) so that it can be used in the layout.
 
-With some CSS tricks. This behavior can be taken advantaged and used to create modals.
+- app
+  - photo-gallery
+    - @modal
+    - page.tsx
 
-You can see them in the below, you can ignore the notation (..) which is not essential at this stage:
+3. Create a layout:
 
-**Demo**: [www.localhost:3000/modals] (Please run dev without turbo such as `yarn next dev` instead of `yarn next dev --turbo`, or run `yarn build && yarn start`)
-**Folder**: `/app/(parallel-routes)/modals`
+- app
+  - photo-gallery
+    - @modal
+    - page.tsx
+    - layout.tsx
+
+```typescript
+// app/photo-gallery/layout.tsx
+export default function Layout(props: {
+  children: React.ReactNode;
+  modal: React.ReactNode;
+}) {
+  return (
+    <>
+      <div>
+        {props.children}
+        {props.modal}
+      </div>
+    </>
+  );
+}
+```
+
+4. Within @modal, create a default.tsx, which acts as a fallback when the active URL does not match. Next, create a folder called "photos" and inside, a page, which represents the content of the modal.
+
+- app
+  - photo-gallery
+    - @modal
+      - photo
+        - page.tsx
+      - default.tsx
+    - page.tsx
+
+```typescript
+// default.tsx
+
+export default function Default() {
+  return null;
+}
+```
+
+```typescript
+// @modal/photos/page.tsx
+
+export default function Component() {
+  return (
+    <MyModal>
+      <Image src={`/image.png`} width={300} height={300} alt="" />
+    </MyModal>
+  );
+}
+```
+
+The above is the basic set up, here are some explanations:
+
+- The @ notation enables @modal to serve 2 functions. One is it allows it to be included in the layout.tsx as a child. Another is that any folders created within the @modal becomes a sort of a pseudo route that listens to the active URL, and when the active route does not corresponds then it will display the @modal/photodefault.tsx.
+
+To illustrate what this means, lets say you navigate to localhost:3000/photo-gallery. The browser enters a territory where the routes defined inside the /photo-gallery are listening to the active URL.
+
+Active URL = http://localhost:3000/photo-gallery
+
+Routes that are listening:
+
+- /photo-gallery/page.tsx
+- /photo-gallery/@modal/photos/page.tsx
+
+Because the active URL corresponds to /photo-gallery/page.tsx, but not /photo-gallery/@modal/photos/page.tsx. Therefore, the component in the former will render, but the latter will render default.tsx. And since our default.tsx returns null, which is what we want in the case of creating a modal, it won't be shown.
+
+What happens if we click the thumbnail, resulting a soft navigation to http://localhost:3000/photo ?
+
+Active URL = http://localhost:3000/photo-gallery
+
+The active url triggers the listening /photo-gallery/@modal/photos/page.tsx and renders the modal component.
+
+The above is soft navigation, what if we hard navigate(ie: opening a new tab) to http://localhost:3000/photo ?
+
+It will return 404.
+
+Unless, we add a default.tsx to parent folder.
+
+- app
+  - photo-gallery
+    - @modal
+      - photo
+        - page.tsx
+      - default.tsx
+    - default.tsx
+    - page.tsx
+
+The default.tsx should return null. You can explore what default.tsx does in the background by returning some JSX instead of null.
+
+With the above, we've succesfully made http://localhost:3000/photo a standalone page.
+
+The problem is, it also retained all the modal styling which doesn't look right. To create a customised standalone page. We can look into the topic intercepting routes below.
 
 ### Intercepting Routes
 
