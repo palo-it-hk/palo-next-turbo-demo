@@ -279,51 +279,33 @@ The `@` notation marks the folder as a slot and can be used within layout.tsx.
 
 With the above, `/dashboard` will show 2 slots and each slot will fetch it's content at the same time. They will render as soon as they are ready and are independent from each other. This means that if one slot encounters an error, that particular slot will render a fallback error page while the others render as normal.
 
-Consider another example:
+#### Using parallel routes to create modals
 
-- /app
-  - route
-    - @slot
-      - slot1
-        - page.tsx
-      - page.tsx
-    - layout.tsx
-    - page.tsx
-
-What happens:
-
-1. localhost:3000/route renders the content of `/app/route/page.tsx` and `/app/route/@slot/page.tsx. The layout.tsx shows how those 2 components are rendered.
-
-```typescript
-// /app/route/layout.tsx
-
+```tsx
+// /dashboard/layout.tsx
 export default function Layout(props: {
   children: React.ReactNode;
-  slot: React.ReactNode;
+  user: React.ReactNode;
+  info: React.ReactNode;
 }) {
   return (
     <>
-      <div>
-        {props.children}
-        {props.slot}
-      </div>
+      {props.children}
+      {props.user}
+      {props.info}
     </>
   );
 }
 ```
 
-2. `@slot/slot1/page.tsx` can only be viewed when navigation to the URL `localhost:3000/slot1` is done within `localhost:3000/route`. You can think of it as pseudo routes that exists only in the context of this `localhost:3000/route`. So a button that navigates to `localhost:3000/route/slot1` only works when it is created within `/app/route`. Other attempts of navigation will return a 404.
+With the above layout.tsx, the children: children, user and info exist within the page. It's up to you on how the component are rendered in the UI.
 
-3. `@slot/page.tsx` acts as a fallback component if the URL doesn’t match with localhost:3000/route/modal1`. So if we navigate to `localhost:3000/route/slot1` the URL will be changed to`localhost:3000/route/slot1`. if the conditions that we've described in step 2 is met, a match will be detected and will render the content in `@slot/slot1/page.tsx`over`@slot/page.ts`
+With some CSS tricks. This behavior can be taken advantaged and used to create modals.
 
-4. With some CSS tricks. This behavior can be taken advantaged and used to create modals.
+You can see them in the below, you can ignore the notation (..) which is not essential at this stage:
 
 **Demo**: [www.localhost:3000/modals] (Please run dev without turbo such as `yarn next dev` instead of `yarn next dev --turbo`, or run `yarn build && yarn start`)
 **Folder**: `/app/(parallel-routes)/modals`
-
-Note:
-
-In the next docs, the fallback `page.tsx` is named as default.tsx. The behavior is the same if the file is labeled either way.
 
 ### Intercepting Routes
 
@@ -343,7 +325,7 @@ Using the previous photo gallery example:
     - `page.tsx`
     - `layout.tsx`
 
-The pages within @folders renders as an overlay of the current layout. If you visit the `localhost:3000/photos/1` directly. You will see it as an overlay. What if I actually define the route by create a `photos` folder outside of @my-modal?
+The pages within @my-modal renders as an overlay of the current layout. If you visit the `localhost:3000/photos/1` directly. You will see it as an overlay. What if I actually define the route by create a `photos` folder outside of @my-modal?
 
 - `/app`
   - `/photo-gallery`
@@ -362,7 +344,7 @@ In order to have a proper standalone page for `/photo-gallery/photos/1`. We can 
 - `/app`
   - `/photo-gallery`
     - `@my-modal`
-      - `(..)photos/[id]/page.tsx <-----
+      - `(.)photos/[id]/page.tsx <-----
       - `default.tsx`
     - `photos/[id]/page.tsx <-----
     - `default.tsx`

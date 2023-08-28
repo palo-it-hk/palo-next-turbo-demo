@@ -3,5 +3,10 @@
 
 export default function Default() {
   // To make this invisible, return null
-  return <>I am the default page in @modals/default.tsx</>;
+  return (
+    <>
+      I am the default page in @modals/default.tsx, normally you should have me
+      return null so I dont show.
+    </>
+  );
 }
