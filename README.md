@@ -87,10 +87,15 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
 
 ## Features not yet supported by Turbopack
 
-| feature/library                 | Description                                                                                     | docs                                                                                       |
-| ------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| [SVGR](https://react-svgr.com/) | A library that enables importing of svg files as React components                               | [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140) |
-| Server rendered CSS-in-JS       | CSS-in-JS styling such as styled-components, kuma-ui, styled-jsx, etc cannot be server rendered | [css-in-js](https://nextjs.org/docs/app/building-your-application/styling/css-in-js)       |
+| feature/library                 | Description                                                       | docs                                                                                       |
+| ------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [SVGR](https://react-svgr.com/) | A library that enables importing of svg files as React components | [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140) |
+
+## Features not yet supported by Server components
+
+| feature/library           | Description                                                                                     | docs                                                                                 |
+| ------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Server rendered CSS-in-JS | CSS-in-JS styling such as styled-components, kuma-ui, styled-jsx, etc cannot be server rendered | [css-in-js](https://nextjs.org/docs/app/building-your-application/styling/css-in-js) |
 
 ## Issues
 
@@ -1272,6 +1277,8 @@ File-based metadata has the higher priority and will override any config-based m
 
 - To set the **favicon**, create an icon and name it as `favicon.ico`, put it in `/app`. No need to add it into the header. .ico files only.
 - To have **icons for individual pages**, create an icon and name it was `icon.jpeg` and put it in the same location as `page.tsx`. Other file types are ok: .ico, .jpg, .jpeg, .png, .svg.
+  - **Demo**: [localhost:3000/file-based]
+  - **Folder**: `/src/app/(metadata)/file-based`
 - About **Apple icons**: As a large portion of the mobile devices consists of Apple products, you should be mindful about the Apple icon (touch icon) of your website. Ideally the size should be 180x180 so iOS can generate the icon suite properly. Name the file as 'apple-icon.jpg' and put it in the root `/app`. Accepted files are : jpg|jpeg|png.
 
 Notes:
@@ -1288,8 +1295,8 @@ Notes:
 
 ```typescript
 // app/robots.ts
-import { MetadataRoute } from 'next'
- 
+import { MetadataRoute } from 'next';
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
@@ -1298,7 +1305,7 @@ export default function robots(): MetadataRoute.Robots {
       disallow: '/private/',
     },
     sitemap: 'https://acme.com/sitemap.xml',
-  }
+  };
 }
 ```
 
@@ -1309,8 +1316,8 @@ export default function robots(): MetadataRoute.Robots {
 
 ```typescript
 // app/sitemap.ts
-import { MetadataRoute } from 'next'
- 
+import { MetadataRoute } from 'next';
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
@@ -1325,7 +1332,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: 'https://acme.com/blog',
       lastModified: new Date(),
     },
-  ]
+  ];
 }
 ```
 
