@@ -2,7 +2,6 @@
 import { useCallback, useRef, useEffect, MouseEventHandler } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '../../atoms/Button-SC';
-import Link from 'next/link';
 
 export default function ModalWrapper({
   children,
@@ -41,7 +40,7 @@ export default function ModalWrapper({
   return (
     <div
       ref={overlay}
-      className="bg-black/60 fixed bottom-0 left-0 right-0 top-0 z-10 mx-auto"
+      className="fixed bottom-0 left-0 right-0 top-0 z-10 mx-auto bg-black/60"
       onClick={onClick}
     >
       <div

@@ -24,10 +24,12 @@ module.exports = {
       xl: '1280px',
       '2xl': '1536px',
     },
-    colors: {
-      primary: 'rgb(115,203,153)',
-      secondary: 'rgb(237,161,24)',
-      warning: 'rgb(252,69,96)',
+    extend: {
+      colors: {
+        primary: 'rgb(115,203,153)',
+        secondary: 'rgb(237,161,24)',
+        warning: 'rgb(252,69,96)',
+      },
     },
   },
   plugins: [],
