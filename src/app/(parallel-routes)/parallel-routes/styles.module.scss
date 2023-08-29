@@ -1,0 +1,21 @@
+%component-shared {
+  border: 1px solid black;
+  padding: 20px;
+  width: 50%;
+  text-align: center;
+ 
+}
+
+div.wrapper {
+  width: 100%;
+  display: flex;
+}
+
+div.column {
+  @extend %component-shared;
+}
+
+div.row {
+  @extend %component-shared;
+  width: 100%;
+}

@@ -77,7 +77,6 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
    - Metadata
    - State Management
 10) Others
-    - Draft mode (WIP)
     - Security
 
 ### Functions(Usage can be found across this readme)
@@ -90,6 +89,7 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
 | feature/library                 | Description                                                       | docs                                                                                       |
 | ------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | [SVGR](https://react-svgr.com/) | A library that enables importing of svg files as React components | [App fails to build with Turbopack loader](https://github.com/vercel/next.js/issues/48140) |
+| Modals with Parallel routes     | Modals will not work when running dev mode with turbo             |                                                                                            |
 
 ## Features not yet supported by Server components
 
@@ -831,7 +831,7 @@ async function getData() {
 export default function Page() {}
 ```
 
-## Dynamic routes
+### Dynamic routes
 
 **demo**: [www.localhost:3000/cat-profile/<choose a value between 1 to 3>]
 
@@ -839,13 +839,13 @@ export default function Page() {}
 
 A Dynamic Segment can be created by wrapping a folder's name in square brackets: [folderName]. For example, [id] or [slug].
 
-### Generate dynamic routes on build time
+#### Generate dynamic routes on build time
 
 The `generateStaticParams` function can be used in combination with dynamic route segments to statically generate routes at build time instead of on-demand at request time.
 
 The function returns a list of `params` to populate the dynamic segment.
 
-#### Single dynamic segment (ie: /product/[id]):
+##### Single dynamic segment (ie: /product/[id]):
 
 This demo intends to be a page of a product based on product ID.
 
@@ -853,7 +853,7 @@ This demo intends to be a page of a product based on product ID.
 
 **folder** : `/app/(generateStaticParams)/product`
 
-#### multiple dynamic segment (ie: /[brandName]/[productCategory]):
+##### multiple dynamic segment (ie: /[brandName]/[productCategory]):
 
 This demo intends to be a page of a category of product of a brand.
 
@@ -866,7 +866,7 @@ For a full list brand name and categories, run a `GET` request to `https://dummy
 To return 404 if a route that is not generated from generateStaticParams(),
 add `export const dynamicParams = false;` to the top of the page.
 
-#### Catch all segments
+##### Catch all segments
 
 Dynamic Segments can be extended to catch-all subsequent segments by adding an ellipsis inside the brackets [...folderName].
 
@@ -889,6 +889,275 @@ export default function Page({ params }: { params: { slug: string[] } }) {
 ```
 
 Catch-all Segments can be made optional by including the parameter in double square brackets: `[[...folderName]]`. Using the above examples, it will also capture localhost:3000/product.
+
+### Parallel Routes
+
+#### Parallel routing with slots
+
+**Demo**: [www.localhost:3000/parallel-routes]
+**Folder** : `/app/(parallel-routes)/parallel-routes`
+
+Parallel Routing allows you to simultaneously or conditionally render one or more pages in the same layout.
+
+Convention:
+
+- `/app`
+  - `/dashboard`
+    - `@user`
+      - `page.tsx`
+    - `@info`
+      - `page.tsx`
+    - `page.tsx`
+    - `layout.tsx`
+
+```tsx
+// /dashboard/layout.tsx
+export default function Layout(props: {
+  children: React.ReactNode;
+  user: React.ReactNode;
+  info: React.ReactNode;
+}) {
+  return (
+    <>
+      {props.children}
+      {props.user}
+      {props.info}
+    </>
+  );
+}
+```
+
+The `@` notation marks the folder as a slot and can be used within layout.tsx.
+
+With the above, `/dashboard` will show 2 slots and each slot will fetch it's content at the same time. They will render as soon as they are ready and are independent from each other. This means that if one slot encounters an error, that particular slot will render a fallback error page while the others render as normal.
+
+##### Using parallel routes to create modals
+
+QUICK START:
+
+To quickly create modals, here is an example using a photo gallery where you click an image and a modal pops out. Here are the steps:
+
+1. Create a route: In this case it is `localhost:3000/photo-gallery`. The page shows a clickable thumbnail of the pic
+
+- app
+  - photo-gallery
+    - page.tsx
+
+```typescript
+// page.tsx
+
+export default function Page() {
+  return (
+    <>
+      <Link href="/photo-gallery/photo">
+        <Thumbnail />
+      </Link>
+    </>
+  );
+}
+```
+
+2. Create the base of the modal: Create a folder with the @ notation(we named it 'modal' but any name works) so that it can be used in the layout.
+
+- app
+  - photo-gallery
+    - @modal
+    - page.tsx
+
+3. Create a layout:
+
+- app
+  - photo-gallery
+    - @modal
+    - page.tsx
+    - layout.tsx
+
+```typescript
+// app/photo-gallery/layout.tsx
+export default function Layout(props: {
+  children: React.ReactNode;
+  modal: React.ReactNode;
+}) {
+  return (
+    <>
+      <div>
+        {props.children}
+        {props.modal}
+      </div>
+    </>
+  );
+}
+```
+
+4. Within @modal, create a default.tsx, which acts as a fallback when the active URL does not match. Next, create a folder called "photos" and inside, a page, which represents the content of the modal.
+
+- app
+  - photo-gallery
+    - @modal
+      - photo
+        - page.tsx
+      - default.tsx
+    - page.tsx
+
+```typescript
+// default.tsx
+
+export default function Default() {
+  return null;
+}
+```
+
+```typescript
+// @modal/photos/page.tsx
+
+export default function Component() {
+  return (
+    <MyModal>
+      <Image src={`/image.png`} width={300} height={300} alt="" />
+    </MyModal>
+  );
+}
+```
+
+The above is the basic set up, here are some explanations:
+
+- The @ notation enables @modal to serve 2 functions. One is it allows it to be included in the layout.tsx as a child. Another is that any folders created within the @modal becomes a sort of a pseudo route that listens to the active URL, and when the active route does not corresponds then it will display the @modal/photodefault.tsx.
+
+To illustrate what this means, lets say you navigate to localhost:3000/photo-gallery. The browser enters a territory where the routes defined inside the /photo-gallery are listening to the active URL.
+
+Active URL = http://localhost:3000/photo-gallery
+
+Routes that are listening:
+
+- /photo-gallery/page.tsx
+- /photo-gallery/@modal/photos/page.tsx
+
+Because the active URL corresponds to /photo-gallery/page.tsx, but not /photo-gallery/@modal/photos/page.tsx. Therefore, the component in the former will render, but the latter will render default.tsx. And since our default.tsx returns null, which is what we want in the case of creating a modal, it won't be shown.
+
+What happens if we click the thumbnail, resulting a soft navigation to http://localhost:3000/photo ?
+
+Active URL = http://localhost:3000/photo-gallery
+
+The active url triggers the listening /photo-gallery/@modal/photos/page.tsx and renders the modal component.
+
+The above is soft navigation, what if we hard navigate(ie: opening a new tab) to http://localhost:3000/photo ?
+
+It will return 404.
+
+Unless, we add a default.tsx to parent folder.
+
+- app
+  - photo-gallery
+    - @modal
+      - photo
+        - page.tsx
+      - default.tsx
+    - default.tsx
+    - page.tsx
+
+The default.tsx should return null. You can explore what default.tsx does in the background by returning some JSX instead of null.
+
+With the above, we've succesfully made http://localhost:3000/photo a standalone page.
+
+The problem is, it also retained all the modal styling which doesn't look right. To create a customised standalone page. We can look into the topic intercepting routes below.
+
+#### Intercepting Routes
+
+**Demo**: [www.localhost:3000/modals] (Please run dev without turbo such as `yarn next dev` instead of `yarn next dev --turbo`, or run `yarn build && yarn start`)
+**Folder**: `/app/(parallel-routes)/modals`
+
+Intercepting routes allows you to create standalone pages for the modal.
+
+Using the previous photo gallery example:
+
+- `/app`
+  - `/photo-gallery`
+    - `@my-modal`
+      - `photos/[id]/page.tsx
+      - `default.tsx`
+    - `default.tsx`
+    - `page.tsx`
+    - `layout.tsx`
+
+The pages within @my-modal renders as an overlay of the current layout. If you visit the `localhost:3000/photos/1` directly. You will see it as an overlay. What if I actually define the route by create a `photos` folder outside of @my-modal?
+
+- `/app`
+  - `/photo-gallery`
+    - `@my-modal`
+      - `photos/[id]/page.tsx <-----
+      - `default.tsx`
+    - `photos/[id]/page.tsx <-----
+    - `default.tsx`
+    - `page.tsx`
+    - `layout.tsx`
+
+If you visit `localhost:3000/photos/1`, it will render the contents in `/photo-gallery/photos/[id]/page.tsx` and overlayed by `@my-modal/photos/[id]/page.tsx`.
+
+In order to have a proper standalone page for `/photo-gallery/photos/1`. We can implement intercepting routes by adding the (..) notation to the `photos` folder within `@my-modal`
+
+- `/app`
+  - `/photo-gallery`
+    - `@my-modal`
+      - `(.)photos/[id]/page.tsx <-----
+      - `default.tsx`
+    - `photos/[id]/page.tsx <-----
+    - `default.tsx`
+    - `page.tsx`
+    - `layout.tsx`
+
+This tells NextJS that if the route of the annotated folder is visited, it should intercept and display the matched route instead.
+
+- (.) to match segments on the same level
+- (..) to match segments one level above
+- (..)(..) to match segments two levels above
+- (...) to match segments from the root app directory
+
+This way, you can customise how you want the standalone page to look like.
+
+#### Parallel routing issues
+
+This parallel routing feature is not production ready and the community has found some bugs:
+
+| Issue                             | Documentation                                                                                                                                                                                                                                    |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Individual loading doesn't work   | (Next.js parallel routes are awesome (if they worked correctly))[https://www.youtube.com/watch?v=g5V6koptSXs]                                                                                                                                    |
+| Modals do not work with turbopack | Modals don't show as modals in `/modals` with `next dev --turbo`                                                                                                                                                                                 |
+| Inconsistancy                     | Sometimes `yarn build && yarn start` and `yarn next dev` will produce differenct behavior. For example, the slot may or may not render as a modal, etc. The best bet is to delete the `.next` folder, `yarn build && yarn start` to view the app |
+
+##### Reading segments
+
+Both `useSelectedLayoutSegment` and `useSelectedLayoutSegments` accept a parallelRoutesKey, which allows you read the active route segment within that slot.
+
+```tsx
+'use client';
+
+import './global.css';
+import GithubCorner from '../components/github-corner/GithubCorner';
+import { useSelectedLayoutSegment } from 'next/navigation';
+
+export default function Layout(props: {
+  children: React.ReactNode;
+  slot_one: React.ReactNode;
+  slot_two: React.ReactNode;
+}) {
+  const segment = useSelectedLayoutSegment('slot_one');
+
+  console.log('Segment is', segment);
+
+  return (
+    <html>
+      <body>
+        <GithubCorner />
+        {props.children}
+        {props.slot_two}
+        {props.slot_one}
+      </body>
+    </html>
+  );
+}
+```
+
+The console log returns the string "children" if the argument is on slot_one and if navigated on slot_one, it will return the string 'children'.But according to the documentation, it should return the segment as a string, which should be '/slot_one'.
 
 ## 7. Styling
 
