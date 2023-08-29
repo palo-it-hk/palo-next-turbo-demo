@@ -34,7 +34,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       {displayContent ? (
         <div>
           <div>
-            <Button label="Logout" size="small" onClick={logout} />
+            <Button label="Logout" size="small" onClick={logout} primary />
           </div>
           {children}
         </div>

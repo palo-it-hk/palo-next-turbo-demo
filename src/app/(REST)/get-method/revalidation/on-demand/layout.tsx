@@ -42,11 +42,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         label="Revalidate with revalidatePath"
         size="small"
         onClick={() => revalidateWithPath()}
+        primary
       />
       <Button
         label="Revalidate with revalidateTag"
         size="small"
         onClick={() => revalidateWithTag()}
+        primary
       />
       <p> {errorMsg}</p>
 

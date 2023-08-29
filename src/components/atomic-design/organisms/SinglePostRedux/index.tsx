@@ -32,7 +32,12 @@ export const SinglePostRedux = ({ id }: { id: string }) => {
         route={route}
       />
       <Link href={`/redux/edit-post/${id}`}>
-        <Button label="edit post" size="small" style={{ marginTop: '10px' }} />
+        <Button
+          label="edit post"
+          size="small"
+          style={{ marginTop: '10px' }}
+          primary
+        />
       </Link>
     </>
   );

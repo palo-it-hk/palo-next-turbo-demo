@@ -32,7 +32,12 @@ export const SinglePostMobx = ({ id }: { id: string }) => {
         route={route}
       />
       <Link href={`/${route}/edit-post/${id}`}>
-        <Button label="edit post" size="small" style={{ marginTop: '10px' }} />
+        <Button
+          label="edit post"
+          size="small"
+          style={{ marginTop: '10px' }}
+          primary
+        />
       </Link>
     </>
   );

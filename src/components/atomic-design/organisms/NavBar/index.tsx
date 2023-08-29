@@ -12,10 +12,10 @@ export function NavBar() {
   return (
     <div style={{ margin: '20px 0px 20px 0px' }}>
       <Link href={`/${route}`}>
-        <Button label="All posts" size="small" />
+        <Button label="All posts" size="small" primary />
       </Link>
       <Link href={`/${route}/add-post`}>
-        <Button label="Add new post" size="small" />
+        <Button label="Add new post" size="small" primary />
       </Link>
     </div>
   );
