@@ -45,7 +45,7 @@ export default function ModalWrapper({
     >
       <div
         ref={wrapper}
-        className="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 p-6 text-center sm:w-10/12 md:w-8/12 lg:w-1/2"
+        className="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 bg-white p-6 text-center sm:w-10/12 md:w-8/12 lg:w-1/2"
       >
         {children}
         <a href="/modals">
