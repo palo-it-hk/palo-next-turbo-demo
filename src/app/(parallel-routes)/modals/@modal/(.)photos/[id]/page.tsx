@@ -18,7 +18,7 @@ export default function Modal({
         className="col-span-2 aspect-square w-full object-cover"
       />
       <Link href="/modals/info">
-        <Button label="More info" size="small" />
+        <Button label="More info" size="small" primary />
       </Link>
     </ModalWrapper>
   );

@@ -49,7 +49,7 @@ export default function ModalWrapper({
       >
         {children}
         <a href="/modals">
-          <Button label="Back" size="small" />
+          <Button label="Back" size="small" primary />
         </a>
       </div>
     </div>
