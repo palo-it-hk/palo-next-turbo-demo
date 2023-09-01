@@ -28,7 +28,7 @@ export default function Page() {
       </Text>
       <Text>This is a styled Component button</Text>
 
-      <Button label="some button" size="small" />
+      <Button label="some button" size="small" primary />
     </Wrapper>
   );
 }

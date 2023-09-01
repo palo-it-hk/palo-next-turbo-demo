@@ -48,7 +48,7 @@ function LoginPage() {
       <InputField fieldName="Username" action={setUsername} value={username} />
       <InputField fieldName="Password" action={setPassword} value={password} />
       <div>
-        <Button label="submit" size="small" onClick={handleSubmit} />
+        <Button label="submit" size="small" onClick={handleSubmit} primary />
       </div>
       <p style={{ color: 'red' }}>{errorMessage}</p>
     </>

@@ -160,6 +160,12 @@ There are of caching bahaviors both in the client-side and server-side:
 
 Also known as Router Cache, this is a client side caching feature. As users navigates between pages, the visited pages are cached as well as page links wrapper with `<Link>` when they are physically hovered over. This allows a quick and seamless browsing experience.
 
+The React Server Component Payload is stored in the client-side Router Cache - a separate in-memory cache, split by individual route segment. This Router Cache is used to improve the navigation experience by storing previously visited routes and prefetching future routes.
+
+On subsequent navigations or during prefetching, Next.js will check if the React Server Components Payload is stored in Router Cache. If so, it will skip sending a new request to the server.
+
+If the route segments are not in the cache, Next.js will fetch the React Server Components Payload from the server, and populate the Router Cache on the client.
+
 #### Server-side
 
 ##### Request memoization

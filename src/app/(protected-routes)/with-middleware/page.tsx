@@ -41,7 +41,7 @@ export default function Page() {
   return (
     <>
       {message}
-      <Button label="Logout" onClick={logOut} />
+      <Button label="Logout" onClick={logOut} primary />
     </>
   );
 }
